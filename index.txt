@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+ <html lang="fr">
+ <head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>Galerie de Berlines Sportives</title>
+ <style>
+ :root{
+ --bg-overlay: rgba(0,0,0,.25);
+ --panel: rgba(0,0,0,.6);
+ --card: rgba(0,0,0,.4);
+ --text-shadow: 0 0 8px rgba(0,0,0,.8);
+ --radius: 12px;
+ --gap: 20px;
+ }
+ 
+ * { box-sizing: border-box; }
+ 
+ body {
+ margin: 0;
+ font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+ min-height: 100vh;
+ display: flex;
+ flex-direction: column;
+ background: url("https://upload.wikimedia.org/wikipedia/commons/5/5b/France_Cote_d%27Azur_Eze.jpg") no-repeat center / cover fixed;
+ color: #fff;
+ text-shadow: var(--text-shadow);
+ }
+ 
+ body::before {
+ content: "";
+ position: fixed;
+ inset: 0;
+ background: var(--bg-overlay);
+ z-index: 0;
+ }
+ 
+ header, footer {
+ background: var(--panel);
+ padding: 1rem;
+ text-align: center;
+ position: relative;
+ z-index: 1;
+ }
+ 
+ nav {
+ display: inline-flex;
+ gap: .5rem;
+ align-items: center;
+ }
+ 
+ .sep { opacity: .6; }
+ 
+ .linklike {
+ background: transparent;
+ border: 0;
+ color: #fff;
+ padding: 0;
+ font: inherit;
+ cursor: pointer;
+ text-decoration: none;
+ }
+ .linklike:hover { text-decoration: underline; }
+ 
+ main {
+ flex: 1;
+ display: flex;
+ justify-content: center;
+ padding: 2rem;
+ position: relative;
+ z-index: 1;
+ }
+ 
+ .gallery {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+ gap: var(--gap);
+ width: 100%;
+ max-width: 1400px;
+ }
+ 
+ .gallery-item {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ background: var(--card);
+ border-radius: var(--radius);
+ overflow: hidden;
+ box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+ transition: transform .3s ease;
+ }
+ .gallery-item:hover { transform: scale(1.03); }
+ 
+ .gallery-item img {
+ width: 100%;
+ height: 200px;
+ object-fit: contain;
+ display: block;
+ }
+ 
+ .gallery-item span {
+ padding: 10px;
+ text-align: center;
+ font-weight: 700;
+ font-size: 1rem;
+ color: #fff;
+ text-shadow: 0 0 5px rgba(0,0,0,.7);
+ background: rgba(0,0,0,.5);
+ width: 100%;
+ }
+ 
+ .price { font-style: italic; margin: 10px 0; }
+ 
+ @media (max-width: 768px) {
+ main { padding: 1rem; }
+ .gallery-item img { height: 180px; }
+ }
+ 
+ @media (prefers-reduced-motion: reduce) {
+ .gallery-item { transition: none; }
+ .gallery-item:hover { transform: none; }
+ .dropdown { transition: none; }
+ }
+ 
+ .dropdown {
+ max-height: 0;
+ overflow: hidden;
+ margin: 1rem auto 0;
+ padding: 0 1rem;
+ background: rgba(0, 0, 0, .7);
+ border-radius: 10px;
+ text-align: center;
+ transition: max-height .5s ease, padding .5s ease;
+ width: min(800px, 95%);
+ }
+ .dropdown.show {
+ max-height: 220px;
+ padding: 1rem;
+ }
+ .dropdown p { margin: 5px 0; }
+ </style>
+ </head>
+ 
+ <body>
+ <header>
+ <h1>Galerie de Berlines Sportives</h1>
+ <nav aria-label="Navigation principale">
+ <button id="aboutBtn" class="linklike" aria-controls="aboutSection" aria-expanded="false">À propos</button>
+ <span class="sep">|</span>
+ <button id="contactBtn" class="linklike" aria-controls="contactSection" aria-expanded="false">Contact</button>
+ </nav>
+ </header>
+ 
+ <main>
+ <section class="gallery">
+ <div class="gallery-item">
+ <span>Nissan GTR</span>
+ <p class="price">Prix : 120 000€</p>
+ <a href="https://fr.motor1.com/news/532915/nissan-gtr-t-spec-sportive/" target="_blank" rel="noopener noreferrer">
+ <img loading="lazy" decoding="async" src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Nissan_GTR_Nismo_01.jpg" alt="Nissan GTR">
+ </a>
+ </div>
+ 
+ <div class="gallery-item">
+ <span>Toyota Supra</span>
+ <p class="price">Prix : 75 000€</p>
+ <a href="https://fr.wikipedia.org/wiki/Toyota_GR_Supra" target="_blank" rel="noopener noreferrer">
+ <img loading="lazy" decoding="async" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Toyota_Supra_GR_Genf_2019_1Y7A5645.jpg/2560px-Toyota_Supra_GR_Genf_2019_1Y7A5645.jpg" alt="Toyota Supra GR au salon de Genève 2019">
+ </a>
+ </div>
+ 
+ <div class="gallery-item">
+ <span>BMW M5 Manhart</span>
+ <p class="price">Prix : 140 000€</p>
+ <a href="https://voi.id/fr/mobil/427533" target="_blank" rel="noopener noreferrer">
+ <img loading="lazy" decoding="async" src="https://imgsrv2.voi.id/LPE7yvuGYX1vxW5q0RU3NQN_mL__MW5NdLewm2VkP5s/auto/1200/675/sm/1/bG9jYWw6Ly8vcHVibGlzaGVycy80Mjc1MzMvMjAyNDEwMjMxNzA3LW1haW4uY3JvcHBlZF8xNzI5Njc4MDM0LmpwZWc.jpg" alt="BMW M5 préparée par Manhart">
+ </a>
+ </div>
+ 
+ <div class="gallery-item">
+ <span>Audi S4</span>
+ <p class="price">Prix : 65 000€</p>
+ <a href="https://www.audi.fr/fr/article/audi-s4-rs-4-occasion/" target="_blank" rel="noopener noreferrer">
+ <img loading="lazy" decoding="async" src="https://media.audi.com/is/image/audi/nemo/fr/Gamme/GammeArticles/s4-rs4-occasion/1920x1080_Header_RS4_24062024.png" alt="Audi S4">
+ </a>
+ </div>
+ 
+ <div class="gallery-item">
+ <span>BMW M3</span>
+ <p class="price">Prix : 85 000€</p>
+ <a href="https://www.drivek.fr/bmw/m3-berline/" target="_blank" rel="noopener noreferrer">
+ <img loading="lazy" decoding="async" src="https://cdn-xy.drivek.com/eyJidWNrZXQiOiJkYXRhay1jZG4teHkiLCJrZXkiOiJjb25maWd1cmF0b3ItaW1ncy9jYXJzL2ZyL29yaWdpbmFsL0JNVy9NMy80NDUxN19TRURBTi00LURPT1JTL2Jtdy1tMy1zZWRhbi1mcm9udC12aWV3LmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6MTAyNCwiaGVpZ2h0IjpudWxsLCJmaXQiOiJjb3ZlciJ9fX0=" alt="BMW M3 berline, vue avant">
+ </a>
+ </div>
+ 
+ <div class="gallery-item">
+ <span>Mercedes-Benz C63 AMG</span>
+ <p class="price">Prix : 110 000€</p>
+ <a href="https://www.mercedes-benz.ca/fr/future-vehicles/2024-AMG-C63SE" target="_blank" rel="noopener noreferrer">
+ <img loading="lazy" decoding="async" src="https://preview.redd.it/what-is-your-opinion-of-the-new-c63-amg-v0-ha2qkb2iq71b1.jpg?width=1080&crop=smart&auto=webp&s=4f6f0f5d764ebffdbaafd1dc691ac9d9b4a3b674" alt="Mercedes-AMG C63">
+ </a>
+ </div>
+ 
+ <div class="gallery-item">
+ <span>Jaguar XE</span>
+ <p class="price">Prix : 60 000€</span>
+ <a href="https://www.jaguar.fr/jaguar-range/xe/index.html" target="_blank" rel="noopener noreferrer">
+ <img loading="lazy" decoding="async" src="https://cdn.autobild.es/sites/navi.axelspringer.es/public/bdc/dc/fotos/jaguar_xe_2021.jpg?tf=1920x" alt="Jaguar XE 2021">
+ </a>
+ </div>
+ 
+ <div class="gallery-item">
+ <span>Alfa Romeo Giulia QV</span>
+ <p class="price">Prix : 95 000€</p>
+ <a href="https://www.alfaromeo.fr/modeles/quadrifoglio/giulia-quadrifoglio" target="_blank" rel="noopener noreferrer">
+ <img loading="lazy" decoding="async" src="https://hips.hearstapps.com/hmg-prod/images/2024-alfa-romeo-giulia-quadrifoglio-100th-anniversario-116-643962c48c32c.jpg?crop=1xw:1xh;center,top" alt="Alfa Romeo Giulia Quadrifoglio 2024">
+ </a>
+ </div>
+ 
+ <div class="gallery-item">
+ <span>Nissan 370Z</span>
+ <p class="price">Prix : 40 000€</p>
+ <a href="https://www.nissan.fr/experience-nissan/vehicule-historique/370z.html" target="_blank" rel="noopener noreferrer">
+ <img loading="lazy" decoding="async" src="https://www.motortrend.com/uploads/sites/10/2017/04/2018-Nissan-370Z-Heritage-Edition-front-three-quarter-03.jpg" alt="Nissan 370Z Heritage Edition 2018">
+ </a>
+ </div>
+ 
+ <div class="gallery-item">
+ <span>Ford Mustang GT</span>
+ <p class="price">Prix : 50 000€</p>
+ <a href="https://fr.ford.ca/performance/mustang-gtd/" target="_blank" rel="noopener noreferrer">
+ <img loading="lazy" decoding="async" src="https://media.ford.com/content/fordmedia/feu/fr/fr/news/2023/08/la-toute-nouvelle-mustang-gtd---une-technologie-de-pointe-homolo/jcr%3acontent/par/image.img.jpg/1692314359245.jpg" alt="Ford Mustang GTD">
+ </a>
+ </div>
+ </section>
+ </main>
+ 
+ <section id="aboutSection" class="dropdown" hidden>
+ <p>Réalisé par Timée Meylan.</p>
+ <p>Projet d'étudiant à l'ESGI</p>
+ <p>Aix-en-Provence.</p>
+ </section>
+ 
+ <section id="contactSection" class="dropdown" hidden>
+ <p>Email : <span id="email"></span></p>
+ <p>Téléphone : <span id="phone"></span></p>
+ <p>Instagram : <span id="instagram"></span></p>
+ </section>
+ 
+ <footer>
+ <p>&copy; 2025 Mon Site</p>
+ </footer>
+ 
+ <script>
+ // Données centralisées
+ const CONTACT = {
+ email: "t.meylan@myskolae.fr",
+ phone: "07 66 52 56 21",
+ instagram: "@timee_myl",
+ };
+ 
+ // Sélection des éléments
+ const aboutBtn = document.getElementById("aboutBtn");
+ const contactBtn = document.getElementById("contactBtn");
+ const aboutSection = document.getElementById("aboutSection");
+ const contactSection = document.getElementById("contactSection");
+ const emailEl = document.getElementById("email");
+ const phoneEl = document.getElementById("phone");
+ const instaEl = document.getElementById("instagram");
+ 
+ // Utility pour afficher/masquer une section et mettre à jour aria-expanded
+ function toggleSection(sectionToShow, sectionToHide, triggerToToggle, triggerToClose) {
+ const shouldOpen = !sectionToShow.classList.contains("show");
+ // Fermer proprement
+ [sectionToShow, sectionToHide].forEach(sec => {
+ sec.classList.remove("show");
+ sec.hidden = true;
+ });
+ [triggerToToggle, triggerToClose].forEach(btn => btn && btn.setAttribute("aria-expanded", "false"));
+ 
+ // Ouvrir si demandé
+ if (shouldOpen) {
+ sectionToShow.classList.add("show");
+ sectionToShow.hidden = false;
+ triggerToToggle && triggerToToggle.setAttribute("aria-expanded", "true");
+ sectionToShow.scrollIntoView({ behavior: "smooth", block: "center" });
+ }
+ }
+ 
+ // Handlers
+ contactBtn.addEventListener("click", (e) => {
+ e.preventDefault?.();
+ // Remplir au moment de l'ouverture
+ emailEl.textContent = CONTACT.email;
+ phoneEl.textContent = CONTACT.phone;
+ instaEl.textContent = CONTACT.instagram;
+ toggleSection(contactSection, aboutSection, contactBtn, aboutBtn);
+ });
+ 
+ aboutBtn.addEventListener("click", (e) => {
+ e.preventDefault?.();
+ toggleSection(aboutSection, contactSection, aboutBtn, contactBtn);
+ });
+ </script>
+ </body>
+ </html>
