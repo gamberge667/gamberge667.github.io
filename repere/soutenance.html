@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repère — support de soutenance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23191713' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23E2643C'/></svg>">
+<style>
+  body{overflow:hidden}
+  .deck{height:100vh;display:grid;place-items:center;padding:0 6vw}
+  .slide{display:none;width:100%;max-width:960px;animation:in .35s ease}
+  .slide.on{display:block}
+  @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .slide .who{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--clay);margin-bottom:18px;display:block}
+  .slide h2{font-size:clamp(32px,5.4vw,60px);letter-spacing:-.03em;line-height:1.05}
+  .slide h2 em{font-style:italic;color:var(--clay)}
+  .slide p.big{font-size:clamp(17px,2.3vw,22px);color:var(--ink-2);max-width:62ch;margin:22px 0 0}
+  .slide ul.ticks li{font-size:17px}
+  .bigfig{font-family:"Space Grotesk",sans-serif;font-size:clamp(56px,12vw,120px);font-weight:600;letter-spacing:-.04em;line-height:1}
+  .figrow{display:flex;gap:56px;flex-wrap:wrap;margin-top:34px}
+  .figrow div span{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);margin-top:6px}
+  .hud{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;
+       padding:16px 24px;font-family:var(--mono);font-size:12px;color:var(--ink-3);border-top:1px solid var(--line);
+       background:var(--paper)}
+  .hud b{color:var(--ink)}
+  .hud button{border:1px solid var(--line);background:var(--paper-2);border-radius:8px;min-width:30px;height:30px;
+    padding:0 9px;cursor:pointer;font:inherit;font-size:12px;color:var(--ink);white-space:nowrap}
+  .timerbar{position:fixed;top:0;left:0;height:3px;background:var(--clay);width:0;transition:width .4s}
+</style>
+</head>
+<body>
+<div class="timerbar" id="tb"></div>
+<div class="deck">
+
+  <section class="slide on">
+    <span class="who">Anthony · A1 · 0:00 – 0:45</span>
+    <h2>Tu viens d'arriver et tu ne sais pas <em>par quoi commencer</em> ?</h2>
+    <p class="big">On a réuni au même endroit les démarches à faire, les réponses aux questions de la première
+      semaine, les astuces des autres étudiants — et de quoi suivre son budget du mois.
+      Ça s'appelle <strong>Repère</strong>, ça s'ouvre sur ton téléphone, sans compte et sans installation.
+      Le lien et le QR code sont sur le Discord.</p>
+    <p class="big" style="color:var(--ink-3);font-size:15px;margin-top:28px">↑ L'elevator pitch. Il se dit d'une traite, sans notes.</p>
+  </section>
+
+  <section class="slide">
+    <span class="who">Matteo · A1 · 0:45 – 1:40</span>
+    <h2>Le problème n'est pas le manque d'infos.<br>C'est la <em>dispersion</em>.</h2>
+    <ul class="ticks" style="margin-top:30px">
+      <li>L'information existe : un mail, un PDF, MyGES, un Discord, la tête d'un A2.</li>
+      <li>Elle n'est nulle part réunie, et rien ne dit dans quel ordre s'y prendre.</li>
+      <li>Résultat : on découvre une démarche quand le délai est déjà passé.</li>
+    </ul>
+    <p class="big">J'ai collecté les réponses auprès des A2 et de l'administration, puis je les ai
+      recoupées avant de les écrire. Aucune info du site n'est là sans avoir été vérifiée deux fois.</p>
+  </section>
+
+  <section class="slide">
+    <span class="who">Timée · A2 · 1:40 – 3:15 · DÉMO EN DIRECT</span>
+    <h2>Cinq écrans. <em>Terminés.</em></h2>
+    <ul class="ticks" style="margin-top:24px">
+      <li><strong>Ma liste</strong> — 12 démarches à cocher, gardées sur l'appareil.</li>
+      <li><strong>Budget</strong> — ce qui rentre, ce qui sort, ce qu'il reste et combien par jour.</li>
+      <li><strong>Emploi du temps</strong> — la semaine type, saisie une fois, consultable partout.</li>
+      <li><strong>Guide et astuces</strong> — 8 réponses vérifiées, plus le mur d'astuces qu'on alimente.</li>
+      <li><strong>Poser une question</strong> — on répond dès qu'on la voit et la réponse rejoint le guide.</li>
+    </ul>
+    <p class="big"><strong>À montrer :</strong> créer le profil (prénom + mot de passe, 20 s) → cocher deux cases →
+      saisir une dépense et voir le reste-à-vivre bouger → ouvrir l'emploi du temps du jour → poser une question.</p>
+  </section>
+
+  <section class="slide">
+    <span class="who">Axel · A2 · 3:15 – 4:15</span>
+    <h2>Un budget, ça se protège. <em>Vraiment.</em></h2>
+    <p class="big">Dès qu'on touche à l'argent et à l'emploi du temps de quelqu'un, la question n'est plus
+      « est-ce que ça marche » mais « qui peut les lire ». Réponse : personne d'autre que l'étudiant.</p>
+    <ul class="ticks" style="margin-top:26px">
+      <li>Le mot de passe n'est <strong>stocké nulle part</strong> — il dérive une clé via PBKDF2-SHA256, 600 000 itérations, sel aléatoire.</li>
+      <li>Les données sont chiffrées en <strong>AES-256-GCM</strong>, avec un vecteur d'initialisation neuf à chaque écriture.</li>
+      <li>La clé vit en mémoire : fermer l'onglet la détruit. Aucun serveur, aucun compte en ligne.</li>
+    </ul>
+    <p class="big"><strong>À montrer en direct :</strong> <u>depuis l'onglet Budget</u>, recharger la page →
+      l'app redemande le mot de passe → ouvrir le stockage du navigateur devant le jury → il n'y a que du charabia.</p>
+  </section>
+
+  <section class="slide">
+    <span class="who">Mohand · A1 · 4:15 – 5:00</span>
+    <h2>En ligne, et <em>ça marche partout</em>.</h2>
+    <ul class="ticks" style="margin-top:30px">
+      <li>Publié sur une page publique gratuite, en HTTPS, accessible par lien ou par QR code.</li>
+      <li>Testé sur <strong>__ téléphones</strong> et <strong>__ navigateurs</strong> différents avant vendredi.</li>
+      <li>Une version hors-ligne est prête sur une clé : si le réseau de l'amphi lâche, la démo a lieu quand même.</li>
+    </ul>
+    <p class="big" style="color:var(--ink-3);font-size:15px;margin-top:24px">↑ Remplacer les __ par les vrais chiffres.</p>
+  </section>
+
+  <section class="slide">
+    <span class="who">Anthony · A1 · 5:00 – 6:10</span>
+    <h2>Des vrais testeurs, de <em>vraies</em> corrections.</h2>
+    <div class="figrow">
+      <div><div class="bigfig" id="n1">__</div><span>étudiants ont testé</span></div>
+      <div><div class="bigfig" id="n2">__</div><span>retours écrits</span></div>
+      <div><div class="bigfig" id="n3">__</div><span>corrections faites</span></div>
+    </div>
+    <ul class="ticks" style="margin-top:34px">
+      <li>Ce qu'on a changé après les tests : <strong>à compléter jeudi soir</strong>.</li>
+      <li>Ce qu'on n'a pas eu le temps de corriger, et pourquoi : <strong>à compléter</strong>.</li>
+    </ul>
+    <p class="big" style="color:var(--ink-3);font-size:15px;margin-top:24px">↑ Ne jamais inventer : le jury demande les preuves.</p>
+  </section>
+
+  <section class="slide">
+    <span class="who">Timée · A2 · 6:10 – 7:00</span>
+    <h2>Ce qu'on en retire.</h2>
+    <ul class="ticks" style="margin-top:30px">
+      <li>Cinq écrans finis valent mieux que douze commencés.</li>
+      <li>Chacun a pris le morceau qui correspond à ce qu'il veut faire — data, sécurité, réseaux, comm — et l'a mené seul jusqu'au bout.</li>
+      <li>Ce qu'on referait autrement : <strong>à compléter jeudi</strong>.</li>
+    </ul>
+    <p class="big" style="margin-top:36px;font-size:clamp(19px,2.6vw,26px);color:var(--ink)">
+      « Repère, c'est ce qu'on aurait voulu trouver le premier jour — et il est déjà en ligne. »</p>
+  </section>
+
+  <section class="slide" style="text-align:center">
+    <span class="logo-mark" style="margin:0 auto 20px;width:46px;height:46px"><i style="width:14px;height:14px"></i></span>
+    <h2>Merci.</h2>
+    <p class="big" style="margin-inline:auto">Groupe G__ · Timée · Axel · Matteo · Mohand · Anthony<br>
+      Le lien et le QR code sont sur le Discord — on prend vos questions.</p>
+  </section>
+
+</div>
+
+<div class="hud">
+  <div>REPÈRE · G__ · <b>7 min max</b></div>
+  <div id="ct">— · —</div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button id="t">▶ minuteur</button>
+    <button id="p">←</button><button id="n">→</button>
+    <span><b id="i">1</b> / <span id="tot">7</span></span>
+  </div>
+</div>
+
+<script>
+const slides = [...document.querySelectorAll(".slide")];
+let cur = 0;
+document.getElementById("tot").textContent = slides.length;
+function go(d){
+  cur = Math.max(0, Math.min(slides.length - 1, cur + d));
+  slides.forEach((s,i)=>s.classList.toggle("on", i===cur));
+  document.getElementById("i").textContent = cur + 1;
+}
+document.getElementById("n").onclick = () => go(1);
+document.getElementById("p").onclick = () => go(-1);
+addEventListener("keydown", e => {
+  if (["ArrowRight"," ","PageDown"].includes(e.key)) { e.preventDefault(); go(1); }
+  if (["ArrowLeft","PageUp"].includes(e.key)) { e.preventDefault(); go(-1); }
+});
+
+/* minuteur 7 minutes */
+let t0 = null, iv = null;
+const LIMIT = 7*60;
+document.getElementById("t").onclick = () => {
+  if (iv) { clearInterval(iv); iv = null; t0 = null;
+    document.getElementById("t").textContent = "▶ minuteur";
+    document.getElementById("ct").textContent = "— · —";
+    document.getElementById("tb").style.width = "0"; return; }
+  t0 = Date.now();
+  document.getElementById("t").textContent = "■ stop";
+  iv = setInterval(() => {
+    const s = Math.floor((Date.now()-t0)/1000);
+    const m = String(Math.floor(s/60)), ss = String(s%60).padStart(2,"0");
+    const el = document.getElementById("ct");
+    el.textContent = m+":"+ss+" / 7:00";
+    el.style.color = s > LIMIT ? "var(--clay)" : "var(--ink-3)";
+    document.getElementById("tb").style.width = Math.min(100, s/LIMIT*100)+"%";
+  }, 500);
+};
+</script>
+</body>
+</html>

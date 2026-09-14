@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repère — le projet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23191713' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23E2643C'/></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="index.html"><span class="logo-mark"><i></i></span>Repère</a>
+    <div class="nav-links">
+      <a class="link" href="index.html">L'outil</a>
+      <a class="link" href="soutenance.html">Soutenance</a>
+      <a class="btn ghost" href="index.html#outil">Tester l'outil</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">● Fiche projet · Groupe G__</span>
+    <h1>Un outil <em>fini</em>, pas une maquette.</h1>
+    <p class="lead">Repère répond à une question posée par le sujet lui-même : « qu'est-ce qui vous aurait aidé
+      à votre arrivée ? ». On a choisi le format « fabriquer quelque chose d'utile », avec un périmètre
+      volontairement petit pour qu'il soit réellement terminé et testé avant vendredi.</p>
+    <div class="hero-meta">
+      <div><span>Format</span><strong>Application web</strong></div>
+      <div><span>Public visé</span><strong>Les A1 qui arrivent</strong></div>
+      <div><span>Objectif de tests</span><strong>20 testeurs minimum</strong></div>
+      <div><span>Équipe</span><strong>2 A2 + 3 A1</strong></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01 — Le besoin</span>
+      <h2>Personne ne manque d'informations. Elles sont juste éparpillées.</h2>
+      <p>Quand on arrive, l'info existe : elle est dans un mail, dans un PDF, sur MyGES, sur un Discord,
+        ou dans la tête d'un A2. Le problème n'est pas le manque, c'est la dispersion — et le fait
+        qu'on ne sait pas quelles questions poser.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card">
+        <div class="ico a">📄</div>
+        <span class="kicker">Le constat</span>
+        <h3>L'info est là, mais pas trouvable</h3>
+        <p>Quatre canaux différents, aucun ordre, rien qui dise par quoi commencer.</p>
+      </div>
+      <div class="card">
+        <div class="ico b">🙋</div>
+        <span class="kicker">Le vrai blocage</span>
+        <h3>On ne sait pas quoi demander</h3>
+        <p>On découvre une démarche quand il est trop tard pour la faire dans les délais.</p>
+      </div>
+      <div class="card">
+        <div class="ico c">🎯</div>
+        <span class="kicker">Notre réponse</span>
+        <h3>Une liste, un guide, un mur</h3>
+        <p>Ce qu'il faut faire, dans l'ordre — plus les réponses et les astuces de ceux qui sont déjà passés par là.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02 — Le périmètre</span>
+      <h2>Cinq écrans. Un seul fil.</h2>
+      <p>Chaque écran répond à un besoin réel de la première semaine, et aucun ne dépend d'un serveur.
+        C'est ce qui nous permet de tout finir : « un périmètre raisonnable et un résultat terminé ».</p>
+    </div>
+    <div class="scope">
+      <div class="card in">
+        <span class="kicker" style="color:var(--green)">Dans le périmètre</span>
+        <h3>Ce qu'on livre vendredi</h3>
+        <ul class="ticks">
+          <li><strong>Ma liste</strong> — 12 démarches à cocher, la progression est gardée sur l'appareil.</li>
+          <li><strong>Budget</strong> — entrées et dépenses du mois, reste à vivre, montant par jour ; les lignes « chaque mois » se reportent seules.</li>
+          <li><strong>Emploi du temps</strong> — la semaine type, saisie une fois, consultable hors connexion.</li>
+          <li><strong>Guide et astuces</strong> — 8 réponses vérifiées avec recherche, plus le mur d'astuces, alimenté par ce que les étudiants nous remontent et que l'on intègre.</li>
+          <li><strong>Poser une question</strong> — l'étudiant écrit, l'équipe répond dès qu'elle la voit et publie la réponse dans le guide.</li>
+        </ul>
+      </div>
+      <div class="card out">
+        <span class="kicker">Hors périmètre — assumé</span>
+        <h3>Ce qu'on ne fait pas</h3>
+        <ul class="ticks no">
+          <li>Pas de comptes en ligne — le profil est local, et son mot de passe ne quitte jamais l'appareil.</li>
+          <li>Pas de base de données ni de serveur — un site statique rend le même service et ne tombe jamais.</li>
+          <li>Pas de banque connectée au budget — la saisie est manuelle, les chiffres ne partent nulle part.</li>
+          <li>Pas d'application mobile, pas d'IA, pas de carte, pas de messagerie.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03 — L'équipe</span>
+      <h2>Cinq rôles, cinq contributions démontrables</h2>
+      <p>Chaque membre porte un périmètre qu'il peut expliquer seul devant le jury. Timée et Axel (A2) encadrent et transmettent ; Matteo, Mohand et Anthony (A1) produisent et présentent leur propre travail.</p>
+    </div>
+    <div class="grid g2">
+      <div class="card"><div class="member">
+        <div class="avatar" style="background:var(--ink);color:var(--paper);border-color:var(--ink)">T</div>
+        <div><h3>Timée <span class="badge l2">A2</span></h3>
+          <span class="kicker">Chef de projet &amp; développement</span>
+          <p>Cadre le périmètre, code les cinq écrans de l'application, intègre le travail de chacun,
+            met en ligne et dépose le rendu. Tient le tableau de suivi à jour toute la semaine.</p>
+          <ul class="ticks"><li>Preuve : le code du site, le suivi des tâches, le dépôt MyGES</li></ul>
+        </div></div></div>
+
+      <div class="card"><div class="member">
+        <div class="avatar" style="background:var(--blue-soft)">A</div>
+        <div><h3>Axel <span class="badge l2">A2</span></h3>
+          <span class="kicker">Sécurité &amp; données personnelles</span>
+          <p>A conçu le profil chiffré : le mot de passe de l'étudiant dérive une clé
+            <strong>AES-256-GCM</strong> (PBKDF2-SHA256, 600 000 itérations, sel aléatoire) qui verrouille
+            le budget et l'emploi du temps. Le mot de passe n'est stocké nulle part, la clé vit en mémoire
+            et disparaît à la fermeture. Relit le code avec Timée et accompagne Matteo.</p>
+          <ul class="ticks"><li>Preuve : le code du coffre, la revue de sécurité écrite, la démonstration en direct</li></ul>
+        </div></div></div>
+
+      <div class="card"><div class="member">
+        <div class="avatar" style="background:var(--green-soft)">M</div>
+        <div><h3>Matteo <span class="badge l1">A1</span></h3>
+          <span class="kicker">Données &amp; contenu</span>
+          <p>Construit et vérifie tout ce que l'application affiche : les 12 étapes de la checklist,
+            les 8 réponses du guide, les catégories de dépenses. Puis dépouille les retours des tests —
+            tri, chiffres, ce qui revient le plus souvent.</p>
+          <ul class="ticks"><li>Preuve : le fichier de données du site, l'analyse des retours</li></ul>
+        </div></div></div>
+
+      <div class="card"><div class="member">
+        <div class="avatar" style="background:var(--clay-soft)">M</div>
+        <div><h3>Mohand <span class="badge l1">A1</span></h3>
+          <span class="kicker">Infrastructure &amp; mise en ligne</span>
+          <p>Héberge le site et publie chaque nouvelle version, fabrique le QR code de l'affiche,
+            teste sur plusieurs téléphones et navigateurs, et prépare la version hors-ligne qui servira
+            de plan B le jour de la démonstration.</p>
+          <ul class="ticks"><li>Preuve : le lien public, le QR code, le tableau de compatibilité</li></ul>
+        </div></div></div>
+
+      <div class="card"><div class="member">
+        <div class="avatar" style="background:var(--green-soft)">A</div>
+        <div><h3>Anthony <span class="badge l1">A1</span></h3>
+          <span class="kicker">Tests utilisateurs &amp; communication</span>
+          <p>Recrute les testeurs, fait passer les tests en observant sans aider, construit le questionnaire,
+            écrit l'annonce Discord et l'affiche, compte les participants et classe ce qu'ils remontent.</p>
+          <ul class="ticks"><li>Preuve : le questionnaire, la liste des testeurs, l'annonce publiée</li></ul>
+        </div></div></div>
+
+      <div class="card" style="background:var(--green-soft);border-color:var(--green)">
+        <span class="kicker" style="color:var(--green)">Règle d'équipe</span>
+        <h3>Personne ne présente le travail d'un autre</h3>
+        <p>Chacun tient son périmètre du début à la fin et le défend seul face au jury.
+          Timée et Axel aident, expliquent, relisent — mais ne font jamais à la place.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">04 — La semaine</span>
+      <h2>Le planning, jour par jour</h2>
+      <p>Chaque journée se termine par quelque chose de livré. Aucune tâche ne traverse deux jours.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="when">Lun. 14</div><div>
+        <h4>Cadrer et valider</h4>
+        <p>Constitution du groupe, numéro attribué par Léo, choix du projet, fiche projet remplie, rôles distribués.
+          Objectif de testeurs validé en fin de séance.</p></div></div>
+      <div class="step"><div class="when">Mar. 15</div><div>
+        <h4>Contenu, design, première version</h4>
+        <p>Matteo collecte et vérifie le contenu, Anthony prépare l'annonce et le pitch avec Delphine, Mohand met le site en ligne.
+          Première version du site en ligne le soir, même incomplète.</p></div></div>
+      <div class="step"><div class="when">Mer. 16</div><div>
+        <h4>Journée de production (autonomie)</h4>
+        <p>On finit les cinq écrans, Axel branche le chiffrement et fait sa revue, on relit tous les textes, on prépare l'affiche et le questionnaire.
+          Version testable prête en fin de journée.</p></div></div>
+      <div class="step"><div class="when">Jeu. 17</div><div>
+        <h4>Tests réels et corrections</h4>
+        <p>Matin : on fait tester le site aux étudiants, on observe, on note. Après-midi : point avec Léo,
+          on corrige les problèmes remontés et on prépare la soutenance.</p></div></div>
+      <div class="step"><div class="when">Ven. 18</div><div>
+        <h4>Derniers retours, dépôt, soutenance</h4>
+        <p>Derniers tests le matin, ZIP déposé sur MyGES <strong>avant 12 h</strong>, répétition du passage.
+          Soutenance en amphi à partir de 14 h : 7 minutes, cinq prises de parole.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">05 — Le rendu</span>
+      <h2>Les cinq pièces du ZIP</h2>
+      <p>Un seul fichier <code>GXX — Repère.zip</code>, déposé par un membre sur MyGES avant vendredi 12 h.</p>
+    </div>
+    <div class="grid g2">
+      <div class="card"><span class="kicker">Pièce 1</span><h3>La fiche projet</h3>
+        <p>Une page : groupe et membres avec promotions, public, besoin, format, objectif de testeurs validé, recueil des retours, moyens.</p></div>
+      <div class="card"><span class="kicker">Pièce 2</span><h3>Le suivi du travail</h3>
+        <p>Tâches, responsables, échéances, résultats et décisions prises pendant la semaine.</p></div>
+      <div class="card"><span class="kicker">Pièce 3</span><h3>La réalisation et ses preuves</h3>
+        <p>Les fichiers du site, le lien public, l'annonce publiée, les chiffres de test et les retours reçus.</p></div>
+      <div class="card"><span class="kicker">Pièce 4</span><h3>Le support de soutenance</h3>
+        <p>Court, lisible, centré sur le résultat et les retours. Sept minutes maximum.</p></div>
+      <div class="card" style="grid-column:1/-1"><span class="kicker">Pièce 5</span><h3>Un bilan par personne</h3>
+        <p>Pour chacun des cinq : contribution, preuve de travail, difficulté rencontrée, apprentissage, amélioration possible.
+          C'est la pièce la plus souvent bâclée — et elle pèse sur les 8 points individuels.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong>Repère</strong> — groupe G__ · Séminaire de prérentrée, 14–18 septembre 2026</div>
+    <div><a href="index.html">L'outil</a> · <a href="soutenance.html">Soutenance</a></div>
+  </div>
+</footer>
+</body>
+</html>

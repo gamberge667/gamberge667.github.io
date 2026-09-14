@@ -1,0 +1,1259 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FBF7F0">
+<title>Repère — ta première semaine, en clair</title>
+<meta name="description" content="Tes démarches, ton budget, ton emploi du temps, le guide et les astuces des autres étudiants. Sans installation, et tes données restent chez toi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23191713' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23E2643C'/></svg>">
+</head>
+<body>
+
+<svg style="display:none">
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M9.8 20v-5.2h4.4V20"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16.5" rx="3.5"/><path d="M8 12.3l2.6 2.6L16.4 9"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5h5.2A2.8 2.8 0 0 1 12 7.3V20a2.4 2.4 0 0 0-2.4-2.4H4z"/><path d="M20 4.5h-5.2A2.8 2.8 0 0 0 12 7.3V20a2.4 2.4 0 0 1 2.4-2.4H20z"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.3 17.3a6.2 6.2 0 1 1 5.4 0"/><path d="M9.6 17.5h4.8"/><path d="M10.2 20.4h3.6"/></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.2A2.7 2.7 0 0 1 6.2 5.5h10.3a2 2 0 0 1 2 2v.7"/><rect x="3.5" y="8.2" width="17" height="11.3" rx="2.8"/><path d="M20.5 12.5h-3.2a1.9 1.9 0 0 0 0 3.8h3.2"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 9.6h17M8.3 3.3v3.4M15.7 3.3v3.4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="M8.5 7.5 12 4l3.5 3.5"/><path d="M5.5 13v6.5h13V13"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11.2v5"/><circle cx="12" cy="7.9" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></symbol>
+  <symbol id="i-cl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5l-7 7 7 7"/></symbol>
+  <symbol id="i-cr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5l7 7-7 7"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2.6"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.3" r="3.8"/><path d="M4.8 20c.6-3.7 3.6-5.8 7.2-5.8s6.6 2.1 7.2 5.8"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 3.5 10.2 13.8"/><path d="M20.5 3.5 14 20.5l-3.8-6.7-6.7-3.8z"/></symbol>
+</svg>
+
+<!-- ================= ÉCRAN DE GARDE (profil + déverrouillage) ================= -->
+<div class="gate" id="gate">
+  <button class="close" id="gate-close" aria-label="Fermer"><svg><use href="#i-x"/></svg></button>
+  <div class="in">
+    <div class="mark"><i></i></div>
+
+    <!-- création -->
+    <div data-gate="creer">
+      <h1>Ton profil, sur ton téléphone.</h1>
+      <p class="lead">Ton budget et ton emploi du temps sont des données personnelles.
+        On les chiffre avec un mot de passe que toi seul connais, et elles ne quittent jamais cet appareil.</p>
+      <div class="err" id="err-creer" hidden></div>
+      <div class="field">
+        <label for="g-prenom">Ton prénom</label>
+        <input id="g-prenom" maxlength="24" autocomplete="given-name" placeholder="Matteo">
+      </div>
+      <div class="field">
+        <label for="g-promo">Ta promo</label>
+        <input id="g-promo" maxlength="24" placeholder="A1">
+      </div>
+      <div class="field">
+        <label for="g-pw">Ton mot de passe <span style="color:var(--faint);font-weight:400">— 8 caractères minimum</span></label>
+        <input id="g-pw" type="password" autocomplete="new-password" placeholder="••••••••">
+      </div>
+      <div class="pwmeter"><i id="pwbar"></i></div>
+      <p class="pwhint" id="pwhint">Choisis-en un que tu retiens : personne ne pourra te le redonner.</p>
+      <div class="field">
+        <label for="g-pw2">Répète-le</label>
+        <input id="g-pw2" type="password" autocomplete="new-password" placeholder="••••••••">
+      </div>
+      <button class="primary" id="btn-creer">Créer mon profil</button>
+      <button class="ghostbtn" id="go-unlock" hidden>J'ai déjà un profil sur cet appareil</button>
+      <div class="crypto-note">
+        <b>Ce qu'on fait de tes données, en clair</b>
+        Ton mot de passe n'est stocké nulle part. Il sert à fabriquer une clé de chiffrement
+        (PBKDF2-SHA256, 600 000 itérations) qui verrouille tes données en AES-256-GCM.
+        Aucun serveur, aucun compte, aucune donnée envoyée : si quelqu'un ouvre le stockage
+        de ton navigateur, il ne voit que du texte illisible.
+      </div>
+    </div>
+
+    <!-- déverrouillage -->
+    <div data-gate="ouvrir" hidden>
+      <h1 id="g-bonjour">Content de te revoir.</h1>
+      <p class="lead">Entre ton mot de passe pour déchiffrer ton budget et ton emploi du temps.</p>
+      <div class="err" id="err-ouvrir" hidden></div>
+      <div class="field">
+        <label for="g-pw3">Mot de passe</label>
+        <input id="g-pw3" type="password" autocomplete="current-password" placeholder="••••••••">
+      </div>
+      <button class="primary" id="btn-ouvrir">Déverrouiller</button>
+      <button class="ghostbtn" id="btn-oubli">J'ai oublié mon mot de passe</button>
+      <div class="crypto-note">
+        <b>Pourquoi on ne peut pas te le renvoyer</b>
+        Il n'existe nulle part : ni chez nous, ni sur un serveur. C'est précisément ce qui rend
+        tes données illisibles pour tout le monde sauf toi. Sans lui, la seule option est de repartir de zéro.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= barre du haut ================= -->
+<div class="topbar" id="topbar">
+  <div class="in">
+    <a class="brand" href="index.html"><span class="dot"><i></i></span>Repère</a>
+    <div class="right">
+      <button class="iconbtn" id="btn-profil" title="Mon profil"><svg><use href="#i-user"/></svg></button>
+      <button class="iconbtn" id="btn-share" title="Partager le lien"><svg><use href="#i-share"/></svg></button>
+      <a class="iconbtn" href="projet.html" title="À propos du projet"><svg><use href="#i-info"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<main class="app">
+
+<!-- ================= ACCUEIL ================= -->
+<section class="screen" id="s-home">
+  <div class="head">
+    <p class="eyebrow" id="greet">Bienvenue</p>
+    <h1>Ta première semaine,<br><span class="squiggle">en clair<svg viewBox="0 0 120 11" preserveAspectRatio="none"><path d="M2 7.5C22 3.2 44 8.6 63 5.2c17-3 32 2.4 55 1.1"/></svg></span>.</h1>
+  </div>
+
+  <div class="ring-w">
+    <div class="ring">
+      <svg width="88" height="88" viewBox="0 0 88 88">
+        <circle cx="44" cy="44" r="37" fill="none" stroke="rgba(251,247,240,.18)" stroke-width="9"/>
+        <circle id="ring-arc" cx="44" cy="44" r="37" fill="none" stroke="#FBF7F0" stroke-width="9"
+                stroke-linecap="round" stroke-dasharray="232.5" stroke-dashoffset="232.5"
+                style="transition:stroke-dashoffset .6s cubic-bezier(.3,.9,.3,1)"/>
+      </svg>
+      <div class="num" id="ring-num">0/12</div>
+    </div>
+    <div>
+      <h2 id="ring-title">On commence ?</h2>
+      <p id="ring-sub">Douze trucs à régler pour être tranquille. Aucun ne prend plus de dix minutes.</p>
+      <button class="go" data-goto="check">Ouvrir ma liste <svg width="13" height="13"><use href="#i-arw"/></svg></button>
+    </div>
+  </div>
+
+  <div class="rail">
+    <button class="chip" data-goto="check"><svg><use href="#i-check"/></svg> Ma liste</button>
+    <button class="chip" data-goto="budget"><svg><use href="#i-wallet"/></svg> Mon budget</button>
+    <button class="chip" data-goto="edt"><svg><use href="#i-cal"/></svg> Mes cours</button>
+    <button class="chip" data-goto="question"><svg><use href="#i-send"/></svg> Poser une question</button>
+    <button class="chip" data-goto="tips"><svg><use href="#i-bulb"/></svg> Les astuces</button>
+  </div>
+
+  <button class="card" id="home-cours" data-goto="edt" hidden
+          style="display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer">
+    <span class="ic-money" id="hc-ic" style="background:var(--bleu-pale);color:var(--bleu)">◷</span>
+    <span style="flex:1">
+      <b style="display:block;font-size:15px" id="hc-title">Prochain cours</b>
+      <span style="font-size:13px;color:var(--muted)" id="hc-sub"></span>
+    </span>
+    <svg style="width:17px;height:17px;color:var(--faint);flex:none"><use href="#i-arw"/></svg>
+  </button>
+
+  <div class="postit">
+    <span class="lbl">l'astuce du jour</span>
+    <p id="pot-txt">…</p>
+    <span class="sig" id="pot-sig">— un A2</span>
+  </div>
+
+  <button class="card" id="home-budget" data-goto="budget"
+          style="display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer">
+    <span class="ic-money">€</span>
+    <span style="flex:1">
+      <b style="display:block;font-size:15px" id="hb-title">Mon budget</b>
+      <span style="font-size:13px;color:var(--muted)" id="hb-sub">Note ce qui rentre et ce qui sort.</span>
+    </span>
+    <svg style="width:17px;height:17px;color:var(--faint);flex:none"><use href="#i-arw"/></svg>
+  </button>
+
+  <div class="seg">À faire en priorité</div>
+  <div id="next3"></div>
+  <p class="tiny">Ta liste, tes astuces et tes questions restent sur cet appareil.
+    Ton budget et ton emploi du temps sont en plus chiffrés avec ton mot de passe.</p>
+</section>
+
+<!-- ================= MA LISTE ================= -->
+<section class="screen" id="s-check" hidden>
+  <div class="head">
+    <p class="eyebrow">Douze choses, dans l'ordre</p>
+    <h1>Ma liste</h1>
+  </div>
+  <div class="tiles">
+    <div class="tile v"><div class="big" id="t-done">0</div><span class="lbl">déjà réglées</span></div>
+    <div class="tile t"><div class="big" id="t-left">12</div><span class="lbl">qu'il te reste</span></div>
+  </div>
+  <div id="checklist"></div>
+  <p class="tiny">Tu reprends là où tu t'es arrêté, même si tu fermes la page.
+    <button class="linky" id="reset">tout décocher</button></p>
+</section>
+
+<!-- ================= BUDGET ================= -->
+<section class="screen" id="s-budget" hidden>
+  <div class="head">
+    <div class="monthnav">
+      <button id="m-prev" aria-label="Mois précédent"><svg><use href="#i-cl"/></svg></button>
+      <span id="m-label">…</span>
+      <button id="m-next" aria-label="Mois suivant"><svg><use href="#i-cr"/></svg></button>
+      <button class="today" id="m-today" hidden>ce mois-ci</button>
+    </div>
+    <h1>Mon budget</h1>
+  </div>
+
+  <div id="budget-locked" class="locked" hidden>
+    <div class="big">🔒</div>
+    <h3>Tes finances, ça ne regarde personne</h3>
+    <p>Crée un profil pour chiffrer ton budget sur cet appareil. Ça prend vingt secondes
+      et aucune donnée ne part ailleurs.</p>
+    <button class="primary" data-gate-open>Créer mon profil</button>
+  </div>
+
+  <div id="budget-body">
+    <div class="money" id="money">
+      <span class="lbl" id="b-lbl">Il te reste ce mois-ci</span>
+      <div class="amount" id="b-reste">0 €</div>
+      <div class="perday" id="b-jour">Ajoute ce qui rentre pour commencer.</div>
+      <div class="gauge"><i id="b-gauge"></i></div>
+      <div class="row">
+        <div><b id="b-in">0 €</b><span>entrées</span></div>
+        <div><b id="b-out">0 €</b><span>sorties</span></div>
+        <div><b id="b-pct">—</b><span>dépensé</span></div>
+      </div>
+    </div>
+
+    <div class="rail">
+      <button class="chip" id="add-dep"><svg><use href="#i-plus"/></svg> Une dépense</button>
+      <button class="chip" id="add-rev"><svg><use href="#i-plus"/></svg> Une entrée d'argent</button>
+    </div>
+
+    <div class="seg">Ce qui rentre</div>
+    <div id="revenus"></div>
+
+    <div class="seg">Ce qui sort</div>
+    <div id="depenses"></div>
+
+    <p class="tiny">Les lignes cochées « tous les mois » se reportent automatiquement.
+      Tout est chiffré avec ton mot de passe : sans lui, ces chiffres sont illisibles.</p>
+  </div>
+</section>
+
+<!-- ================= EMPLOI DU TEMPS ================= -->
+<section class="screen" id="s-edt" hidden>
+  <div class="head">
+    <p class="eyebrow" id="edt-eyebrow">Ta semaine type</p>
+    <h1>Mes cours</h1>
+  </div>
+
+  <div id="edt-locked" class="locked" hidden>
+    <div class="big">🔒</div>
+    <h3>Ton emploi du temps t'appartient</h3>
+    <p>Crée un profil pour l'enregistrer, chiffré, sur cet appareil. Tu le retrouveras
+      à chaque ouverture, même hors connexion.</p>
+    <button class="primary" data-gate-open>Créer mon profil</button>
+  </div>
+
+  <div id="edt-body">
+    <div class="days" id="days"></div>
+    <div id="cours"></div>
+    <button class="primary" id="add-cours" style="margin-top:8px">＋ Ajouter un cours</button>
+    <p class="tiny">C'est une semaine type : chaque cours revient toutes les semaines.
+      Vérifie quand même MyGES la veille, les salles bougent.</p>
+  </div>
+</section>
+
+<!-- ================= GUIDE + ASTUCES ================= -->
+<section class="screen" id="s-guide" hidden>
+  <div class="head">
+    <p class="eyebrow">Vérifié auprès des A2</p>
+    <h1>Le guide</h1>
+  </div>
+  <div class="segctrl">
+    <button aria-selected="true" data-sub="qa">Questions</button>
+    <button aria-selected="false" data-sub="as">Astuces</button>
+  </div>
+
+  <div data-sub-panel="qa">
+    <div class="search">
+      <svg><use href="#i-search"/></svg>
+      <input id="q" type="search" placeholder="MyGES, manger, absence…" autocomplete="off">
+    </div>
+    <div id="guide-list"></div>
+    <p class="tiny" id="noresult" hidden>Rien sur ce mot-là — pose ta question, on y répond.</p>
+    <span class="handnote">une question qui manque ? dis-le-nous ↓</span>
+    <button class="primary" data-goto="question">Poser ma question</button>
+  </div>
+
+  <div data-sub-panel="as" hidden>
+    <div class="rail" id="filters"></div>
+    <div id="tips"></div>
+    <button class="primary" id="open-tip" style="margin-top:8px">＋ Ajouter mon astuce</button>
+  </div>
+</section>
+
+<!-- ================= LES ASTUCES (accès direct) ================= -->
+<section class="screen" id="s-tips" hidden>
+  <div class="head">
+    <p class="eyebrow">Écrites par des étudiants</p>
+    <h1>Les astuces</h1>
+  </div>
+  <div class="rail" id="filters2"></div>
+  <div id="tips2"></div>
+</section>
+
+<!-- ================= POSER UNE QUESTION ================= -->
+<section class="screen" id="s-question" hidden>
+  <div class="qhero">
+    <h1>Une question ?<br>On te répond.</h1>
+    <p>Tout ce que tu n'as pas trouvé dans le guide. Même la question que tu trouves bête —
+      surtout celle-là, en fait : si tu te la poses, dix autres se la posent aussi.</p>
+    <div class="promise"><svg style="width:17px;height:17px;flex:none"><use href="#i-check"/></svg>
+      <span>Ta question est <b>copiée</b> pour que tu la colles sur le Discord du groupe. On répond dès qu'on la voit,
+      et la réponse est ajoutée au guide pour tout le monde.</span></div>
+  </div>
+
+  <label for="ask" style="display:block;font-weight:600;font-size:15px;margin-bottom:9px">Ta question</label>
+  <textarea class="bigask" id="ask" maxlength="600" placeholder="Ex : je dois rendre un devoir mais MyGES refuse mon fichier, je fais quoi ?"></textarea>
+  <div class="counter"><span id="askcount">0</span> / 600</div>
+
+  <div class="field">
+    <label for="ask-who">Ton prénom <span style="color:var(--faint);font-weight:400">— si tu veux qu'on te réponde directement</span></label>
+    <input id="ask-who" maxlength="40" placeholder="Matteo · A1">
+  </div>
+  <button class="primary" id="send-ask">Copier ma question pour l'envoyer</button>
+  <p class="tiny">On n'a pas de serveur, donc rien ne part tout seul : on copie ta question et on t'ouvre le Discord,
+    tu n'as plus qu'à la coller. Elle reste aussi gardée ici, sur ton téléphone, pour que tu la retrouves.</p>
+
+  <div class="seg" id="seg-mes" hidden>Mes questions</div>
+  <div id="mes-questions"></div>
+
+  <div class="seg">Déjà répondu à d'autres</div>
+  <div id="repondues"></div>
+</section>
+
+</main>
+
+<button class="fab" id="fab" hidden><svg><use href="#i-plus"/></svg> Mon astuce</button>
+
+<!-- ================= feuille modale ================= -->
+<div class="backdrop" id="bd"></div>
+<div class="sheet" id="sheet" role="dialog" hidden>
+  <div class="grab"></div>
+
+  <div data-form="tip">
+    <h2>Balance ton astuce</h2>
+    <p class="sub">Le genre de truc que tu aurais voulu qu'on te dise la première semaine.<br>
+      Elle reste sur ton téléphone — envoie-la sur le Discord pour qu'on l'ajoute au mur commun.</p>
+    <form id="tipform">
+      <div class="field"><label>C'est à propos de quoi ?</label><div class="catpick" id="catpick"></div></div>
+      <div class="field"><label for="t-txt">Ton astuce</label>
+        <textarea id="t-txt" maxlength="240" placeholder="Ex : la salle du fond au 3e est toujours vide entre midi et 14 h."></textarea></div>
+      <div class="field"><label for="t-who">Ton prénom + promo <span style="color:var(--faint);font-weight:400">— si tu veux</span></label>
+        <input id="t-who" maxlength="40" placeholder="Léa · A1"></div>
+      <button class="primary" type="submit">Enregistrer</button>
+      <button class="ghostbtn" type="button" data-close>Annuler</button>
+    </form>
+  </div>
+
+  <div data-form="rev" hidden>
+    <h2>Ce qui rentre</h2>
+    <p class="sub">Bourse, salaire, aide des parents, APL… tout ce qui arrive sur ton compte.</p>
+    <form id="revform">
+      <div class="field"><label for="r-montant">Combien ?</label>
+        <div class="amountfield"><input id="r-montant" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0"><span class="cur">€</span></div></div>
+      <div class="field"><label for="r-label">C'est quoi ?</label>
+        <input id="r-label" maxlength="40" placeholder="Bourse, job du samedi, virement des parents…"></div>
+      <label class="toggle"><span class="txt"><b>Tous les mois</b><small>On le remettra automatiquement le mois prochain.</small></span>
+        <input type="checkbox" id="r-rec" checked></label>
+      <button class="primary" type="submit">Ajouter</button>
+      <button class="ghostbtn" type="button" data-close>Annuler</button>
+    </form>
+  </div>
+
+  <div data-form="dep" hidden>
+    <h2>Une dépense</h2>
+    <p class="sub">Note-la tout de suite, c'est le seul moyen que ça tienne.</p>
+    <form id="depform">
+      <div class="field"><label for="d-montant">Combien ?</label>
+        <div class="amountfield"><input id="d-montant" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0"><span class="cur">€</span></div></div>
+      <div class="field"><label>Dans quoi ?</label><div class="catpick" id="depcat"></div></div>
+      <div class="field"><label for="d-label">Une précision <span style="color:var(--faint);font-weight:400">— si tu veux</span></label>
+        <input id="d-label" maxlength="40" placeholder="Courses de la semaine"></div>
+      <label class="toggle"><span class="txt"><b>Tous les mois</b><small>Loyer, abonnement, forfait… on le reportera aussi.</small></span>
+        <input type="checkbox" id="d-rec"></label>
+      <button class="primary" type="submit">Ajouter</button>
+      <button class="ghostbtn" type="button" data-close>Annuler</button>
+    </form>
+  </div>
+
+  <div data-form="cours" hidden>
+    <h2>Un cours</h2>
+    <p class="sub">Il reviendra toutes les semaines au même créneau.</p>
+    <form id="coursform">
+      <div class="field"><label for="c-matiere">La matière</label>
+        <input id="c-matiere" maxlength="40" placeholder="Architecture réseaux"></div>
+      <div class="field"><label>Quel jour ?</label><div class="catpick" id="c-jour"></div></div>
+      <div class="timerow">
+        <div class="field"><label for="c-debut">Début</label><input id="c-debut" type="time" value="09:00"></div>
+        <div class="field"><label for="c-fin">Fin</label><input id="c-fin" type="time" value="12:00"></div>
+      </div>
+      <div class="field"><label for="c-salle">Salle <span style="color:var(--faint);font-weight:400">— si tu veux</span></label>
+        <input id="c-salle" maxlength="24" placeholder="B204"></div>
+      <div class="field"><label for="c-prof">Intervenant <span style="color:var(--faint);font-weight:400">— si tu veux</span></label>
+        <input id="c-prof" maxlength="40" placeholder="M. Bernard"></div>
+      <div class="field"><label>Une couleur</label><div class="colorpick" id="c-couleur"></div></div>
+      <button class="primary" type="submit">Ajouter le cours</button>
+      <button class="ghostbtn" type="button" data-close>Annuler</button>
+    </form>
+  </div>
+
+  <div data-form="profil" hidden>
+    <h2>Mon profil</h2>
+    <p class="sub" id="pf-sub">…</p>
+    <div class="crypto-note" style="margin-top:0">
+      <b>Où sont tes données</b>
+      Uniquement dans ce navigateur, sur cet appareil. Ton budget et ton emploi du temps sont
+      chiffrés en AES-256-GCM avec une clé dérivée de ton mot de passe. Nous n'y avons pas accès.
+    </div>
+    <button class="primary" id="pf-lock" style="margin-top:16px">Verrouiller maintenant</button>
+    <button class="ghostbtn" id="pf-wipe" style="color:var(--terre)">Supprimer mon profil et mes données</button>
+    <button class="ghostbtn" type="button" data-close>Fermer</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<nav class="tabbar">
+  <div class="in">
+    <button class="tabbtn" data-screen="home"   aria-selected="true"><span class="pip"></span><svg><use href="#i-home"/></svg>Accueil</button>
+    <button class="tabbtn" data-screen="check"  aria-selected="false"><span class="pip"></span><svg><use href="#i-check"/></svg>Ma liste<span class="badge" id="tabbadge" hidden>12</span></button>
+    <button class="tabbtn" data-screen="budget" aria-selected="false"><span class="pip"></span><svg><use href="#i-wallet"/></svg>Budget</button>
+    <button class="tabbtn" data-screen="edt"    aria-selected="false"><span class="pip"></span><svg><use href="#i-cal"/></svg>Cours</button>
+    <button class="tabbtn" data-screen="guide"  aria-selected="false"><span class="pip"></span><svg><use href="#i-book"/></svg>Guide</button>
+  </div>
+</nav>
+
+<script>
+/* ===========================================================================
+   Repère — un seul fichier, aucune dépendance.
+   Le contenu modifiable est en haut. Le code commence à « OUTILS ».
+   =========================================================================== */
+
+/* ----- à remplir par l'équipe ----- */
+const CONTACT = {
+  discord: "LIEN_DISCORD_A_COLLER",        // salon où arrivent les questions
+  mail:    "MAIL_DE_LEQUIPE_A_COLLER"      // secours si quelqu'un n'a pas Discord
+};
+
+const LISTE = [
+  ["Avant le premier cours", [
+    ["Activer mon compte MyGES", "Les identifiants arrivent par mail. C'est là que passent les notes, l'agenda et les rendus."],
+    ["Rejoindre le groupe de promo", "Demande le lien à un A2. La moitié de l'info utile circule là, pas ailleurs."],
+    ["Noter mon emploi du temps", "Onglet Cours : tu le saisis une fois, tu l'as tout le semestre."],
+    ["Repérer ma salle une fois à vide", "Dix minutes de marche aujourd'hui, zéro stress lundi matin."]
+  ]],
+  ["Les papiers", [
+    ["Récupérer mon certificat de scolarité", "Il sert pour à peu près tout : transports, banque, mutuelle, logement."],
+    ["Demander ma carte étudiante", "Sans elle : pas de tarif réduit, et parfois pas d'accès à certaines salles."],
+    ["Faire ma demande d'aides, si ça me concerne", "Les délais sont courts en septembre. C'est le truc qu'on regrette de ne pas avoir fait."],
+    ["Prendre l'abonnement transport étudiant", "Il faut le certificat de scolarité et une photo. Compte une semaine de traitement."]
+  ]],
+  ["Le quotidien", [
+    ["Poser mon budget du mois", "Onglet Budget : ce qui rentre, ce qui sort. Dix secondes, et plus de mauvaise surprise le 25."],
+    ["Me trouver un coin calme pour bosser", "Salle vide, bibli, café. Avoir un plan B fait gagner des heures."],
+    ["Prendre le numéro de trois personnes", "Le jour où tu rates un cours, c'est ça qui te sauve."],
+    ["Savoir à qui parler si ça coince", "Un délégué, un référent, un A2. Mieux vaut le savoir avant d'en avoir besoin."]
+  ]]
+];
+
+const GUIDE = [
+  ["C'est quoi MyGES, exactement ?",
+   "<p><strong>La plateforme de l'école.</strong> Emploi du temps, notes, supports de cours, dépôts de devoirs : tout est là.</p><p>Le réflexe à prendre dès cette semaine : <strong>l'ouvrir tous les soirs</strong>. Les salles et les horaires changent parfois la veille, et c'est aussi là que se fait le dépôt du vendredi.</p>"],
+  ["Je rate un cours, je fais quoi ?",
+   "<p>Tu préviens quelqu'un de ta promo <strong>le jour même</strong> et tu demandes les notes. Un cours raté se rattrape en une soirée la première semaine ; en novembre, beaucoup moins.</p><p>Si c'est justifié (maladie, transport, convocation), envoie le justificatif tout de suite : les absences comptent pour le passage en année supérieure.</p>"],
+  ["On mange où, le midi ?",
+   "<p>Trois options qui reviennent chez les A2 : <strong>la gamelle</strong> (imbattable), <strong>les boulangeries du coin</strong> pour les formules autour de 5 €, ou <strong>le resto U le plus proche</strong> si tu as ta carte étudiante.</p><p>Les adresses précises et les prix sont dans les <strong>astuces</strong> — ce sont des étudiants qui les écrivent, pas nous.</p>"],
+  ["Comment on bosse en groupe quand on ne connaît personne ?",
+   "<p>Ce qui marche : <strong>un canal de discussion, un document partagé, une liste de tâches</strong>. Rien de plus, sinon personne ne l'utilise.</p><p>Au premier échange, écrivez noir sur blanc qui fait quoi et pour quand. C'est exactement comme ça qu'on a monté ce projet.</p>"],
+  ["Il faut déjà savoir coder en A1 ?",
+   "<p><strong>Non</strong>, et ce n'est pas une consolation : c'est écrit dans les attentes. Les A1 sont évalués sur leur contribution, leur progression et leurs initiatives, sans compétence technique supposée à l'entrée.</p><p>Ce qui compte : prendre une tâche, la finir, savoir expliquer ce que tu as fait.</p>"],
+  ["Qu'est-ce qui fait vraiment la différence, la première année ?",
+   "<p>Les A2 disent tous la même chose : <strong>être là</strong>, <strong>rendre à l'heure</strong>, <strong>poser les questions tôt</strong>.</p><p>Le piège classique, c'est d'attendre d'avoir compris tout seul. Personne ne juge une question posée en semaine 1 — on juge celle posée en semaine 12.</p>"],
+  ["À qui je demande une salle, du matériel, une autorisation ?",
+   "<p>Pendant le séminaire : <strong>Chloé, Philippe ou Julien</strong>.</p><p>Dans ton message, mets toujours ton groupe, l'activité, la date, les horaires, le nombre de personnes, tes besoins et un responsable. Et retiens ça : <strong>une demande envoyée n'est pas un accord</strong>. Attends la confirmation avant d'annoncer quoi que ce soit.</p>"],
+  ["Mes données dans Repère, elles vont où ?",
+   "<p><strong>Nulle part.</strong> Il n'y a pas de serveur : tout est stocké dans le navigateur de ton téléphone.</p><p>Ton budget et ton emploi du temps sont en plus <strong>chiffrés en AES-256-GCM</strong> avec une clé fabriquée à partir de ton mot de passe (PBKDF2-SHA256, 600 000 itérations). Sans ce mot de passe — que personne d'autre ne connaît, nous compris — ces données sont illisibles, même en ouvrant le stockage du navigateur.</p>"]
+];
+
+const CATS = ["Manger","Transport","Cours","Papiers","Vie de l'école","Bons plans"];
+
+const ASTUCES = [
+  ["Manger","La boulangerie à deux rues fait sandwich + boisson autour de 5 €. À midi pile il y a dix minutes de queue, à 12 h 30 il ne reste plus rien. Vise 11 h 50.","Sofiane · A2"],
+  ["Cours","Prends tes notes dans un seul outil pour toute l'année. Changer d'appli tous les mois, c'est le meilleur moyen de ne rien retrouver en janvier.","Marion · A2"],
+  ["Transport","Fais ta demande d'abonnement étudiant dès que tu as ton certificat de scolarité. Moi j'ai attendu, j'ai payé plein tarif pendant trois semaines.","Yanis · A2"],
+  ["Vie de l'école","Le premier qui dit bonjour en entrant dans une salle repart avec trois potes. Ça a l'air bête. C'est vrai quand même.","Clara · A2"],
+  ["Bons plans","Ta carte étudiante marche au cinéma, dans les musées et sur pas mal de logiciels. Vérifie toujours avant de payer plein tarif.","Marion · A2"],
+  ["Papiers","Scanne ton certificat de scolarité et garde-le dans ton téléphone. Tu vas te le faire demander six fois d'ici Noël.","Un A2"]
+];
+
+/* Réponses publiées par l'équipe. Pour en ajouter une : recopier une ligne. */
+const REPONSES = [
+  ["Est-ce qu'on peut manger dans les salles de cours ?",
+   "Pas pendant les cours. Entre midi et 14 h, les salles libres sont tolérées si tu ne laisses rien derrière toi. En cas de doute, demande à l'accueil plutôt que de tenter.",
+   "Matteo", "12 septembre"],
+  ["Je n'ai pas reçu mes identifiants MyGES, c'est normal ?",
+   "Ça arrive : le mail part parfois dans les indésirables, et certains comptes sont créés avec deux jours de retard. Regarde tes spams, puis écris à l'accueil avec ton nom, prénom et ta promo. Ne laisse pas traîner plus de 48 h, les premiers rendus passent par là.",
+   "Anthony", "12 septembre"],
+  ["Le site marche sans connexion ?",
+   "Une fois la page ouverte, tes données sont en local donc elles s'affichent. Par contre le tout premier chargement a besoin de réseau. Pour la soutenance on garde une version hors-ligne sur clé, au cas où.",
+   "Mohand", "13 septembre"]
+];
+</script>
+
+<script>
+/* =========================== OUTILS =========================== */
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const load = (k,d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } };
+const save = (k,v) => localStorage.setItem(k, JSON.stringify(v));   // doit lever : l'appelant décide
+const saveMou = (k,v) => { try { save(k,v) } catch {} };              // pour les données non critiques
+const uid  = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+const esc  = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+let tt;
+function toast(msg){
+  const el = $("#toast");
+  el.textContent = msg; el.classList.add("on");
+  clearTimeout(tt); tt = setTimeout(() => el.classList.remove("on"), 2100);
+}
+
+/* ================== COFFRE CHIFFRÉ ==================
+   Le mot de passe n'est jamais stocké. Il sert à dériver une clé AES-256-GCM
+   (PBKDF2-SHA256, 210 000 itérations, sel aléatoire de 16 octets).
+   La clé vit uniquement en mémoire : fermer l'onglet la détruit.
+   ==================================================== */
+const K_VAULT = "repere.vault.v1";
+const ITER = 600000;   // recommandation OWASP pour PBKDF2-HMAC-SHA256
+const sub = (window.crypto && window.crypto.subtle) ? window.crypto.subtle : null;
+
+let cle = null;                                   // CryptoKey, jamais persistée
+let profil = null;                                // {prenom, promo} — en clair, non sensible
+let coffre = { budget:{revenus:[],depenses:[]}, edt:[] };
+
+const b64  = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const alea = n => window.crypto.getRandomValues(new Uint8Array(n));
+
+async function deriver(pw, sel){
+  const base = await sub.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+  return sub.deriveKey({name:"PBKDF2", salt:sel, iterations:ITER, hash:"SHA-256"},
+                       base, {name:"AES-GCM", length:256}, false, ["encrypt","decrypt"]);
+}
+
+const litCoffre = () => load(K_VAULT, null);
+const coffreExiste = () => !!litCoffre();
+const ouvert = () => cle !== null;
+
+let enCours = false, aRefaire = false, monN = 0;
+async function sauverCoffre(){
+  if (!cle) return;
+  if (enCours) { aRefaire = true; return; }
+  enCours = true;
+  try {
+    const brut = litCoffre();
+    if (!brut) throw new Error("coffre absent");
+    if ((brut.n || 0) !== monN &&
+        !confirm("Tes données ont été modifiées dans un autre onglet.\n\nGarder cette version-ci et écraser l'autre ?")) {
+      enCours = false; return;                               // on préfère ne rien écrire
+    }
+    const iv    = alea(12);                                  // un IV neuf à CHAQUE écriture
+    const clair = new TextEncoder().encode(JSON.stringify(coffre));
+    const ct    = await sub.encrypt({name:"AES-GCM", iv}, cle, clair);
+    monN = (brut.n || 0) + 1;
+    save(K_VAULT, {v:2, n:monN, sel:brut.sel, iv:b64(iv), ct:b64(ct)});
+  } catch(e){
+    toast("Impossible d'enregistrer sur cet appareil");
+    enCours = false;
+    throw e;                                   // l'appelant doit savoir que rien n'a été écrit
+  }
+  enCours = false;
+  if (aRefaire) { aRefaire = false; sauverCoffre(); }
+}
+
+async function creerProfil(prenom, promo, pw){
+  const sel = alea(16);
+  const k = await deriver(pw, sel);
+  // ce qui existait en clair avant, pour le faire entrer dans le coffre
+  const ancien = load("repere.budget.v1", null);
+  const contenu = { profil:{prenom, promo}, budget: ancien || {revenus:[],depenses:[]}, edt: [] };
+
+  // on écrit d'abord, on ne bascule l'app en « déverrouillé » qu'après vérification
+  const iv = alea(12);
+  const ct = await sub.encrypt({name:"AES-GCM", iv}, k,
+                               new TextEncoder().encode(JSON.stringify(contenu)));
+  save(K_VAULT, {v:2, n:1, sel:b64(sel), iv:b64(iv), ct:b64(ct)});   // lève si le stockage refuse
+
+  // relecture réelle : on ne détruit la copie en clair qu'une fois le déchiffrement prouvé
+  const relu = litCoffre();
+  if (!relu || !relu.ct || !relu.iv) throw new Error("coffre non persisté");
+  await sub.decrypt({name:"AES-GCM", iv:unb64(relu.iv)}, k, unb64(relu.ct));
+
+  cle = k; profil = {prenom, promo}; coffre = contenu; monN = 1;
+  try { localStorage.removeItem("repere.budget.v1"); } catch {}
+}
+
+async function ouvrirProfil(pw){
+  const v = litCoffre();
+  const k = await deriver(pw, unb64(v.sel));
+  const clair = await sub.decrypt({name:"AES-GCM", iv:unb64(v.iv)}, k, unb64(v.ct)); // lève si mauvais mdp
+  const lu = JSON.parse(new TextDecoder().decode(clair));
+  cle = k;
+  monN = v.n || 0;
+  // le prénom vit dans le coffre chiffré ; v.prenom n'existe que sur les anciens profils
+  profil = lu.profil || {prenom: v.prenom || "", promo: v.promo || ""};
+  coffre = { profil, budget: lu.budget || {revenus:[],depenses:[]}, edt: lu.edt || [] };
+}
+
+function verrouiller(){
+  cle = null; profil = null;
+  coffre = { budget:{revenus:[],depenses:[]}, edt:[] };
+  monN = 0;
+  majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
+  toast("Verrouillé");
+}
+function effacerProfil(){
+  try { localStorage.removeItem(K_VAULT); } catch {}
+  cle = null; profil = null; monN = 0;
+  coffre = { budget:{revenus:[],depenses:[]}, edt:[] };
+  majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
+}
+
+/* ---- écran de garde ---- */
+function gate(mode){
+  $$("#gate [data-gate]").forEach(d => d.hidden = d.dataset.gate !== mode);
+  $("#err-creer").hidden = true; $("#err-ouvrir").hidden = true;
+  // pas de prénom affiché ici : il est dans le coffre chiffré, donc illisible tant qu'il est verrouillé
+  $("#gate").classList.add("on");
+  setTimeout(() => $(mode === "creer" ? "#g-prenom" : "#g-pw3").focus(), 120);
+}
+const fermerGate = () => $("#gate").classList.remove("on");
+function demanderProfil(){
+  if (!sub) return toast("Ton navigateur ne permet pas le chiffrement ici");
+  gate(coffreExiste() ? "ouvrir" : "creer");
+}
+$("#gate-close").onclick = fermerGate;
+$$("[data-gate-open]").forEach(b => b.onclick = demanderProfil);
+$("#go-unlock").onclick = () => gate("ouvrir");
+
+/* force du mot de passe — indicatif, honnête, sans faux scoring */
+$("#g-pw").oninput = e => {
+  const v = e.target.value;
+  let n = 0;
+  if (v.length >= 12) n++;
+  if (v.length >= 16) n++;
+  if (v.split(/\s+/).filter(Boolean).length >= 3 || v.length >= 20) n++;
+  const cfg = [["0%","var(--terre-txt)","Trop court : 12 caractères minimum."],
+               ["33%","var(--terre-txt)","Ça passe. Une phrase serait plus sûre."],
+               ["66%","#B08C1E","Correct."],
+               ["100%","var(--vert)","Solide. Note-la quelque part de sûr."]][n];
+  $("#pwbar").style.width = cfg[0];
+  $("#pwbar").style.background = cfg[1];
+  $("#pwhint").textContent = v ? cfg[2] : "Une phrase de trois mots vaut mieux qu'un mot compliqué. Personne ne pourra te la redonner.";
+};
+
+$("#btn-creer").onclick = async () => {
+  const err = $("#err-creer");
+  const prenom = $("#g-prenom").value.trim(), promo = $("#g-promo").value.trim();
+  const pw = $("#g-pw").value, pw2 = $("#g-pw2").value;
+  const dire = m => { err.textContent = m; err.hidden = false; };
+  if (!prenom) return dire("Mets au moins ton prénom.");
+  if (pw.length < 12) return dire("Le mot de passe doit faire au moins 12 caractères — une phrase courte fait très bien l'affaire.");
+  if (pw !== pw2) return dire("Les deux mots de passe ne sont pas identiques.");
+  err.hidden = true;
+  $("#btn-creer").textContent = "Chiffrement en cours…"; $("#btn-creer").disabled = true;
+  try {
+    await creerProfil(prenom, promo, pw);
+    $("#g-pw").value = $("#g-pw2").value = "";
+    fermerGate(); majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
+    toast("Profil créé, données chiffrées");
+  } catch(e){
+    dire(String(e && e.name).includes("Quota") || String(e).includes("torage")
+      ? "Ton navigateur refuse d'enregistrer (navigation privée ou stockage bloqué). Rien n'a été modifié : réessaie dans une fenêtre normale."
+      : "Le chiffrement a échoué sur ce navigateur. Rien n'a été modifié.");
+  }
+  $("#btn-creer").textContent = "Créer mon profil"; $("#btn-creer").disabled = false;
+};
+
+$("#btn-ouvrir").onclick = async () => {
+  const err = $("#err-ouvrir"), pw = $("#g-pw3").value;
+  if (!pw) { err.textContent = "Entre ton mot de passe."; err.hidden = false; return; }
+  $("#btn-ouvrir").textContent = "Déchiffrement…"; $("#btn-ouvrir").disabled = true;
+  try {
+    await ouvrirProfil(pw);
+    $("#g-pw3").value = "";
+    fermerGate(); majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
+    toast("Bonjour " + profil.prenom);
+  } catch(e){
+    err.textContent = "Mot de passe incorrect. Les données restent illisibles.";
+    err.hidden = false;
+  }
+  $("#btn-ouvrir").textContent = "Déverrouiller"; $("#btn-ouvrir").disabled = false;
+};
+
+$("#btn-oubli").onclick = () => {
+  if (!confirm("Personne ne peut retrouver ce mot de passe, pas même nous.\n\nLa seule option est de supprimer le profil et de repartir de zéro. On continue ?")) return;
+  effacerProfil(); fermerGate(); gate("creer");
+};
+
+$("#btn-profil").onclick = () => {
+  if (!ouvert()) return demanderProfil();
+  $("#pf-sub").textContent = profil.prenom + (profil.promo ? " · " + profil.promo : "") + " — déverrouillé sur cet appareil.";
+  ouvrirFeuille("profil");
+};
+$("#pf-lock").onclick = () => { fermerFeuille(); verrouiller(); };
+$("#pf-wipe").onclick = () => {
+  if (!confirm("Supprimer ton profil, ton budget et ton emploi du temps de cet appareil ? C'est définitif.")) return;
+  effacerProfil(); fermerFeuille(); toast("Profil supprimé");
+};
+
+function majVerrous(){
+  if (!sub) {                       // http:// ou file:// : Web Crypto n'existe pas
+    $$(".locked").forEach(box => {
+      box.hidden = false; box.classList.add("nocrypto");
+      box.querySelector("h3").textContent = "Chiffrement indisponible sur cette adresse";
+      box.querySelector("p").textContent =
+        "Cet écran contient des données personnelles : on refuse de les enregistrer sans chiffrement. " +
+        "Ouvre la page en https:// (ou http://localhost) et tout se débloquera.";
+      box.querySelector("[data-gate-open]").hidden = true;
+    });
+    $("#budget-body").hidden = true; $("#edt-body").hidden = true;
+    return;
+  }
+  const ok = ouvert();
+  $("#budget-locked").hidden = ok;  $("#budget-body").hidden = !ok;
+  $("#edt-locked").hidden    = ok;  $("#edt-body").hidden    = !ok;
+  if (!ok && coffreExiste()) {
+    $$(".locked h3")[0].textContent = "Ton budget est verrouillé";
+    $$(".locked h3")[1].textContent = "Ton emploi du temps est verrouillé";
+    $$(".locked p").forEach(p => p.textContent = "Entre ton mot de passe pour déchiffrer ces données sur cet appareil.");
+    $$("[data-gate-open]").forEach(b => b.textContent = "Déverrouiller");
+  }
+  $("#btn-profil").style.color = ok ? "var(--vert)" : "";
+}
+</script>
+
+<script>
+/* =========================== NAVIGATION =========================== */
+const TAB_DE = {home:"home", check:"check", budget:"budget", edt:"edt",
+                guide:"guide", tips:"guide", question:"guide"};
+let ecranCourant = "home";
+function montrer(nom, viaHistorique){
+  $$(".screen").forEach(s => s.hidden = s.id !== "s-" + nom);
+  $$(".tabbtn").forEach(b => b.setAttribute("aria-selected", String(b.dataset.screen === TAB_DE[nom])));
+  $("#fab").hidden = nom !== "tips";
+  const url = nom === "home" ? location.pathname : "#" + nom;
+  // on empile pour que le bouton Retour du téléphone revienne à l'écran précédent
+  if (viaHistorique) history.replaceState({ecran:nom}, "", url);
+  else if (nom !== ecranCourant) history.pushState({ecran:nom}, "", url);
+  else history.replaceState({ecran:nom}, "", url);
+  ecranCourant = nom;
+  scrollTo(0, 0);
+  if ((nom === "budget" || nom === "edt") && !ouvert() && coffreExiste()) demanderProfil();
+}
+addEventListener("popstate", e => {
+  if ($("#sheet").classList.contains("on")) return fermerFeuille(true);
+  if ($("#gate").classList.contains("on"))  return fermerGate();
+  montrer((e.state && e.state.ecran) || "home", true);
+});
+$$(".tabbtn").forEach(b => b.onclick = () => montrer(b.dataset.screen));
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-goto]");
+  if (el) montrer(el.dataset.goto);
+});
+$$(".segctrl button").forEach(b => b.onclick = () => {
+  $$(".segctrl button").forEach(x => x.setAttribute("aria-selected", String(x === b)));
+  $$("[data-sub-panel]").forEach(p => p.hidden = p.dataset.subPanel !== b.dataset.sub);
+});
+
+/* =========================== MA LISTE =========================== */
+const K_C = "repere.check.v2";
+let coche = load(K_C, {});
+const TOTAL = LISTE.reduce((n,[,it]) => n + it.length, 0);
+
+function dessinerListe(){
+  $("#checklist").innerHTML = LISTE.map(([nom, items], g) =>
+    `<div class="seg">${nom}</div>` + items.map(([titre, aide], i) => {
+      const id = g + "-" + i, on = coche[id];
+      return `<label class="task${on?" done":""}"><input type="checkbox" data-id="${id}"${on?" checked":""}>
+        <span><b>${titre}</b><span>${aide}</span></span></label>`;
+    }).join("")
+  ).join("");
+  brancher($("#checklist")); compter();
+}
+function compter(){
+  const faits = Object.values(coche).filter(Boolean).length;
+  $("#t-done").textContent = faits;
+  $("#t-left").textContent = TOTAL - faits;
+}
+function brancher(zone){
+  zone.querySelectorAll("input[data-id]").forEach(inp => inp.onchange = () => {
+    const id = inp.dataset.id;
+    coche[id] = inp.checked; saveMou(K_C, coche);
+    $$(`input[data-id="${id}"]`).forEach(x => {
+      x.checked = inp.checked;
+      x.closest(".task").classList.toggle("done", inp.checked);
+    });
+    if (inp.checked) toast(["Réglé ✓","Un de moins ✓","Ça avance ✓"][Math.floor(Math.random()*3)]);
+    compter(); majAccueil();
+  });
+}
+$("#reset").onclick = () => {
+  if (!confirm("Tout décocher ?")) return;
+  coche = {}; saveMou(K_C, coche); dessinerListe(); majAccueil();
+};
+
+/* =========================== GUIDE =========================== */
+function dessinerGuide(filtre=""){
+  const f = filtre.trim().toLowerCase();
+  const vus = GUIDE.filter(([q,r]) => !f || (q + " " + r).toLowerCase().includes(f));
+  $("#guide-list").innerHTML = vus.map(([q,r]) =>
+    `<details class="qa"><summary>${q}<svg class="arw"><use href="#i-arw"/></svg></summary><div class="in">${r}</div></details>`).join("");
+  $("#noresult").hidden = vus.length > 0;
+}
+$("#q").oninput = e => dessinerGuide(e.target.value);
+
+/* =========================== ASTUCES =========================== */
+const K_T = "repere.tips.v2";
+let miennes = load(K_T, []);
+let filtre = null;
+function dessinerFiltres(){
+  const html = `<button class="chip" aria-pressed="${filtre===null}" data-cat="">Tout</button>` +
+    CATS.map(c => `<button class="chip" aria-pressed="${filtre===c}" data-cat="${c}">${c}</button>`).join("");
+  ["#filters","#filters2"].forEach(sel => {
+    $(sel).innerHTML = html;
+    $$(sel + " .chip").forEach(b => b.onclick = () => { filtre = b.dataset.cat || null; dessinerFiltres(); dessinerAstuces(); });
+  });
+}
+function dessinerAstuces(){
+  const tout = [...miennes.map(t => [...t, true]), ...ASTUCES.map(t => [...t, false])]
+               .filter(t => !filtre || t[0] === filtre);
+  const html = tout.length ? tout.map(([cat, txt, qui, mienne]) =>
+    `<div class="tip${mienne?" mine":""}"><p>${esc(txt)}</p>
+      <div class="meta"><span class="cat">${esc(cat)}</span>${esc(qui || "Anonyme")}${mienne?" · la tienne, sur cet appareil":""}</div></div>`).join("")
+    : `<div class="empty">Rien dans cette catégorie pour l'instant.<br>Tu veux l'inaugurer ?</div>`;
+  $("#tips").innerHTML = html; $("#tips2").innerHTML = html;
+}
+$("#open-tip").onclick = () => ouvrirFeuille("tip");
+
+/* =========================== BUDGET =========================== */
+const CAT_DEP = ["Courses","Resto","Transport","Sorties","Logement","Fournitures","Autre"];
+const EMO = {Courses:"🛒",Resto:"🍽",Transport:"🚌",Sorties:"🎬",Logement:"🏠",Fournitures:"✏️",Autre:"•"};
+let vue = moisDe(new Date());
+
+function moisDe(d){ return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0"); }
+function euro(n){ return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",
+  maximumFractionDigits: Number.isInteger(n) ? 0 : 2}).format(n); }
+function nomMois(m){ const [a,mo] = m.split("-"); return new Date(a, mo-1, 1).toLocaleDateString("fr-FR",{month:"long",year:"numeric"}); }
+function decale(m, pas){ const [a,mo] = m.split("-").map(Number); return moisDe(new Date(a, mo-1+pas, 1)); }
+const actif = e => e.mois === vue || (e.rec && e.mois <= vue && (!e.fin || vue <= e.fin));
+const somme = arr => arr.reduce((t,e) => t + e.montant, 0);
+
+function joursRestants(){
+  const now = new Date();
+  const [a,mo] = vue.split("-").map(Number);
+  const fin = new Date(a, mo, 0).getDate();
+  if (now.getFullYear() === a && now.getMonth()+1 === mo) return fin - now.getDate() + 1;
+  return vue > moisDe(now) ? fin : 0;
+}
+
+function dessinerBudget(){
+  $("#m-label").textContent = nomMois(vue);
+  $("#m-today").hidden = vue === moisDe(new Date());
+  if (!ouvert()) {                       // on efface le rendu, sinon il reste lisible à l'écran
+    $("#revenus").textContent = ""; $("#depenses").textContent = "";
+    $("#b-reste").textContent = "—"; $("#b-in").textContent = "—"; $("#b-out").textContent = "—";
+    $("#b-pct").textContent = "—"; $("#b-jour").textContent = ""; $("#b-gauge").style.width = "0%";
+    $("#money").classList.remove("neg","warn");
+    return;
+  }
+
+  const rev = coffre.budget.revenus.filter(actif), dep = coffre.budget.depenses.filter(actif);
+  const entre = somme(rev), sort = somme(dep), reste = entre - sort;
+  const part = entre > 0 ? Math.min(sort/entre, 1) : 0;
+
+  const box = $("#money");
+  box.classList.toggle("neg", reste < 0);
+  box.classList.toggle("warn", reste >= 0 && part > 0.8);
+  $("#b-reste").textContent = euro(reste);
+  $("#b-lbl").textContent   = reste < 0 ? "Tu es dans le rouge de" : "Il te reste";
+  $("#b-in").textContent    = euro(entre);
+  $("#b-out").textContent   = euro(sort);
+  $("#b-pct").textContent   = entre > 0 ? Math.round(part*100) + " %" : "—";
+  $("#b-gauge").style.width = (part*100) + "%";
+
+  const j = joursRestants();
+  $("#b-jour").textContent =
+    entre === 0 ? "Commence par ajouter ce qui rentre ce mois-ci." :
+    reste < 0   ? "Il reste " + j + " jour" + (j>1?"s":"") + " avant la fin du mois." :
+    j > 0       ? euro(Math.floor(reste/j*100)/100) + " par jour pendant " + j + " jour" + (j>1?"s":"") :
+                  "Mois terminé.";
+
+  $("#revenus").innerHTML = rev.length ? rev.map(e =>
+    `<div class="line"><div class="ic in">+</div>
+      <div class="txt"><b>${esc(e.label || "Entrée d'argent")}${e.rec?'<span class="rec">chaque mois</span>':''}</b>
+        <span>${e.rec && e.mois < vue ? "reporté depuis " + nomMois(e.mois) : "ajouté ce mois-ci"}</span></div>
+      <div class="amt in">+${euro(e.montant)}</div>
+      <button class="del" data-sup="revenus" data-id="${e.id}" aria-label="Supprimer"><svg><use href="#i-x"/></svg></button>
+    </div>`).join("")
+    : `<div class="card flat" style="text-align:center;color:var(--muted);font-size:14.5px">Rien pour l'instant. Ajoute ta bourse, ton job ou le virement des parents.</div>`;
+
+  $("#depenses").innerHTML = dep.length ? [...dep].reverse().map(e =>
+    `<div class="line"><div class="ic">${EMO[e.cat] || "•"}</div>
+      <div class="txt"><b>${esc(e.label || e.cat)}${e.rec?'<span class="rec">chaque mois</span>':''}</b>
+        <span>${esc(e.cat)}${e.jour ? " · le " + e.jour : ""}</span></div>
+      <div class="amt">−${euro(e.montant)}</div>
+      <button class="del" data-sup="depenses" data-id="${e.id}" aria-label="Supprimer"><svg><use href="#i-x"/></svg></button>
+    </div>`).join("")
+    : `<div class="card flat" style="text-align:center;color:var(--muted);font-size:14.5px">Aucune dépense notée. C'est soit très bien, soit un oubli.</div>`;
+
+  $$("#s-budget [data-sup]").forEach(b => b.onclick = () => {
+    const e = coffre.budget[b.dataset.sup].find(x => x.id === b.dataset.id);
+    if (e.rec && e.mois < vue) {
+      // deux gestes différents : arrêter à partir d'ici, ou effacer aussi le passé
+      if (confirm("Cette ligne revient tous les mois.\n\nOK = elle s'arrête à partir de " + nomMois(vue) +
+                  " et reste dans les mois passés.\nAnnuler = choisir de tout effacer.")) {
+        e.fin = decale(vue, -1);
+        sauverCoffre(); dessinerBudget(); majAccueil(); toast("Arrêtée à partir de ce mois");
+        return;
+      }
+      if (!confirm("Tout effacer, y compris dans les mois déjà passés ?")) return;
+    }
+    coffre.budget[b.dataset.sup] = coffre.budget[b.dataset.sup].filter(x => x.id !== b.dataset.id);
+    sauverCoffre(); dessinerBudget(); majAccueil(); toast("Supprimé");
+  });
+}
+$("#m-prev").onclick  = () => { vue = decale(vue,-1); dessinerBudget(); };
+$("#m-next").onclick  = () => { vue = decale(vue, 1); dessinerBudget(); };
+$("#m-today").onclick = () => { vue = moisDe(new Date()); dessinerBudget(); };
+$("#add-rev").onclick = () => ouvrirFeuille("rev");
+$("#add-dep").onclick = () => ouvrirFeuille("dep");
+
+$("#revform").onsubmit = e => {
+  e.preventDefault();
+  const m = parseFloat($("#r-montant").value);
+  if (!(m > 0)) return toast("Mets un montant");
+  coffre.budget.revenus.push({id:uid(), label:$("#r-label").value.trim(), montant:m, rec:$("#r-rec").checked, mois:vue});
+  sauverCoffre(); e.target.reset(); $("#r-rec").checked = true;
+  fermerFeuille(); dessinerBudget(); majAccueil(); toast("Entrée ajoutée");
+};
+let catDep = CAT_DEP[0];
+$("#depcat").innerHTML = CAT_DEP.map(c => `<button type="button" data-c="${c}" aria-pressed="${c===catDep}">${c}</button>`).join("");
+$$("#depcat button").forEach(b => b.onclick = () => {
+  catDep = b.dataset.c;
+  $$("#depcat button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.c === catDep)));
+});
+$("#depform").onsubmit = e => {
+  e.preventDefault();
+  const m = parseFloat($("#d-montant").value);
+  if (!(m > 0)) return toast("Mets un montant");
+  const now = new Date();
+  coffre.budget.depenses.push({id:uid(), label:$("#d-label").value.trim(), montant:m, cat:catDep,
+    rec:$("#d-rec").checked, mois:vue, jour: vue === moisDe(now) ? now.getDate() : null});
+  sauverCoffre(); e.target.reset(); $("#d-rec").checked = false;
+  fermerFeuille(); dessinerBudget(); majAccueil(); toast("Dépense notée");
+};
+</script>
+
+<script>
+/* =========================== EMPLOI DU TEMPS =========================== */
+const JOURS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+const JCOURT = ["Lu","Ma","Me","Je","Ve","Sa"];
+const COULEURS = ["#3A7D5C","#E2643C","#3C6E9F","#8A5CB8","#C9A227","#C2405F"];
+let jourVu = Math.min(Math.max((new Date().getDay() + 6) % 7, 0), 5);
+let couleurVue = COULEURS[0], jourChoisi = 0;
+
+const enMin = h => { const [a,b] = h.split(":").map(Number); return a*60 + b; };
+const triCours = l => [...l].sort((a,b) => enMin(a.debut) - enMin(b.debut));
+
+function dessinerEDT(){
+  if (!ouvert()) {
+    $("#edt-eyebrow").textContent = "Ta semaine type";
+    $("#days").textContent = ""; $("#cours").textContent = "";
+    return;
+  }
+  const now = new Date(), jNow = (now.getDay() + 6) % 7, minNow = now.getHours()*60 + now.getMinutes();
+
+  $("#days").innerHTML = JOURS.map((j,i) => {
+    const n = coffre.edt.filter(c => c.jour === i).length;
+    return `<button class="day${n?" has":""}" data-j="${i}" aria-pressed="${i===jourVu}">
+      <b>${JCOURT[i]}</b><span>${n || "—"}</span></button>`;
+  }).join("");
+  $$("#days .day").forEach(b => b.onclick = () => { jourVu = +b.dataset.j; dessinerEDT(); });
+
+  const duJour = triCours(coffre.edt.filter(c => c.jour === jourVu));
+  $("#edt-eyebrow").textContent = JOURS[jourVu] + " · " + (duJour.length ? duJour.length + " cours" : "rien de prévu");
+
+  $("#cours").innerHTML = duJour.length ? duJour.map(c => {
+    const maintenant = jourVu === jNow && minNow >= enMin(c.debut) && minNow < enMin(c.fin);
+    return `<div class="course${maintenant?" now":""}">
+      <div class="bar" style="background:${c.couleur}"></div>
+      <div class="h">${c.debut}<small>${c.fin}</small></div>
+      <div class="b"><b>${esc(c.matiere)}</b>
+        <span>${[c.salle && "Salle " + esc(c.salle), c.prof && esc(c.prof)].filter(Boolean).join(" · ") || "—"}</span></div>
+      <button class="del" data-cid="${c.id}" aria-label="Supprimer"><svg><use href="#i-x"/></svg></button>
+    </div>`;
+  }).join("")
+  : `<div class="card flat" style="text-align:center;color:var(--muted);font-size:14.5px">
+       Aucun cours ${jourVu === 5 ? "le samedi" : "ce " + JOURS[jourVu].toLowerCase()}. Profites-en.</div>`;
+
+  $$("#cours [data-cid]").forEach(b => b.onclick = () => {
+    if (!confirm("Supprimer ce cours ?")) return;
+    coffre.edt = coffre.edt.filter(c => c.id !== b.dataset.cid);
+    sauverCoffre(); dessinerEDT(); majAccueil(); toast("Cours supprimé");
+  });
+}
+
+$("#c-jour").innerHTML = JOURS.map((j,i) => `<button type="button" data-j="${i}" aria-pressed="${i===0}">${JCOURT[i]}</button>`).join("");
+$$("#c-jour button").forEach(b => b.onclick = () => {
+  jourChoisi = +b.dataset.j;
+  $$("#c-jour button").forEach(x => x.setAttribute("aria-pressed", String(+x.dataset.j === jourChoisi)));
+});
+$("#c-couleur").innerHTML = COULEURS.map((c,i) =>
+  `<button type="button" data-c="${c}" style="background:${c}" aria-pressed="${i===0}" aria-label="Couleur ${i+1}"></button>`).join("");
+$$("#c-couleur button").forEach(b => b.onclick = () => {
+  couleurVue = b.dataset.c;
+  $$("#c-couleur button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.c === couleurVue)));
+});
+$("#add-cours").onclick = () => {
+  jourChoisi = jourVu;
+  $$("#c-jour button").forEach(x => x.setAttribute("aria-pressed", String(+x.dataset.j === jourChoisi)));
+  ouvrirFeuille("cours");
+};
+$("#coursform").onsubmit = e => {
+  e.preventDefault();
+  const matiere = $("#c-matiere").value.trim();
+  const debut = $("#c-debut").value, fin = $("#c-fin").value;
+  if (!matiere) return toast("Il manque la matière");
+  if (!debut || !fin) return toast("Il manque un horaire");
+  if (enMin(fin) <= enMin(debut)) return toast("La fin doit être après le début");
+  coffre.edt.push({id:uid(), matiere, jour:jourChoisi, debut, fin,
+    salle:$("#c-salle").value.trim(), prof:$("#c-prof").value.trim(), couleur:couleurVue});
+  sauverCoffre(); e.target.reset();
+  $("#c-debut").value = "09:00"; $("#c-fin").value = "12:00";
+  jourVu = jourChoisi;
+  fermerFeuille(); dessinerEDT(); majAccueil(); toast("Cours ajouté");
+};
+
+/* prochain cours de la semaine, pour l'accueil */
+function prochainCours(){
+  if (!ouvert() || !coffre.edt.length) return null;
+  const now = new Date(), jNow = (now.getDay()+6)%7, minNow = now.getHours()*60 + now.getMinutes();
+  for (let d = 0; d <= 7; d++) {          // d = 7 ramène au même jour la semaine suivante
+    const j = (jNow + d) % 7;
+    if (j > 5) continue;
+    const liste = triCours(coffre.edt.filter(c => c.jour === j));
+    for (const c of liste) {
+      if (d === 0 && minNow >= enMin(c.debut) && minNow < enMin(c.fin)) return {c, quand:"en ce moment"};
+      if (d === 0 && enMin(c.debut) > minNow) return {c, quand:"à " + c.debut};
+      if (d > 0) return {c, quand:(d === 1 ? "demain" : JOURS[j].toLowerCase() + (d >= 7 ? " prochain" : "")) + " à " + c.debut};
+    }
+  }
+  return null;
+}
+
+/* =========================== POSER UNE QUESTION =========================== */
+const K_Q = "repere.questions.v1";
+let mesQuestions = load(K_Q, []);
+
+$("#ask").oninput = e => $("#askcount").textContent = e.target.value.length;
+
+function dessinerQuestions(){
+  $("#seg-mes").hidden = mesQuestions.length === 0;
+  $("#mes-questions").innerHTML = mesQuestions.map(q =>
+    `<div class="qitem"><span class="st wait">⏳ à coller sur le Discord</span>
+      <div class="q">${esc(q.texte)}</div>
+      <div class="a" style="border:none;padding:0;margin-top:6px;font-size:13px;color:var(--faint)">
+        envoyée le ${esc(q.date)}${q.qui ? " · " + esc(q.qui) : ""}
+        <span class="actions"><button class="linky" data-req="${q.id}">recopier pour l'envoyer</button>
+        <button class="linky" data-delq="${q.id}">retirer</button></span></div>
+    </div>`).join("");
+
+  $("#repondues").innerHTML = REPONSES.map(([q,a,par,date]) =>
+    `<div class="qitem"><span class="st done">✓ répondu</span>
+      <div class="q">${esc(q)}</div>
+      <div class="a">${esc(a)}<br><br><b>${esc(par)}</b> · ${esc(date)}</div></div>`).join("");
+
+  $$("[data-delq]").forEach(b => b.onclick = () => {
+    if (!confirm("Retirer cette question de ta liste ?")) return;
+    mesQuestions = mesQuestions.filter(q => q.id !== b.dataset.delq);
+    saveMou(K_Q, mesQuestions); dessinerQuestions();
+  });
+  $$("[data-req]").forEach(b => b.onclick = () => {
+    const q = mesQuestions.find(x => x.id === b.dataset.req);
+    if (q) envoyer(q.texte, q.qui);
+  });
+}
+
+function envoyer(texte, qui){
+  const msg = "❓ Question Repère" + (qui ? " — de " + qui : "") + "\n" + texte;
+  const suite = () => {
+    if (CONTACT.discord && !CONTACT.discord.startsWith("LIEN_")) window.open(CONTACT.discord, "_blank", "noopener");
+    else if (!CONTACT.mail || CONTACT.mail.startsWith("MAIL_"))
+      setTimeout(() => toast("Colle-la sur le Discord du groupe"), 2200);
+    else if (CONTACT.mail && !CONTACT.mail.startsWith("MAIL_"))
+      location.href = "mailto:" + CONTACT.mail + "?subject=" + encodeURIComponent("Question Repère") + "&body=" + encodeURIComponent(msg);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(msg).then(() => { toast("Copiée — colle-la sur le Discord"); suite(); },
+                                            () => { prompt("Copie ta question :", msg); });
+  } else { prompt("Copie ta question :", msg); }
+}
+
+$("#send-ask").onclick = () => {
+  const texte = $("#ask").value.trim();
+  if (texte.length < 8) return toast("Écris ta question en entier");
+  const d = new Date();
+  const q = {id:uid(), texte, qui:$("#ask-who").value.trim(),
+             date: d.toLocaleDateString("fr-FR",{day:"numeric",month:"long"})};
+  mesQuestions.unshift(q); saveMou(K_Q, mesQuestions);
+  $("#ask").value = ""; $("#askcount").textContent = "0";
+  dessinerQuestions(); envoyer(q.texte, q.qui);
+};
+
+/* =========================== FEUILLE MODALE =========================== */
+const PREMIER = {tip:"#t-txt", rev:"#r-montant", dep:"#d-montant", cours:"#c-matiere", profil:null};
+let fermeture;
+function ouvrirFeuille(mode){
+  clearTimeout(fermeture);
+  $$("#sheet [data-form]").forEach(f => f.hidden = f.dataset.form !== mode);
+  const sh = $("#sheet");
+  sh.hidden = false; sh.setAttribute("aria-modal", "true");
+  requestAnimationFrame(() => { $("#bd").classList.add("on"); sh.classList.add("on"); });
+  if (PREMIER[mode]) setTimeout(() => $(PREMIER[mode]).focus(), 320);
+  history.pushState({feuille:true}, "", location.hash || location.pathname);
+}
+function fermerFeuille(viaRetour){
+  const sh = $("#sheet");
+  $("#bd").classList.remove("on"); sh.classList.remove("on");
+  sh.removeAttribute("aria-modal");
+  // on attend la fin de l'animation avant de la sortir de l'ordre de tabulation
+  clearTimeout(fermeture);
+  fermeture = setTimeout(() => sh.hidden = true, 320);
+  // on retire l'entrée d'historique posée à l'ouverture, sauf si c'est justement le Retour qui ferme
+  if (!viaRetour && history.state && history.state.feuille) history.back();
+}
+$("#fab").onclick = () => ouvrirFeuille("tip");
+$("#bd").onclick = fermerFeuille;
+$$("[data-close]").forEach(b => b.onclick = fermerFeuille);
+addEventListener("keydown", e => { if (e.key === "Escape") { fermerFeuille(); fermerGate(); } });
+
+let catAstuce = CATS[0];
+$("#catpick").innerHTML = CATS.map(c => `<button type="button" data-c="${c}" aria-pressed="${c===catAstuce}">${c}</button>`).join("");
+$$("#catpick button").forEach(b => b.onclick = () => {
+  catAstuce = b.dataset.c;
+  $$("#catpick button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.c === catAstuce)));
+});
+$("#tipform").onsubmit = e => {
+  e.preventDefault();
+  const txt = $("#t-txt").value.trim();
+  if (!txt) return toast("Écris ton astuce d'abord");
+  miennes.unshift([catAstuce, txt, $("#t-who").value.trim()]);
+  saveMou(K_T, miennes); e.target.reset();
+  filtre = null; dessinerFiltres(); dessinerAstuces();
+  fermerFeuille(); toast("Gardée sur ton téléphone");
+};
+
+/* =========================== ACCUEIL =========================== */
+function majAccueil(){
+  const faits = Object.values(coche).filter(Boolean).length;
+  $("#ring-arc").style.strokeDashoffset = 232.5 * (1 - faits/TOTAL);
+  $("#ring-num").textContent = faits + "/" + TOTAL;
+  $("#ring-title").textContent =
+    faits === 0 ? "On commence ?" : faits === TOTAL ? "Tout est réglé." :
+    faits < 5 ? "C'est lancé." : faits < 9 ? "Bien entamé." : "Plus que quelques-uns.";
+  $("#ring-sub").textContent =
+    faits === 0 ? "Douze trucs à régler pour être tranquille. Aucun ne prend plus de dix minutes." :
+    faits === TOTAL ? "Franchement, bravo — tu es en avance sur pas mal d'A2." :
+    "Il t'en reste " + (TOTAL - faits) + ". Les plus urgents sont en haut de la liste.";
+
+  const badge = $("#tabbadge");
+  badge.hidden = faits === TOTAL; badge.textContent = TOTAL - faits;
+
+  const reste = [];
+  LISTE.forEach(([,items], g) => items.forEach(([titre, aide], i) => {
+    if (!coche[g+"-"+i]) reste.push([g+"-"+i, titre, aide]);
+  }));
+  $("#next3").innerHTML = reste.slice(0,3).map(([id,titre,aide]) =>
+    `<label class="task"><input type="checkbox" data-id="${id}"><span><b>${titre}</b><span>${aide}</span></span></label>`
+  ).join("") || `<div class="card flat" style="text-align:center;color:var(--muted)">Plus rien en attente. Va te détendre.</div>`;
+  brancher($("#next3"));
+
+  // budget
+  if (!ouvert()) {
+    $("#hb-title").textContent = coffreExiste() ? "Mon budget · verrouillé" : "Mon budget";
+    $("#hb-sub").textContent = coffreExiste() ? "Entre ton mot de passe pour le déchiffrer."
+                                              : "Note ce qui rentre et ce qui sort, ça prend dix secondes.";
+  } else {
+    const m = moisDe(new Date());
+    const dans = e => e.mois === m || (e.rec && e.mois <= m);
+    const entre = somme(coffre.budget.revenus.filter(dans)), sort = somme(coffre.budget.depenses.filter(dans));
+    if (entre === 0 && sort === 0) {
+      $("#hb-title").textContent = "Mon budget";
+      $("#hb-sub").textContent = "Note ce qui rentre et ce qui sort, ça prend dix secondes.";
+    } else {
+      const r = entre - sort;
+      $("#hb-title").textContent = (r < 0 ? "Dans le rouge de " : "Il te reste ") + euro(r);
+      $("#hb-sub").textContent = "sur " + euro(entre) + " ce mois-ci · " + euro(sort) + " dépensés";
+    }
+  }
+
+  // prochain cours
+  const p = prochainCours();
+  $("#home-cours").hidden = !p;
+  if (p) {
+    $("#hc-title").textContent = p.c.matiere;
+    $("#hc-sub").textContent = p.quand + (p.c.salle ? " · salle " + p.c.salle : "");
+    $("#hc-ic").style.background = p.c.couleur + "22";
+    $("#hc-ic").style.color = p.c.couleur;
+  }
+
+  const h = new Date().getHours();
+  $("#greet").textContent = (h < 12 ? "Bonjour" : h < 18 ? "Bon après-midi" : "Bonsoir") +
+                            (ouvert() ? ", " + profil.prenom : "");
+}
+
+/* =========================== DIVERS =========================== */
+$("#btn-share").onclick = async () => {
+  const url = location.href.split("#")[0];
+  if (navigator.share) { try { await navigator.share({title:"Repère", url}); return; } catch {} }
+  try { await navigator.clipboard.writeText(url); toast("Lien copié"); }
+  catch { prompt("Copie le lien :", url); }
+};
+addEventListener("scroll", () => $("#topbar").classList.toggle("stuck", scrollY > 6), {passive:true});
+
+/* Sur iPhone le clavier ne réduit pas la page : on mesure sa hauteur et on la réserve en bas,
+   sinon les boutons « Créer mon profil » et « Ajouter » passent dessous sans pouvoir défiler. */
+if (window.visualViewport) {
+  const majClavier = () => document.documentElement.style.setProperty("--kb",
+    Math.max(0, innerHeight - visualViewport.height - visualViewport.offsetTop) + "px");
+  visualViewport.addEventListener("resize", majClavier);
+  visualViewport.addEventListener("scroll", majClavier);
+  majClavier();
+}
+
+(function potDuJour(){
+  const jour = Math.floor(Date.now() / 864e5);
+  const [, txt, qui] = ASTUCES[jour % ASTUCES.length];
+  $("#pot-txt").textContent = txt;
+  $("#pot-sig").textContent = "— " + qui;
+})();
+
+/* =========================== DÉMARRAGE =========================== */
+dessinerListe(); dessinerGuide(); dessinerFiltres(); dessinerAstuces();
+dessinerQuestions(); majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
+
+const depart = location.hash.slice(1);
+if (["check","budget","edt","guide","tips","question"].includes(depart)) montrer(depart);
+if (coffreExiste() && !ouvert() && ["budget","edt"].includes(depart)) demanderProfil();
+</script>
+</body>
+</html>
