@@ -336,7 +336,7 @@
   <div class="counter"><span id="askcount">0</span> / 600</div>
 
   <div class="field">
-    <label for="ask-who">Ton prénom <span style="color:var(--faint);font-weight:400">— pour qu'on sache qui demande</span></label>
+    <label for="ask-who">Ton prénom <span style="color:var(--faint);font-weight:400">— il signera tes questions comme tes réponses</span></label>
     <input id="ask-who" maxlength="40" placeholder="Matteo · A1">
   </div>
   <button class="primary" id="send-ask">Publier ma question</button>
@@ -484,8 +484,8 @@ const CONTACT = {
    Tant que ces deux valeurs ne sont pas remplies, la question est simplement copiée
    pour le Discord — l'application continue de fonctionner. */
 const SUPABASE = {
-  url: "URL_SUPABASE_A_COLLER",            // ex. https://xxxxxxxx.supabase.co
-  cle: "CLE_ANON_A_COLLER"                 // la clé « anon public », faite pour être dans le code
+  url: "https://ovsnubinssbtwrmdotxh.supabase.co",
+  cle: "sb_publishable_N13CQwT-lmJMw_ELkERfyw_T5kPYvtw"   // clé « publishable » : prévue pour vivre dans le code d'un site
 };
 
 const LISTE = [
@@ -1278,9 +1278,14 @@ const enLigne = () => !SUPABASE.url.startsWith("URL_") && !SUPABASE.cle.startsWi
 const K_Q = "repere.questions.v1";                 // secours hors ligne
 let mesQuestions = load(K_Q, []);
 let fil = [];
-let envoiEnCours = false;
+let envoiEnCours = false, dernierEnvoi = 0;
 
 $("#ask").oninput = e => $("#askcount").textContent = e.target.value.length;
+
+/* On retient le prénom pour ne pas le retaper à chaque fois. */
+const K_NOM = "repere.nom.v1";
+$("#ask-who").value = load(K_NOM, "") || "";
+$("#ask-who").oninput = e => saveMou(K_NOM, e.target.value.trim());
 
 async function api(chemin, options = {}){
   const r = await fetch(SUPABASE.url + "/rest/v1/" + chemin, {
@@ -1385,10 +1390,12 @@ $("#send-ask").onclick = async () => {
     return;
   }
 
+  if (Date.now() - dernierEnvoi < 8000) return toast("Laisse quelques secondes entre deux questions");
   envoiEnCours = true;
   const b = $("#send-ask"); b.disabled = true; b.textContent = "Publication…";
   try {
     await api("questions", {method:"POST", body: JSON.stringify({texte, auteur})});
+    dernierEnvoi = Date.now();
     $("#ask").value = ""; $("#askcount").textContent = "0";
     await chargerFil();
     toast("Publiée — quelqu'un va te répondre");
