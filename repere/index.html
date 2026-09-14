@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<link rel="stylesheet" href="app.css?v=10">
+<link rel="stylesheet" href="app.css?v=12">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23191713' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23E2643C'/></svg>">
 </head>
 <body>
@@ -60,7 +60,8 @@
       <h1>Ton profil, sur ton téléphone.</h1>
       <p class="lead">Ton budget et ton emploi du temps sont des données personnelles.
         On les chiffre avec un mot de passe que toi seul connais, et elles ne quittent jamais cet appareil.
-        <strong>Pas d'inscription, pas d'identifiant, pas de mail</strong> — rien n'est envoyé nulle part.</p>
+        <strong>Pas d'inscription, pas d'identifiant, pas de mail</strong> : ton profil, ton budget
+        et ton emploi du temps ne quittent jamais cet appareil.</p>
       <div class="err" id="err-creer" hidden></div>
       <div class="field">
         <label for="g-prenom">Ton prénom ou ton pseudo <span style="color:var(--faint);font-weight:400">— c'est ce nom qui apparaîtra dans la liste</span></label>
@@ -71,7 +72,7 @@
         <input id="g-promo" maxlength="24" placeholder="A1">
       </div>
       <div class="field">
-        <label for="g-pw">Ton mot de passe <span style="color:var(--faint);font-weight:400">— 8 caractères minimum</span></label>
+        <label for="g-pw">Ton mot de passe <span style="color:var(--faint);font-weight:400">— 12 caractères minimum, une phrase courte suffit</span></label>
         <input id="g-pw" type="password" autocomplete="new-password" placeholder="••••••••">
       </div>
       <div class="pwmeter"><i id="pwbar"></i></div>
@@ -86,8 +87,8 @@
         <b>Ce qu'on fait de tes données, en clair</b>
         Ton mot de passe n'est stocké nulle part. Il sert à fabriquer une clé de chiffrement
         (PBKDF2-SHA256, 600 000 itérations) qui verrouille tes données en AES-256-GCM.
-        Aucun serveur, aucun compte, aucune donnée envoyée : si quelqu'un ouvre le stockage
-        de ton navigateur, il ne voit que du texte illisible.
+        Aucun compte, aucun mot de passe transmis, rien de chiffré ne sort d'ici : si quelqu'un
+        ouvre le stockage de ton navigateur, il ne voit que du texte illisible.
       </div>
     </div>
 
@@ -188,8 +189,9 @@
 
   <div class="seg">À faire en priorité</div>
   <div id="next3"></div>
-  <p class="tiny">Ta liste, tes astuces et tes questions restent sur cet appareil.
-    Ton budget et ton emploi du temps sont en plus chiffrés avec ton mot de passe.</p>
+  <p class="tiny">Ta liste et tes astuces restent sur cet appareil ; ton budget et ton emploi du temps
+    y sont en plus chiffrés avec ton mot de passe. <strong>Ce que tu écris dans le fil de questions
+    et sur la carte est public</strong> — c'est le seul endroit qui sort de ton téléphone.</p>
 </section>
 
 <!-- ================= MA LISTE ================= -->
@@ -284,8 +286,8 @@
     <div class="days" id="days"></div>
     <div id="cours"></div>
     <button class="primary" id="add-cours" style="margin-top:8px">＋ Ajouter un cours</button>
-    <p class="tiny">C'est une semaine type : chaque cours revient toutes les semaines.
-      Vérifie quand même MyGES la veille, les salles bougent.</p>
+    <p class="tiny">Par défaut un cours revient chaque semaine ; décoche « Toutes les semaines » pour
+      un cours ponctuel. Vérifie quand même MyGES la veille, les salles bougent.</p>
   </div>
 </section>
 
@@ -317,6 +319,7 @@
   <div id="lieux"></div>
   <button class="primary" id="add-lieu" style="margin-top:6px">＋ Ajouter un lieu</button>
   <p class="tiny">Chaque lieu est ajouté par un étudiant, avec sa note et son commentaire.
+    <strong>Tout ce qui est publié ici est public</strong> et ne peut pas être effacé par son auteur.
     Si une info est fausse, ajoute un avis pour le dire.</p>
 </section>
 
@@ -366,7 +369,13 @@
     <p>Tout ce que tu n'as pas trouvé dans le guide. Même la question que tu trouves bête —
       surtout celle-là, en fait : si tu te la poses, dix autres se la posent aussi.</p>
     <div class="promise"><svg style="width:17px;height:17px;flex:none"><use href="#i-check"/></svg>
-      <span>Ta question s'affiche <b>ici même</b>, et n'importe qui de la promo peut y répondre.</span></div>
+      <span>Ta question s'affiche <b>ici même</b>, et n'importe qui peut y répondre.</span></div>
+  </div>
+
+  <div class="avertissement">
+    <b>Ce fil est public sur Internet</b>
+    Pas seulement pour la promo : n'importe qui avec le lien peut le lire. Et tu ne pourras pas
+    effacer ton message toi-même. Pas de nom de famille, pas de numéro, pas d'adresse.
   </div>
 
   <label for="ask" style="display:block;font-weight:600;font-size:15px;margin-bottom:9px">Ta question</label>
@@ -374,12 +383,12 @@
   <div class="counter"><span id="askcount">0</span> / 600</div>
 
   <div class="field">
-    <label for="ask-who">Ton prénom <span style="color:var(--faint);font-weight:400">— il signera tes questions comme tes réponses</span></label>
+    <label for="ask-who">Ton prénom <span style="color:var(--faint);font-weight:400">— il n'est pas vérifié : n'importe qui peut écrire le tien</span></label>
     <input id="ask-who" maxlength="40" placeholder="Matteo · A1">
   </div>
   <button class="primary" id="send-ask">Publier ma question</button>
-  <p class="tiny" id="note-envoi">Les questions et les réponses sont publiques pour la promo.
-    Pas de nom de famille, pas de numéro, pas de mot de passe — c'est un forum, pas une messagerie.</p>
+  <p class="tiny" id="note-envoi">Un message te vise ou te met mal à l'aise ? Préviens l'équipe,
+    on le retire du tableau de bord — c'est la seule façon de supprimer quelque chose.</p>
 
   <div class="seg">Les questions de la promo
     <button class="linky" id="rafraichir" style="margin-left:auto;font-size:13px">rafraîchir</button></div>
@@ -532,14 +541,26 @@
     <p class="sub" id="pf-sub">…</p>
     <div class="crypto-note" style="margin-top:0">
       <b>Où sont tes données</b>
-      Uniquement dans ce navigateur, sur cet appareil. Ton budget et ton emploi du temps sont
+      Ton profil, ton budget et ton emploi du temps : uniquement dans ce navigateur, sur cet appareil,
       chiffrés en AES-256-GCM avec une clé dérivée de ton mot de passe. Nous n'y avons pas accès.
+      Ce que tu publies dans le fil de questions ou sur la carte est public et n'est pas concerné
+      par ce chiffrement.
     </div>
     <button class="primary" id="pf-lock" style="margin-top:16px">Verrouiller maintenant</button>
     <button class="ghostbtn" id="pf-switch">Changer de profil</button>
     <button class="ghostbtn" id="pf-wipe" style="color:var(--terre)">Supprimer mon profil et mes données</button>
     <button class="ghostbtn" type="button" data-close>Fermer</button>
   </div>
+</div>
+
+<div class="bandeau" id="bandeau-fichier" hidden>
+  <div>
+    <b>Tu as ouvert le fichier directement.</b>
+    Dans ce mode, le navigateur bloque le chiffrement des profils et le fond de carte.
+    Ouvre plutôt <a href="https://gamberge667.github.io/repere/">gamberge667.github.io/repere</a>
+    (ou lance <code>start.command</code>).
+  </div>
+  <button id="fermer-bandeau" aria-label="Fermer"><svg><use href="#i-x"/></svg></button>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -619,7 +640,7 @@ const GUIDE = [
   ["À qui je demande une salle, du matériel, une autorisation ?",
    "<p>Pendant le séminaire : <strong>Chloé, Philippe ou Julien</strong>.</p><p>Dans ton message, mets toujours ton groupe, l'activité, la date, les horaires, le nombre de personnes, tes besoins et un responsable. Et retiens ça : <strong>une demande envoyée n'est pas un accord</strong>. Attends la confirmation avant d'annoncer quoi que ce soit.</p>"],
   ["Mes données dans Repère, elles vont où ?",
-   "<p><strong>Nulle part.</strong> Il n'y a pas de serveur : tout est stocké dans le navigateur de ton téléphone.</p><p>Ton budget et ton emploi du temps sont en plus <strong>chiffrés en AES-256-GCM</strong> avec une clé fabriquée à partir de ton mot de passe (PBKDF2-SHA256, 600 000 itérations). Sans ce mot de passe — que personne d'autre ne connaît, nous compris — ces données sont illisibles, même en ouvrant le stockage du navigateur.</p>"]
+   "<p><strong>Ça dépend de quoi on parle, et la différence est nette.</strong></p><p><strong>Ce qui ne bouge pas de ton téléphone :</strong> ta liste, tes astuces, ton budget et ton emploi du temps. Les deux derniers sont en plus <strong>chiffrés en AES-256-GCM</strong> avec une clé fabriquée à partir de ton mot de passe (PBKDF2-SHA256, 600 000 itérations). Sans ce mot de passe — que personne d'autre ne connaît, nous compris — ils sont illisibles, même en ouvrant le stockage du navigateur.</p><p><strong>Ce qui sort, et seulement si tu le publies :</strong> le fil de questions et la carte. Ils sont hébergés sur une base en ligne et <strong>visibles par tout le monde</strong> — c'est le principe, une question qui ne s'afficherait que chez toi ne servirait à rien. N'y écris rien que tu n'écrirais pas au tableau, et tu ne pourras pas l'effacer toi-même.</p>"]
 ];
 
 const CATS = ["Manger","Transport","Cours","Papiers","Vie de l'école","Bons plans"];
@@ -642,7 +663,7 @@ const REPONSES = [
    "Ça arrive : le mail part parfois dans les indésirables, et certains comptes sont créés avec deux jours de retard. Regarde tes spams, puis écris à l'accueil avec ton nom, prénom et ta promo. Ne laisse pas traîner plus de 48 h, les premiers rendus passent par là.",
    "Anthony", "12 septembre"],
   ["Le site marche sans connexion ?",
-   "Une fois la page ouverte, tes données sont en local donc elles s'affichent. Par contre le tout premier chargement a besoin de réseau. Pour la soutenance on garde une version hors-ligne sur clé, au cas où.",
+   "Oui, une fois que tu l'as ouvert une première fois : la page est gardée en mémoire par ton navigateur. Ta liste, ton budget et ton emploi du temps s'affichent normalement. Il faut du réseau uniquement pour le fil de questions et la carte, qui vont chercher ce que les autres ont publié.",
    "Mohand", "13 septembre"]
 ];
 </script>
@@ -1373,7 +1394,7 @@ const enLigne = () => !SUPABASE.url.startsWith("URL_") && !SUPABASE.cle.startsWi
 const K_Q = "repere.questions.v1";                 // secours hors ligne
 let mesQuestions = load(K_Q, []);
 let fil = [];
-let envoiEnCours = false, dernierEnvoi = 0;
+let envoiEnCours = false, dernierEnvoi = 0, dernierChargement = 0;
 
 $("#ask").oninput = e => $("#askcount").textContent = e.target.value.length;
 
@@ -1385,6 +1406,7 @@ $("#ask-who").oninput = e => saveMou(K_NOM, e.target.value.trim());
 async function api(chemin, options = {}){
   const r = await fetch(SUPABASE.url + "/rest/v1/" + chemin, {
     ...options,
+    signal: AbortSignal.timeout(12000),
     headers: {
       "apikey": SUPABASE.cle,
       "Authorization": "Bearer " + SUPABASE.cle,
@@ -1393,18 +1415,42 @@ async function api(chemin, options = {}){
       ...(options.headers || {})
     }
   });
-  if (!r.ok) throw new Error("HTTP " + r.status + " " + (await r.text()).slice(0, 200));
-  return r.status === 204 ? null : r.json();
+  if (!r.ok) {
+    const brut = (await r.text()).slice(0, 400);
+    let msg = "";
+    try { msg = JSON.parse(brut).message || ""; } catch {}
+    const e = new Error("HTTP " + r.status + " " + brut);
+    e.lisible = msg && !/^(permission|new row)/i.test(msg) ? msg : "";
+    throw e;
+  }
+  const t = await r.text();
+  return t ? JSON.parse(t) : null;
+}
+
+/* On écrit via la fonction SQL (qui limite le débit). Tant que le script
+   supabase-2-carte-et-securite.sql n'a pas été exécuté, elle n'existe pas :
+   on retombe alors sur l'écriture directe pour ne rien casser. */
+async function ecrire(fonction, argsRpc, table, corps){
+  try {
+    return await api("rpc/" + fonction, {method:"POST", body: JSON.stringify(argsRpc)});
+  } catch(e) {
+    if (!String(e.message).includes("404") && !String(e.message).includes("PGRST202")) throw e;
+    return await api(table, {method:"POST", body: JSON.stringify(corps)});
+  }
 }
 
 async function chargerFil(){
   if (!enLigne()) { dessinerFilLocal(); return; }
   try {
-    fil = await api("questions?select=id,texte,auteur,cree_le,reponses(id,texte,auteur,cree_le)&order=cree_le.desc&limit=60");
+    fil = await api("questions?select=id,texte,auteur,cree_le,reponses(id,texte,auteur,cree_le)"
+      + "&order=cree_le.desc&limit=40&reponses.order=cree_le.asc&reponses.limit=20");
+    dernierChargement = Date.now();
     dessinerFil();
   } catch(e) {
+    if (fil.length) { toast("Pas de réseau — tu vois la version précédente"); return; }
     $("#fil").innerHTML = `<p class="empty">Impossible de charger les questions pour le moment.<br>
-      <button class="linky" onclick="chargerFil()">réessayer</button></p>`;
+      <button class="linky" id="retry-fil">réessayer</button></p>`;
+    const b = $("#retry-fil"); if (b) b.onclick = chargerFil;
   }
 }
 
@@ -1417,6 +1463,12 @@ const quand = iso => {
 };
 
 function dessinerFil(){
+  // on garde ce qui est en train d'être tapé avant de reconstruire la liste
+  const brouillons = {};
+  $$("#fil [data-rep]").forEach(i => { if (i.value.trim()) brouillons[i.dataset.rep] = i.value; });
+  const remettre = () => $$("#fil [data-rep]").forEach(i => {
+    if (brouillons[i.dataset.rep]) i.value = brouillons[i.dataset.rep];
+  });
   if (!fil.length) {
     $("#fil").innerHTML = `<p class="empty">Personne n'a encore posé de question.<br>Tu peux être le premier.</p>`;
     return;
@@ -1436,9 +1488,13 @@ function dessinerFil(){
     </div>`;
   }).join("");
 
+  remettre();
   $$("#fil [data-envoyer]").forEach(b => b.onclick = () => repondre(b.dataset.envoyer, b));
   $$("#fil [data-rep]").forEach(i => i.onkeydown = e => {
-    if (e.key === "Enter") { e.preventDefault(); repondre(i.dataset.rep, $(`[data-envoyer="${i.dataset.rep}"]`)); }
+    if (e.key === "Enter" && !e.repeat) {
+      e.preventDefault();
+      repondre(i.dataset.rep, $(`[data-envoyer="${CSS.escape(i.dataset.rep)}"]`));
+    }
   });
 }
 
@@ -1453,13 +1509,15 @@ function dessinerFilLocal(){
 }
 
 async function repondre(qid, bouton){
-  const champ = $(`[data-rep="${qid}"]`);
+  if (!bouton || bouton.disabled) return;          // couvre le clic répété ET la touche Entrée
+  const champ = $(`[data-rep="${CSS.escape(qid)}"]`);
   const texte = champ.value.trim();
   if (texte.length < 2) return toast("Écris ta réponse");
   const auteur = ($("#ask-who").value || "").trim();
   bouton.disabled = true; bouton.textContent = "…";
   try {
-    await api("reponses", {method:"POST", body: JSON.stringify({question_id: qid, texte, auteur})});
+    await ecrire("poser_reponse", {p_question: qid, p_texte: texte, p_auteur: auteur || null},
+                 "reponses", {question_id: qid, texte, auteur});
     champ.value = "";
     await chargerFil();
     toast("Merci, ta réponse est en ligne");
@@ -1489,13 +1547,13 @@ $("#send-ask").onclick = async () => {
   envoiEnCours = true;
   const b = $("#send-ask"); b.disabled = true; b.textContent = "Publication…";
   try {
-    await api("questions", {method:"POST", body: JSON.stringify({texte, auteur})});
+    await ecrire("poser_question", {p_texte: texte, p_auteur: auteur || null}, "questions", {texte, auteur});
     dernierEnvoi = Date.now();
     $("#ask").value = ""; $("#askcount").textContent = "0";
     await chargerFil();
     toast("Publiée — quelqu'un va te répondre");
   } catch(e) {
-    toast("La publication a échoué, réessaie");
+    toast(e.lisible || (e.name === "TimeoutError" ? "Le serveur ne répond pas" : "La publication a échoué, réessaie"));
   }
   envoiEnCours = false; b.disabled = false; b.textContent = "Publier ma question";
 };
@@ -1512,7 +1570,7 @@ function envoyerDiscord(texte, qui){
   } else prompt("Copie ta question :", msg);
 }
 
-$("#rafraichir").onclick = () => { $("#fil").innerHTML = `<p class="empty">Chargement…</p>`; chargerFil(); };
+$("#rafraichir").onclick = () => chargerFil();
 
 function dessinerQuestions(){
   $("#repondues").innerHTML = REPONSES.map(([q,a,par,date]) =>
@@ -1575,9 +1633,17 @@ async function chargerLieux(){
     lieux.forEach(l => avisParLieu[l.id] = l.avis || []);
     dessinerCarte();
   } catch(e) {
-    $("#lieux").innerHTML = `<p class="empty">Impossible de charger la carte.<br>
-      <button class="linky" id="retry-carte">réessayer</button></p>`;
+    const pasDeTable = String(e.message).includes("PGRST205") || String(e.message).includes("404");
+    $("#lieux").innerHTML = pasDeTable
+      ? `<p class="empty"><b>La carte n'est pas encore initialisée.</b><br>
+         Il reste à passer le script <code>supabase-carte.sql</code> dans Supabase.</p>`
+      : `<p class="empty">Impossible de charger la carte.<br>
+         <button class="linky" id="retry-carte">réessayer</button></p>`;
     const b = $("#retry-carte"); if (b) b.onclick = chargerLieux;
+    $("#carte-vide").hidden = false;
+    $("#carte-vide").innerHTML = pasDeTable
+      ? "<b>Carte en attente</b><span>Le script SQL de la carte n'a pas encore été passé.</span>"
+      : "<b>Carte indisponible</b><span>Vérifie ta connexion et réessaie.</span>";
   }
 }
 
@@ -1663,12 +1729,35 @@ function poserMarqueurs(liste){
   }
 }
 
+/* OpenStreetMap refuse ses tuiles quand la page vient d'un fichier local ou d'un
+   réseau filtré. On bascule alors automatiquement sur un second fournisseur. */
+const FONDS = [
+  {url:"https://tile.openstreetmap.org/{z}/{x}/{y}.png", opt:{maxZoom:19, attribution:"© OpenStreetMap"}},
+  {url:"https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+   opt:{maxZoom:19, attribution:"© Esri, © OpenStreetMap"}}
+];
+function poserFond(carte, i = 0){
+  const f = FONDS[i];
+  const couche = L.tileLayer(f.url, f.opt).addTo(carte);
+  let rates = 0;
+  couche.on("tileerror", () => {
+    if (++rates < 3 || i + 1 >= FONDS.length) return;
+    carte.removeLayer(couche);
+    poserFond(carte, i + 1);
+  });
+  return couche;
+}
+
 function initCarte(){
+  if (typeof L === "undefined") {            // Leaflet vient d'un CDN : absent hors connexion
+    $("#carte-vide").hidden = false;
+    $("#carte-vide").innerHTML = "<b>Le fond de carte a besoin du réseau</b>" +
+      "<span>La liste des lieux s'affiche quand même dès que la connexion revient.</span>";
+    return;
+  }
   if (maCarte) { setTimeout(() => maCarte.invalidateSize(), 80); return; }
   maCarte = L.map("map", {scrollWheelZoom:false, zoomControl:true}).setView([46.6, 2.4], 5);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution:'© OpenStreetMap', maxZoom:19
-  }).addTo(maCarte);
+  poserFond(maCarte);
   setTimeout(() => maCarte.invalidateSize(), 120);
 }
 
@@ -1737,15 +1826,14 @@ async function envoyerAvis(){
   if (!noteChoisie) return toast("Mets une note, de 1 à 5 étoiles");
   const b = $("#a-envoyer"); b.disabled = true; b.textContent = "Publication…";
   try {
-    await api("avis", {method:"POST", body: JSON.stringify({
-      lieu_id: lieuOuvert, note: noteChoisie,
-      texte: $("#a-texte").value.trim() || null,
-      auteur: ($("#ask-who").value || "").trim() || null })});
+    const t = $("#a-texte").value.trim() || null, qui = ($("#ask-who").value || "").trim() || null;
+    await ecrire("noter_lieu", {p_lieu: lieuOuvert, p_note: noteChoisie, p_texte: t, p_auteur: qui},
+                 "avis", {lieu_id: lieuOuvert, note: noteChoisie, texte: t, auteur: qui});
     await chargerLieux();
     const id = lieuOuvert; ouvrirLieu(id);
     toast("Merci, ton avis est en ligne");
   } catch(e) {
-    toast("L'envoi a échoué, réessaie");
+    toast(e.lisible || "L'envoi a échoué, réessaie");
     b.disabled = false; b.textContent = "Publier mon avis";
   }
 }
@@ -1788,8 +1876,7 @@ $("#add-lieu").onclick = () => {
     const zoom = (maPosition || lieux.length) ? 16 : 5;
     if (!carteAjout) {
       carteAjout = L.map("map-ajout", {zoomControl:true, attributionControl:false}).setView(centre, zoom);
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {maxZoom:19, attribution:'© OpenStreetMap'}).addTo(carteAjout);
+      poserFond(carteAjout);
     } else carteAjout.setView(centre, zoom);
     carteAjout.invalidateSize();
   }, 350);
@@ -1807,21 +1894,25 @@ $("#lieuform").onsubmit = async e => {
   const b = e.target.querySelector('button[type="submit"]');
   b.disabled = true; b.textContent = "Ajout…";
   try {
-    await api("lieux", {method:"POST", body: JSON.stringify({
+    const champs = {
       nom, categorie: catNouveau, sous_type: sousNouveau,
-      adresse: $("#l-adresse").value.trim() || null,
-      lat: c.lat, lng: c.lng,
+      adresse: $("#l-adresse").value.trim() || null, lat: c.lat, lng: c.lng,
       prix: catNouveau === "essence" ? null : prixNouveau,
       prix_litre: catNouveau === "essence" && litre > 0 ? litre : null,
       horaires: $("#l-horaires").value.trim() || null,
-      options: [...optsNouveau],
-      photo: photo || null,
+      options: [...optsNouveau], photo: photo || null,
       note_info: $("#l-mot").value.trim() || null,
-      auteur: ($("#ask-who").value || "").trim() || null })});
+      auteur: ($("#ask-who").value || "").trim() || null };
+    await ecrire("ajouter_lieu", {
+      p_nom: champs.nom, p_categorie: champs.categorie, p_sous_type: champs.sous_type,
+      p_adresse: champs.adresse, p_lat: champs.lat, p_lng: champs.lng,
+      p_prix: champs.prix, p_prix_litre: champs.prix_litre, p_horaires: champs.horaires,
+      p_options: champs.options, p_photo: champs.photo, p_note: champs.note_info,
+      p_auteur: champs.auteur }, "lieux", champs);
     e.target.reset(); optsNouveau = new Set();
     fermerFeuille(); await chargerLieux();
     toast("Ajouté à la carte, merci !");
-  } catch(err) { toast("L'ajout a échoué, réessaie"); }
+  } catch(err) { toast(err.lisible || "L'ajout a échoué, réessaie"); }
   b.disabled = false; b.textContent = "Ajouter à la carte";
 };
 
@@ -1937,6 +2028,20 @@ $("#btn-share").onclick = async () => {
   catch { prompt("Copie le lien :", url); }
 };
 addEventListener("scroll", () => $("#topbar").classList.toggle("stuck", scrollY > 6), {passive:true});
+
+/* Cache hors connexion : la page reste ouvrable même sans réseau. */
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+}
+
+if (location.protocol === "file:") {
+  $("#bandeau-fichier").hidden = false;
+  document.body.classList.add("avec-bandeau");
+}
+$("#fermer-bandeau").onclick = () => {
+  $("#bandeau-fichier").hidden = true;
+  document.body.classList.remove("avec-bandeau");
+};
 
 /* Sur iPhone le clavier ne réduit pas la page : on mesure sa hauteur et on la réserve en bas,
    sinon les boutons « Créer mon profil » et « Ajouter » passent dessous sans pouvoir défiler. */

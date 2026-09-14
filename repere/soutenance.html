@@ -60,13 +60,14 @@
 
   <section class="slide">
     <span class="who">Timée · A2 · 1:40 – 3:15 · DÉMO EN DIRECT</span>
-    <h2>Cinq écrans. <em>Terminés.</em></h2>
+    <h2>Six écrans. <em>Terminés.</em></h2>
     <ul class="ticks" style="margin-top:24px">
       <li><strong>Ma liste</strong> — 12 démarches à cocher, gardées sur l'appareil.</li>
       <li><strong>Budget</strong> — ce qui rentre, ce qui sort, ce qu'il reste et combien par jour.</li>
       <li><strong>Emploi du temps</strong> — la semaine type, saisie une fois, consultable partout.</li>
       <li><strong>Guide et astuces</strong> — 8 réponses vérifiées, plus le mur d'astuces qu'on alimente.</li>
-      <li><strong>Poser une question</strong> — on répond dès qu'on la voit et la réponse rejoint le guide.</li>
+      <li><strong>Poser une question</strong> — n'importe qui de la promo répond dans le fil, tout de suite.</li>
+      <li><strong>La carte</strong> — manger pas cher, essence, sport : notes et avis des étudiants.</li>
     </ul>
     <p class="big"><strong>À montrer :</strong> créer le profil (prénom + mot de passe, 20 s) → cocher deux cases →
       saisir une dépense et voir le reste-à-vivre bouger → ouvrir l'emploi du temps du jour → poser une question.</p>
@@ -80,7 +81,8 @@
     <ul class="ticks" style="margin-top:26px">
       <li>Le mot de passe n'est <strong>stocké nulle part</strong> — il dérive une clé via PBKDF2-SHA256, 600 000 itérations, sel aléatoire.</li>
       <li>Les données sont chiffrées en <strong>AES-256-GCM</strong>, avec un vecteur d'initialisation neuf à chaque écriture.</li>
-      <li>La clé vit en mémoire : fermer l'onglet la détruit. Aucun serveur, aucun compte en ligne.</li>
+      <li>La clé vit en mémoire : fermer l'onglet la détruit. Rien de chiffré ne sort de l'appareil — ni compte, ni mot de passe transmis.</li>
+      <li>La seule chose qui quitte le téléphone, c'est ce que l'étudiant <strong>choisit de publier</strong> : le fil de questions et la carte. On ne les a justement pas mélangés avec le budget.</li>
     </ul>
     <p class="big"><strong>À montrer en direct :</strong> <u>depuis l'onglet Budget</u>, recharger la page →
       l'app redemande le mot de passe → ouvrir le stockage du navigateur devant le jury → il n'y a que du charabia.</p>
@@ -116,7 +118,7 @@
     <span class="who">Timée · A2 · 6:10 – 7:00</span>
     <h2>Ce qu'on en retire.</h2>
     <ul class="ticks" style="margin-top:30px">
-      <li>Cinq écrans finis valent mieux que douze commencés.</li>
+      <li>Six écrans finis valent mieux que douze commencés.</li>
       <li>Chacun a pris le morceau qui correspond à ce qu'il veut faire — data, sécurité, réseaux, comm — et l'a mené seul jusqu'au bout.</li>
       <li>Ce qu'on referait autrement : <strong>à compléter jeudi</strong>.</li>
     </ul>

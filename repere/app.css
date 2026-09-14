@@ -600,3 +600,21 @@ body::before{
   .tabbtn{font-size:9.5px;letter-spacing:-.01em}
   .tabbtn svg{width:21px;height:21px}
 }
+
+/* Bandeau affiché quand la page est ouverte depuis un fichier local (file://) */
+.bandeau{position:fixed;left:0;right:0;top:0;z-index:90;display:flex;gap:14px;align-items:flex-start;
+  background:var(--ink);color:var(--paper);padding:13px 16px calc(13px + env(safe-area-inset-top));
+  font-size:13.5px;line-height:1.45}
+.bandeau b{display:block;font-size:14.5px;margin-bottom:2px}
+.bandeau a{color:#FFC86B}
+.bandeau code{background:rgba(251,247,240,.14);padding:1px 5px;border-radius:5px}
+.bandeau button{border:none;background:none;color:rgba(251,247,240,.7);cursor:pointer;padding:4px;flex:none}
+.bandeau button svg{width:17px;height:17px;display:block}
+body.avec-bandeau .topbar{top:74px}
+body.avec-bandeau{padding-top:74px}
+@media (min-width:900px){ body.avec-bandeau .tabbar{top:74px} }
+
+/* Avertissement avant publication dans un espace public */
+.avertissement{background:var(--terre-pale);border:1px solid #F3D6C9;border-left:3px solid var(--terre);
+  border-radius:12px;padding:13px 15px;font-size:13.5px;line-height:1.5;color:#8A3A1C;margin-bottom:18px}
+.avertissement b{display:block;font-size:14.5px;margin-bottom:2px;color:#7A3218}
