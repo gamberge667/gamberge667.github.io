@@ -330,7 +330,7 @@ body::before{
   padding:0 22px calc(34px + env(safe-area-inset-bottom) + var(--kb,0px));display:none;
   overscroll-behavior:contain}
 .gate.on{display:block}
-.gate .in{max-width:440px;margin:0 auto;padding-top:min(12vh,90px);padding-bottom:24vh}
+.gate .colonne{max-width:440px;margin:0 auto;padding-top:min(12vh,90px);padding-bottom:24vh}
 .gate .mark{width:52px;height:52px;border-radius:50%;border:3px solid var(--ink);display:grid;
   place-items:center;margin-bottom:24px}
 .gate .mark i{width:17px;height:17px;border-radius:50%;background:var(--terre);display:block}
@@ -427,3 +427,13 @@ body::before{
 
 /* Message affiché quand le chiffrement est indisponible (page ouverte en http:// ou file://) */
 .locked.nocrypto{border-color:var(--terre);background:var(--terre-pale);border-style:solid}
+
+/* Lignes de la liste des profils */
+.line.compte{cursor:pointer;margin-bottom:10px;transition:border-color .15s,transform .12s}
+.line.compte:hover{border-color:var(--faint)}
+.line.compte:active{transform:scale(.985)}
+.line.compte:focus-visible{outline:2px solid var(--vert);outline-offset:2px}
+.line.compte .txt b{font-size:16px}
+.line.compte .ic{background:var(--vert-pale);color:var(--vert);
+  font-family:"Bricolage Grotesque",sans-serif;font-weight:600}
+.line.compte .cad{width:16px;height:16px;color:var(--faint);flex:none}

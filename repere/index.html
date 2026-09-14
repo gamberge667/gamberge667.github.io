@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="app.css?v=4">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23191713' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23E2643C'/></svg>">
 </head>
 <body>
@@ -37,19 +37,28 @@
 <!-- ================= ÉCRAN DE GARDE (profil + déverrouillage) ================= -->
 <div class="gate" id="gate">
   <button class="close" id="gate-close" aria-label="Fermer"><svg><use href="#i-x"/></svg></button>
-  <div class="in">
+  <div class="colonne">
     <div class="mark"><i></i></div>
 
+    <!-- choix du profil -->
+    <div data-gate="choisir" hidden>
+      <h1>Qui es-tu ?</h1>
+      <p class="lead">Plusieurs personnes peuvent avoir leur profil sur cet appareil.
+        Chacun a son mot de passe, et personne ne peut lire les données d'un autre.</p>
+      <div id="liste-comptes"></div>
+      <button class="ghostbtn" id="go-creer" style="margin-top:6px">＋ Créer un autre profil</button>
+    </div>
+
     <!-- création -->
-    <div data-gate="creer">
+    <div data-gate="creer" hidden>
       <h1>Ton profil, sur ton téléphone.</h1>
       <p class="lead">Ton budget et ton emploi du temps sont des données personnelles.
         On les chiffre avec un mot de passe que toi seul connais, et elles ne quittent jamais cet appareil.
         <strong>Pas d'inscription, pas d'identifiant, pas de mail</strong> — rien n'est envoyé nulle part.</p>
       <div class="err" id="err-creer" hidden></div>
       <div class="field">
-        <label for="g-prenom">Ton prénom</label>
-        <input id="g-prenom" maxlength="24" autocomplete="given-name" placeholder="Matteo">
+        <label for="g-prenom">Ton prénom ou ton pseudo <span style="color:var(--faint);font-weight:400">— c'est ce nom qui apparaîtra dans la liste</span></label>
+        <input id="g-prenom" maxlength="24" autocomplete="username" placeholder="Matteo">
       </div>
       <div class="field">
         <label for="g-promo">Ta promo</label>
@@ -66,7 +75,7 @@
         <input id="g-pw2" type="password" autocomplete="new-password" placeholder="••••••••">
       </div>
       <button class="primary" id="btn-creer">Créer mon profil</button>
-      <button class="ghostbtn" id="go-unlock" hidden>J'ai déjà un profil sur cet appareil</button>
+      <button class="ghostbtn" id="go-liste">← Revenir à la liste des profils</button>
       <div class="crypto-note">
         <b>Ce qu'on fait de tes données, en clair</b>
         Ton mot de passe n'est stocké nulle part. Il sert à fabriquer une clé de chiffrement
@@ -80,14 +89,14 @@
     <div data-gate="ouvrir" hidden>
       <h1 id="g-bonjour">Content de te revoir.</h1>
       <p class="lead">Entre ton mot de passe pour déchiffrer ton budget et ton emploi du temps.
-        <strong>Il n'y a pas d'identifiant</strong> : ton profil existe uniquement sur ce téléphone,
-        donc le mot de passe suffit à te reconnaître.</p>
+        Ils ne sont lisibles qu'avec ce mot de passe, même par les autres profils de cet appareil.</p>
       <div class="err" id="err-ouvrir" hidden></div>
       <div class="field">
-        <label for="g-pw3">Mot de passe <span style="color:var(--faint);font-weight:400">— celui que tu as choisi ici</span></label>
+        <label for="g-pw3">Mot de passe</label>
         <input id="g-pw3" type="password" autocomplete="current-password" placeholder="••••••••">
       </div>
       <button class="primary" id="btn-ouvrir">Déverrouiller</button>
+      <button class="ghostbtn" id="go-liste2">← Changer de profil</button>
       <button class="ghostbtn" id="btn-oubli">J'ai oublié mon mot de passe</button>
       <div class="crypto-note">
         <b>Pourquoi on ne peut pas te le renvoyer</b>
@@ -418,6 +427,7 @@
       chiffrés en AES-256-GCM avec une clé dérivée de ton mot de passe. Nous n'y avons pas accès.
     </div>
     <button class="primary" id="pf-lock" style="margin-top:16px">Verrouiller maintenant</button>
+    <button class="ghostbtn" id="pf-switch">Changer de profil</button>
     <button class="ghostbtn" id="pf-wipe" style="color:var(--terre)">Supprimer mon profil et mes données</button>
     <button class="ghostbtn" type="button" data-close>Fermer</button>
   </div>
@@ -534,12 +544,14 @@ function toast(msg){
    (PBKDF2-SHA256, 210 000 itérations, sel aléatoire de 16 octets).
    La clé vit uniquement en mémoire : fermer l'onglet la détruit.
    ==================================================== */
-const K_VAULT = "repere.vault.v1";
+const K_COMPTES = "repere.comptes.v1";
+const K_VAULT_V1 = "repere.vault.v1";          // ancien format, un seul profil
 const ITER = 600000;   // recommandation OWASP pour PBKDF2-HMAC-SHA256
 const sub = (window.crypto && window.crypto.subtle) ? window.crypto.subtle : null;
 
 let cle = null;                                   // CryptoKey, jamais persistée
-let profil = null;                                // {prenom, promo} — en clair, non sensible
+let profil = null;                                // {prenom, promo} — déchiffré, en mémoire
+let compteId = null;                              // le profil actuellement ouvert
 let coffre = { budget:{revenus:[],depenses:[]}, edt:[] };
 
 const b64  = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
@@ -552,27 +564,41 @@ async function deriver(pw, sel){
                        base, {name:"AES-GCM", length:256}, false, ["encrypt","decrypt"]);
 }
 
-const litCoffre = () => load(K_VAULT, null);
-const coffreExiste = () => !!litCoffre();
+/* Chaque profil = {id, nom, sel, iv, ct, n}. Seul le nom est en clair : il faut bien
+   pouvoir choisir qui se connecte. Tout le reste (budget, emploi du temps, promo) est chiffré. */
+function lireComptes(){
+  const l = load(K_COMPTES, null);
+  if (l) return l;
+  const v1 = load(K_VAULT_V1, null);             // reprise de l'ancien format
+  if (v1 && v1.ct) {
+    const repris = [{id:"c0", nom: v1.prenom || "Mon profil", sel:v1.sel, iv:v1.iv, ct:v1.ct, n:v1.n || 0}];
+    try { save(K_COMPTES, repris); localStorage.removeItem(K_VAULT_V1); } catch {}
+    return repris;
+  }
+  return [];
+}
+const compteActuel = () => lireComptes().find(c => c.id === compteId) || null;
 const ouvert = () => cle !== null;
 
 let enCours = false, aRefaire = false, monN = 0;
 async function sauverCoffre(){
-  if (!cle) return;
+  if (!cle || !compteId) return;
   if (enCours) { aRefaire = true; return; }
   enCours = true;
   try {
-    const brut = litCoffre();
-    if (!brut) throw new Error("coffre absent");
-    if ((brut.n || 0) !== monN &&
-        !confirm("Tes données ont été modifiées dans un autre onglet.\n\nGarder cette version-ci et écraser l'autre ?")) {
-      enCours = false; return;                               // on préfère ne rien écrire
+    const liste = lireComptes();
+    const i = liste.findIndex(c => c.id === compteId);
+    if (i < 0) throw new Error("profil introuvable");
+    if ((liste[i].n || 0) !== monN &&
+        !confirm("Ce profil a été modifié dans un autre onglet.\n\nGarder cette version-ci et écraser l'autre ?")) {
+      enCours = false; return;
     }
     const iv    = alea(12);                                  // un IV neuf à CHAQUE écriture
     const clair = new TextEncoder().encode(JSON.stringify(coffre));
     const ct    = await sub.encrypt({name:"AES-GCM", iv}, cle, clair);
-    monN = (brut.n || 0) + 1;
-    save(K_VAULT, {v:2, n:monN, sel:brut.sel, iv:b64(iv), ct:b64(ct)});
+    monN = (liste[i].n || 0) + 1;
+    liste[i] = {...liste[i], iv:b64(iv), ct:b64(ct), n:monN};
+    save(K_COMPTES, liste);
   } catch(e){
     toast("Impossible d'enregistrer sur cet appareil");
     enCours = false;
@@ -582,70 +608,102 @@ async function sauverCoffre(){
   if (aRefaire) { aRefaire = false; sauverCoffre(); }
 }
 
-async function creerProfil(prenom, promo, pw){
+async function creerProfil(nom, promo, pw){
+  const liste = lireComptes();
+  if (liste.some(c => c.nom.toLowerCase() === nom.toLowerCase()))
+    throw new Error("nom déjà pris");
   const sel = alea(16);
   const k = await deriver(pw, sel);
-  // ce qui existait en clair avant, pour le faire entrer dans le coffre
-  const ancien = load("repere.budget.v1", null);
-  const contenu = { profil:{prenom, promo}, budget: ancien || {revenus:[],depenses:[]}, edt: [] };
+  // le tout premier profil récupère le budget qui traînait en clair avant les comptes
+  const ancien = liste.length === 0 ? load("repere.budget.v1", null) : null;
+  const contenu = { profil:{prenom:nom, promo}, budget: ancien || {revenus:[],depenses:[]}, edt: [] };
 
-  // on écrit d'abord, on ne bascule l'app en « déverrouillé » qu'après vérification
   const iv = alea(12);
   const ct = await sub.encrypt({name:"AES-GCM", iv}, k,
                                new TextEncoder().encode(JSON.stringify(contenu)));
-  save(K_VAULT, {v:2, n:1, sel:b64(sel), iv:b64(iv), ct:b64(ct)});   // lève si le stockage refuse
+  const id = uid();
+  liste.push({id, nom, sel:b64(sel), iv:b64(iv), ct:b64(ct), n:1});
+  save(K_COMPTES, liste);                        // lève si le stockage refuse
 
-  // relecture réelle : on ne détruit la copie en clair qu'une fois le déchiffrement prouvé
-  const relu = litCoffre();
-  if (!relu || !relu.ct || !relu.iv) throw new Error("coffre non persisté");
+  // relecture réelle : on ne bascule en « déverrouillé » qu'une fois le déchiffrement prouvé
+  const relu = lireComptes().find(c => c.id === id);
+  if (!relu || !relu.ct) throw new Error("profil non persisté");
   await sub.decrypt({name:"AES-GCM", iv:unb64(relu.iv)}, k, unb64(relu.ct));
 
-  cle = k; profil = {prenom, promo}; coffre = contenu; monN = 1;
-  try { localStorage.removeItem("repere.budget.v1"); } catch {}
+  cle = k; compteId = id; profil = {prenom:nom, promo}; coffre = contenu; monN = 1;
+  if (ancien) { try { localStorage.removeItem("repere.budget.v1"); } catch {} }
 }
 
-async function ouvrirProfil(pw){
-  const v = litCoffre();
-  const k = await deriver(pw, unb64(v.sel));
-  const clair = await sub.decrypt({name:"AES-GCM", iv:unb64(v.iv)}, k, unb64(v.ct)); // lève si mauvais mdp
+async function ouvrirProfil(id, pw){
+  const c = lireComptes().find(x => x.id === id);
+  if (!c) throw new Error("profil introuvable");
+  const k = await deriver(pw, unb64(c.sel));
+  const clair = await sub.decrypt({name:"AES-GCM", iv:unb64(c.iv)}, k, unb64(c.ct)); // lève si mauvais mdp
   const lu = JSON.parse(new TextDecoder().decode(clair));
-  cle = k;
-  monN = v.n || 0;
-  // le prénom vit dans le coffre chiffré ; v.prenom n'existe que sur les anciens profils
-  profil = lu.profil || {prenom: v.prenom || "", promo: v.promo || ""};
+  cle = k; compteId = id; monN = c.n || 0;
+  profil = lu.profil || {prenom: c.nom, promo: ""};
   coffre = { profil, budget: lu.budget || {revenus:[],depenses:[]}, edt: lu.edt || [] };
 }
 
 function verrouiller(){
-  cle = null; profil = null;
+  cle = null; profil = null; compteId = null; monN = 0;
   coffre = { budget:{revenus:[],depenses:[]}, edt:[] };
-  monN = 0;
   majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
   toast("Verrouillé");
 }
 function effacerProfil(){
-  try { localStorage.removeItem(K_VAULT); } catch {}
-  cle = null; profil = null; monN = 0;
+  try { save(K_COMPTES, lireComptes().filter(c => c.id !== compteId)); } catch {}
+  cle = null; profil = null; compteId = null; monN = 0;
   coffre = { budget:{revenus:[],depenses:[]}, edt:[] };
   majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
 }
 
 /* ---- écran de garde ---- */
+let compteVise = null;                       // le profil qu'on est en train de déverrouiller
+
+function dessinerComptes(){
+  const liste = lireComptes();
+  $("#liste-comptes").innerHTML = liste.map(c =>
+    `<div class="line compte" role="button" tabindex="0" data-compte="${c.id}">
+       <div class="ic">${esc(c.nom.slice(0,1).toUpperCase())}</div>
+       <div class="txt"><b>${esc(c.nom)}</b><span>profil chiffré sur cet appareil</span></div>
+       <svg class="cad"><use href="#i-lock"/></svg>
+     </div>`).join("");
+  const choisir = el => { compteVise = el.dataset.compte; gate("ouvrir"); };
+  $$("#liste-comptes [data-compte]").forEach(el => {
+    el.onclick = () => choisir(el);
+    el.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); choisir(el); } };
+  });
+}
+
 function gate(mode){
   $$("#gate [data-gate]").forEach(d => d.hidden = d.dataset.gate !== mode);
   $("#err-creer").hidden = true; $("#err-ouvrir").hidden = true;
-  // pas de prénom affiché ici : il est dans le coffre chiffré, donc illisible tant qu'il est verrouillé
+  if (mode === "choisir") dessinerComptes();
+  if (mode === "ouvrir") {
+    const c = lireComptes().find(x => x.id === compteVise);
+    $("#g-bonjour").textContent = c ? "Content de te revoir, " + c.nom + "." : "Content de te revoir.";
+    $("#g-pw3").value = "";
+  }
   $("#gate").classList.add("on");
-  setTimeout(() => $(mode === "creer" ? "#g-prenom" : "#g-pw3").focus(), 120);
+  setTimeout(() => {
+    const cible = mode === "creer" ? "#g-prenom" : mode === "ouvrir" ? "#g-pw3" : null;
+    if (cible) $(cible).focus();
+  }, 120);
 }
 const fermerGate = () => $("#gate").classList.remove("on");
 function demanderProfil(){
   if (!sub) return toast("Ton navigateur ne permet pas le chiffrement ici");
-  gate(coffreExiste() ? "ouvrir" : "creer");
+  const liste = lireComptes();
+  if (liste.length === 0) return gate("creer");
+  if (liste.length === 1) { compteVise = liste[0].id; return gate("ouvrir"); }
+  gate("choisir");
 }
 $("#gate-close").onclick = fermerGate;
 $$("[data-gate-open]").forEach(b => b.onclick = demanderProfil);
-$("#go-unlock").onclick = () => gate("ouvrir");
+$("#go-creer").onclick  = () => gate("creer");
+$("#go-liste").onclick  = () => { const l = lireComptes(); l.length ? gate("choisir") : fermerGate(); };
+$("#go-liste2").onclick = () => gate("choisir");
 
 /* force du mot de passe — indicatif, honnête, sans faux scoring */
 $("#g-pw").oninput = e => {
@@ -668,7 +726,9 @@ $("#btn-creer").onclick = async () => {
   const prenom = $("#g-prenom").value.trim(), promo = $("#g-promo").value.trim();
   const pw = $("#g-pw").value, pw2 = $("#g-pw2").value;
   const dire = m => { err.textContent = m; err.hidden = false; };
-  if (!prenom) return dire("Mets au moins ton prénom.");
+  if (!prenom) return dire("Mets au moins un prénom ou un pseudo.");
+  if (lireComptes().some(c => c.nom.toLowerCase() === prenom.toLowerCase()))
+    return dire("Il y a déjà un profil « " + prenom + " » sur cet appareil. Prends un autre nom.");
   if (pw.length < 12) return dire("Le mot de passe doit faire au moins 12 caractères — une phrase courte fait très bien l'affaire.");
   if (pw !== pw2) return dire("Les deux mots de passe ne sont pas identiques.");
   err.hidden = true;
@@ -679,7 +739,8 @@ $("#btn-creer").onclick = async () => {
     fermerGate(); majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
     toast("Profil créé, données chiffrées");
   } catch(e){
-    dire(String(e && e.name).includes("Quota") || String(e).includes("torage")
+    dire(String(e.message) === "nom déjà pris" ? "Ce nom est déjà utilisé sur cet appareil."
+      : String(e && e.name).includes("Quota") || String(e).includes("torage")
       ? "Ton navigateur refuse d'enregistrer (navigation privée ou stockage bloqué). Rien n'a été modifié : réessaie dans une fenêtre normale."
       : "Le chiffrement a échoué sur ce navigateur. Rien n'a été modifié.");
   }
@@ -691,7 +752,7 @@ $("#btn-ouvrir").onclick = async () => {
   if (!pw) { err.textContent = "Entre ton mot de passe."; err.hidden = false; return; }
   $("#btn-ouvrir").textContent = "Déchiffrement…"; $("#btn-ouvrir").disabled = true;
   try {
-    await ouvrirProfil(pw);
+    await ouvrirProfil(compteVise, pw);
     $("#g-pw3").value = "";
     fermerGate(); majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
     toast("Bonjour " + profil.prenom);
@@ -703,8 +764,14 @@ $("#btn-ouvrir").onclick = async () => {
 };
 
 $("#btn-oubli").onclick = () => {
-  if (!confirm("Personne ne peut retrouver ce mot de passe, pas même nous.\n\nLa seule option est de supprimer le profil et de repartir de zéro. On continue ?")) return;
-  effacerProfil(); fermerGate(); gate("creer");
+  const c = lireComptes().find(x => x.id === compteVise);
+  if (!confirm("Personne ne peut retrouver ce mot de passe, pas même nous.\n\nLa seule option est de supprimer le profil « " +
+               (c ? c.nom : "") + " » et de repartir de zéro. Les autres profils de cet appareil ne sont pas touchés. On continue ?")) return;
+  try { save(K_COMPTES, lireComptes().filter(x => x.id !== compteVise)); } catch {}
+  compteVise = null;
+  majVerrous(); majAccueil();
+  const l = lireComptes();
+  l.length ? gate("choisir") : gate("creer");
 };
 
 $("#btn-profil").onclick = () => {
@@ -713,6 +780,7 @@ $("#btn-profil").onclick = () => {
   ouvrirFeuille("profil");
 };
 $("#pf-lock").onclick = () => { fermerFeuille(); verrouiller(); };
+$("#pf-switch").onclick = () => { fermerFeuille(); verrouiller(); setTimeout(() => gate("choisir"), 350); };
 $("#pf-wipe").onclick = () => {
   if (!confirm("Supprimer ton profil, ton budget et ton emploi du temps de cet appareil ? C'est définitif.")) return;
   effacerProfil(); fermerFeuille(); toast("Profil supprimé");
@@ -734,11 +802,14 @@ function majVerrous(){
   const ok = ouvert();
   $("#budget-locked").hidden = ok;  $("#budget-body").hidden = !ok;
   $("#edt-locked").hidden    = ok;  $("#edt-body").hidden    = !ok;
-  if (!ok && coffreExiste()) {
+  const n = lireComptes().length;
+  if (!ok && n > 0) {
     $$(".locked h3")[0].textContent = "Ton budget est verrouillé";
     $$(".locked h3")[1].textContent = "Ton emploi du temps est verrouillé";
-    $$(".locked p").forEach(p => p.textContent = "Entre ton mot de passe pour déchiffrer ces données sur cet appareil.");
-    $$("[data-gate-open]").forEach(b => b.textContent = "Déverrouiller");
+    $$(".locked p").forEach(p => p.textContent = n > 1
+      ? "Choisis ton profil et entre ton mot de passe."
+      : "Entre ton mot de passe pour déchiffrer ces données sur cet appareil.");
+    $$("[data-gate-open]").forEach(b => b.textContent = n > 1 ? "Choisir mon profil" : "Déverrouiller");
   }
   $("#btn-profil").style.color = ok ? "var(--vert)" : "";
 }
@@ -760,7 +831,7 @@ function montrer(nom, viaHistorique){
   else history.replaceState({ecran:nom}, "", url);
   ecranCourant = nom;
   scrollTo(0, 0);
-  if ((nom === "budget" || nom === "edt") && !ouvert() && coffreExiste()) demanderProfil();
+  if ((nom === "budget" || nom === "edt") && !ouvert() && lireComptes().length > 0) demanderProfil();
 }
 addEventListener("popstate", e => {
   if ($("#sheet").classList.contains("on")) return fermerFeuille(true);
@@ -1192,8 +1263,8 @@ function majAccueil(){
 
   // budget
   if (!ouvert()) {
-    $("#hb-title").textContent = coffreExiste() ? "Mon budget · verrouillé" : "Mon budget";
-    $("#hb-sub").textContent = coffreExiste() ? "Entre ton mot de passe pour le déchiffrer."
+    $("#hb-title").textContent = lireComptes().length > 0 ? "Mon budget · verrouillé" : "Mon budget";
+    $("#hb-sub").textContent = lireComptes().length > 0 ? "Entre ton mot de passe pour le déchiffrer."
                                               : "Note ce qui rentre et ce qui sort, ça prend dix secondes.";
   } else {
     const m = moisDe(new Date());
@@ -1256,7 +1327,7 @@ dessinerQuestions(); majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil()
 
 const depart = location.hash.slice(1);
 if (["check","budget","edt","guide","tips","question"].includes(depart)) montrer(depart);
-if (coffreExiste() && !ouvert() && ["budget","edt"].includes(depart)) demanderProfil();
+if (lireComptes().length > 0 && !ouvert() && ["budget","edt"].includes(depart)) demanderProfil();
 </script>
 </body>
 </html>
