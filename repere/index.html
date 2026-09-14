@@ -44,7 +44,8 @@
     <div data-gate="creer">
       <h1>Ton profil, sur ton téléphone.</h1>
       <p class="lead">Ton budget et ton emploi du temps sont des données personnelles.
-        On les chiffre avec un mot de passe que toi seul connais, et elles ne quittent jamais cet appareil.</p>
+        On les chiffre avec un mot de passe que toi seul connais, et elles ne quittent jamais cet appareil.
+        <strong>Pas d'inscription, pas d'identifiant, pas de mail</strong> — rien n'est envoyé nulle part.</p>
       <div class="err" id="err-creer" hidden></div>
       <div class="field">
         <label for="g-prenom">Ton prénom</label>
@@ -78,10 +79,12 @@
     <!-- déverrouillage -->
     <div data-gate="ouvrir" hidden>
       <h1 id="g-bonjour">Content de te revoir.</h1>
-      <p class="lead">Entre ton mot de passe pour déchiffrer ton budget et ton emploi du temps.</p>
+      <p class="lead">Entre ton mot de passe pour déchiffrer ton budget et ton emploi du temps.
+        <strong>Il n'y a pas d'identifiant</strong> : ton profil existe uniquement sur ce téléphone,
+        donc le mot de passe suffit à te reconnaître.</p>
       <div class="err" id="err-ouvrir" hidden></div>
       <div class="field">
-        <label for="g-pw3">Mot de passe</label>
+        <label for="g-pw3">Mot de passe <span style="color:var(--faint);font-weight:400">— celui que tu as choisi ici</span></label>
         <input id="g-pw3" type="password" autocomplete="current-password" placeholder="••••••••">
       </div>
       <button class="primary" id="btn-ouvrir">Déverrouiller</button>
