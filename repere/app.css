@@ -499,3 +499,19 @@ body::before{
 @media (min-width:1280px){
   .app, .topbar .in{max-width:900px}
 }
+
+/* ---- Ajouter / supprimer une tâche dans « Ma liste » ---- */
+.ajout{display:flex;gap:9px;margin:4px 0 22px}
+.ajout input{flex:1;min-width:0;font:inherit;font-size:16px;padding:14px 15px;
+  border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);outline:none}
+.ajout input:focus{border-color:var(--vert)}
+.ajout .primary{width:52px;flex:none;margin:0;padding:0;font-size:22px;line-height:1;border-radius:14px}
+
+.task .sup{border:none;background:none;color:var(--faint);cursor:pointer;padding:6px;margin:-4px -4px -4px 0;
+  flex:none;align-self:center;border-radius:8px;opacity:.55;transition:opacity .15s,background .15s}
+.task .sup svg{width:15px;height:15px;display:block}
+.task:hover .sup{opacity:1}
+.task .sup:hover{background:var(--terre-pale);color:var(--terre-txt);opacity:1}
+.task .sup:focus-visible{opacity:1;outline:2px solid var(--vert);outline-offset:1px}
+.task.perso{border-left:3px solid var(--vert)}
+.task .txt{flex:1;min-width:0}

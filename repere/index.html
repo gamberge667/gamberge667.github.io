@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="app.css?v=6">
+<link rel="stylesheet" href="app.css?v=7">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23191713' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23E2643C'/></svg>">
 </head>
 <body>
@@ -188,14 +188,23 @@
 <!-- ================= MA LISTE ================= -->
 <section class="screen" id="s-check" hidden>
   <div class="head">
-    <p class="eyebrow">Douze choses, dans l'ordre</p>
+    <p class="eyebrow" id="liste-eyebrow">Tes démarches, tes courses, tes rendus</p>
     <h1>Ma liste</h1>
   </div>
   <div class="tiles">
     <div class="tile v"><div class="big" id="t-done">0</div><span class="lbl">déjà réglées</span></div>
     <div class="tile t"><div class="big" id="t-left">12</div><span class="lbl">qu'il te reste</span></div>
   </div>
+  <form class="ajout" id="form-tache">
+    <input id="new-tache" maxlength="80" autocomplete="off"
+           placeholder="Ajouter quelque chose à faire — pain, rendre le devoir, appeler la scolarité…">
+    <button class="primary" type="submit" aria-label="Ajouter">＋</button>
+  </form>
+
   <div id="checklist"></div>
+
+  <p class="tiny" id="ligne-masques" hidden>
+    <button class="linky" id="restaurer"></button></p>
   <p class="tiny">Tu reprends là où tu t'es arrêté, même si tu fermes la page.
     <button class="linky" id="reset">tout décocher</button></p>
 </section>
@@ -857,24 +866,91 @@ $$(".segctrl button").forEach(b => b.onclick = () => {
 
 /* =========================== MA LISTE =========================== */
 const K_C = "repere.check.v2";
-let coche = load(K_C, {});
-const TOTAL = LISTE.reduce((n,[,it]) => n + it.length, 0);
+const K_P = "repere.perso.v1";      // les tâches ajoutées par l'étudiant
+const K_M = "repere.masques.v1";    // les tâches de base qu'il a retirées
+let coche   = load(K_C, {});
+let perso   = load(K_P, []);
+let masques = load(K_M, []);
+
+/* La liste visible = les tâches de base non masquées + celles ajoutées à la main. */
+function tachesBase(){
+  const out = [];
+  LISTE.forEach(([nom, items], g) => items.forEach(([titre, aide], i) => {
+    const id = g + "-" + i;
+    if (!masques.includes(id)) out.push({id, titre, aide, groupe:nom});
+  }));
+  return out;
+}
+const tachesPerso = () => perso.map(t => ({id:t.id, titre:t.titre, aide:"", groupe:"À moi", perso:true}));
+const toutesTaches = () => [...tachesPerso(), ...tachesBase()];
+const total = () => toutesTaches().length;
+
+function ligneTache(t){
+  const on = coche[t.id];
+  return `<label class="task${on?" done":""}${t.perso?" perso":""}">
+      <input type="checkbox" data-id="${t.id}"${on?" checked":""}>
+      <span class="txt"><b>${esc(t.titre)}</b>${t.aide?`<span>${t.aide}</span>`:""}</span>
+      <button type="button" class="sup" data-sup-tache="${t.id}"
+        aria-label="${t.perso ? "Supprimer" : "Retirer de ma liste"}"><svg><use href="#i-x"/></svg></button>
+    </label>`;
+}
 
 function dessinerListe(){
-  $("#checklist").innerHTML = LISTE.map(([nom, items], g) =>
-    `<div class="seg">${nom}</div>` + items.map(([titre, aide], i) => {
-      const id = g + "-" + i, on = coche[id];
-      return `<label class="task${on?" done":""}"><input type="checkbox" data-id="${id}"${on?" checked":""}>
-        <span><b>${titre}</b><span>${aide}</span></span></label>`;
-    }).join("")
-  ).join("");
-  brancher($("#checklist")); compter();
+  const groupes = [];
+  const p = tachesPerso();
+  if (p.length) groupes.push(["À moi", p]);
+  LISTE.forEach(([nom], g) => {
+    const items = tachesBase().filter(t => t.groupe === nom);
+    if (items.length) groupes.push([nom, items]);
+  });
+  $("#checklist").innerHTML = groupes.length
+    ? groupes.map(([nom, items]) => `<div class="seg">${nom}</div>` + items.map(ligneTache).join("")).join("")
+    : `<div class="card flat" style="text-align:center;color:var(--muted)">
+         Ta liste est vide. Ajoute ce que tu veux dans le champ ci-dessus.</div>`;
+  brancher($("#checklist"));
+
+  $$("#checklist [data-sup-tache]").forEach(b => b.onclick = e => {
+    e.preventDefault(); e.stopPropagation();
+    const id = b.dataset.supTache;
+    if (id.startsWith("p:")) {
+      perso = perso.filter(t => t.id !== id); saveMou(K_P, perso);
+    } else {
+      masques.push(id); saveMou(K_M, masques);
+    }
+    delete coche[id]; saveMou(K_C, coche);
+    dessinerListe(); majAccueil();
+    toast(id.startsWith("p:") ? "Supprimé" : "Retiré de ta liste");
+  });
+
+  // proposition de remettre ce qui a été retiré
+  const l = $("#ligne-masques");
+  l.hidden = masques.length === 0;
+  $("#restaurer").textContent = masques.length === 1
+    ? "remettre l'élément que tu as retiré"
+    : "remettre les " + masques.length + " éléments que tu as retirés";
+  compter();
 }
+
 function compter(){
-  const faits = Object.values(coche).filter(Boolean).length;
+  const ids = toutesTaches().map(t => t.id);
+  const faits = ids.filter(id => coche[id]).length;
   $("#t-done").textContent = faits;
-  $("#t-left").textContent = TOTAL - faits;
+  $("#t-left").textContent = ids.length - faits;
 }
+
+$("#form-tache").onsubmit = e => {
+  e.preventDefault();
+  const titre = $("#new-tache").value.trim();
+  if (!titre) return;
+  perso.unshift({id:"p:" + uid(), titre});
+  saveMou(K_P, perso);
+  $("#new-tache").value = "";
+  dessinerListe(); majAccueil();
+};
+$("#restaurer").onclick = () => {
+  masques = []; saveMou(K_M, masques);
+  dessinerListe(); majAccueil(); toast("Remis dans ta liste");
+};
 function brancher(zone){
   zone.querySelectorAll("input[data-id]").forEach(inp => inp.onchange = () => {
     const id = inp.dataset.id;
@@ -888,7 +964,7 @@ function brancher(zone){
   });
 }
 $("#reset").onclick = () => {
-  if (!confirm("Tout décocher ?")) return;
+  if (!confirm("Tout décocher ? (tes tâches ne sont pas supprimées)")) return;
   coche = {}; saveMou(K_C, coche); dessinerListe(); majAccueil();
 };
 
@@ -1245,26 +1321,28 @@ $("#tipform").onsubmit = e => {
 
 /* =========================== ACCUEIL =========================== */
 function majAccueil(){
-  const faits = Object.values(coche).filter(Boolean).length;
-  $("#ring-arc").style.strokeDashoffset = 232.5 * (1 - faits/TOTAL);
-  $("#ring-num").textContent = faits + "/" + TOTAL;
+  const taches = toutesTaches();
+  const n = taches.length;
+  const faits = taches.filter(t => coche[t.id]).length;
+  $("#ring-arc").style.strokeDashoffset = n ? 232.5 * (1 - faits/n) : 232.5;
+  $("#ring-num").textContent = faits + "/" + n;
   $("#ring-title").textContent =
-    faits === 0 ? "On commence ?" : faits === TOTAL ? "Tout est réglé." :
+    n === 0 ? "Ta liste est vide." :
+    faits === 0 ? "On commence ?" : faits === n ? "Tout est réglé." :
     faits < 5 ? "C'est lancé." : faits < 9 ? "Bien entamé." : "Plus que quelques-uns.";
   $("#ring-sub").textContent =
-    faits === 0 ? "Douze trucs à régler pour être tranquille. Aucun ne prend plus de dix minutes." :
-    faits === TOTAL ? "Franchement, bravo — tu es en avance sur pas mal d'A2." :
-    "Il t'en reste " + (TOTAL - faits) + ". Les plus urgents sont en haut de la liste.";
+    n === 0 ? "Ajoute ce que tu veux dans Ma liste : démarches, courses, rendus." :
+    faits === 0 ? n + " trucs à régler pour être tranquille. Aucun ne prend plus de dix minutes." :
+    faits === n ? "Franchement, bravo — tu es en avance sur pas mal d'A2." :
+    "Il t'en reste " + (n - faits) + ". Les plus urgents sont en haut de la liste.";
 
   const badge = $("#tabbadge");
-  badge.hidden = faits === TOTAL; badge.textContent = TOTAL - faits;
+  badge.hidden = faits === n; badge.textContent = n - faits;
 
-  const reste = [];
-  LISTE.forEach(([,items], g) => items.forEach(([titre, aide], i) => {
-    if (!coche[g+"-"+i]) reste.push([g+"-"+i, titre, aide]);
-  }));
-  $("#next3").innerHTML = reste.slice(0,3).map(([id,titre,aide]) =>
-    `<label class="task"><input type="checkbox" data-id="${id}"><span><b>${titre}</b><span>${aide}</span></span></label>`
+  const reste = taches.filter(t => !coche[t.id]);
+  $("#next3").innerHTML = reste.slice(0,3).map(t =>
+    `<label class="task${t.perso?" perso":""}"><input type="checkbox" data-id="${t.id}">
+      <span class="txt"><b>${esc(t.titre)}</b>${t.aide?`<span>${t.aide}</span>`:""}</span></label>`
   ).join("") || `<div class="card flat" style="text-align:center;color:var(--muted)">Plus rien en attente. Va te détendre.</div>`;
   brancher($("#next3"));
 
