@@ -437,3 +437,65 @@ body::before{
 .line.compte .ic{background:var(--vert-pale);color:var(--vert);
   font-family:"Bricolage Grotesque",sans-serif;font-weight:600}
 .line.compte .cad{width:16px;height:16px;color:var(--faint);flex:none}
+
+/* ================================================================
+   Format ordinateur : la barre du bas devient une barre latérale.
+   En dessous de 900 px, rien ne change — on garde les onglets en bas.
+   ================================================================ */
+.lateral-haut, .lateral-bas{display:none}
+
+@media (min-width:900px){
+  :root{--lat:252px}
+
+  .tabbar{
+    top:0;bottom:0;right:auto;width:var(--lat);
+    border-top:0;border-right:1px solid var(--line);
+    background:var(--paper-deep);backdrop-filter:none;padding-bottom:0;
+  }
+  .tabbar .in{
+    display:flex;flex-direction:column;height:100vh;max-width:none;
+    padding:22px 14px calc(18px + env(safe-area-inset-bottom));gap:3px;grid-template-columns:none;
+  }
+
+  .lateral-haut{display:flex;margin:2px 10px 24px;font-size:19px}
+
+  .tabbtn{
+    flex-direction:row;justify-content:flex-start;gap:13px;
+    height:44px;flex:none;padding:0 12px;border-radius:12px;
+    font-size:15px;font-weight:500;letter-spacing:0;
+  }
+  .tabbtn:hover{background:rgba(25,23,19,.045);color:var(--ink)}
+  .tabbtn[aria-selected="true"]{background:var(--card);color:var(--ink);font-weight:600;
+    box-shadow:0 1px 3px rgba(70,50,25,.08)}
+  .tabbtn svg{width:20px;height:20px}
+  .tabbtn[aria-selected="true"] svg{transform:none;color:var(--vert)}
+  .tabbtn .pip{display:none}
+  .tabbtn .badge{position:static;left:auto;top:auto;margin-left:auto}
+
+  .lateral-bas{display:flex;flex-direction:column;gap:3px;margin-top:auto;
+    padding-top:14px;border-top:1px solid var(--line)}
+  .tabbtn.secondaire{color:var(--muted);font-size:14px;font-weight:400;height:40px}
+  .lateral-lien{font-size:13px;color:var(--faint);text-decoration:none;padding:5px 12px}
+  .lateral-lien:hover{color:var(--ink);text-decoration:underline}
+
+  /* Le contenu vit dans la colonne de droite : on pousse tout le corps de page,
+     comme ça la barre du haut et le contenu restent alignés au pixel près. */
+  body{padding-left:var(--lat);padding-bottom:36px}
+  .app{margin:0 auto;max-width:820px;padding:0 40px}
+  .topbar .in{max-width:820px;padding:16px 40px 14px}
+  .topbar .brand{display:none}          /* déjà dans la barre latérale */
+  .topbar .right{margin-left:auto}
+
+  .screen{padding-top:10px}
+  .screen > .head h1{font-size:38px}
+  .tiles{grid-template-columns:repeat(3,1fr)}
+  .fab{right:40px;left:auto;bottom:28px}
+  .toast{left:calc(50% + var(--lat)/2);bottom:28px}
+  .sheet{left:var(--lat);border-radius:22px 22px 0 0}
+  .gate{padding-inline:22px}
+}
+
+/* Très grand écran : on garde le contenu lisible, pas étiré */
+@media (min-width:1280px){
+  .app, .topbar .in{max-width:900px}
+}
