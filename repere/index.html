@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="app.css?v=7">
+<link rel="stylesheet" href="app.css?v=8">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23191713' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23E2643C'/></svg>">
 </head>
 <body>
@@ -324,12 +324,11 @@
 <!-- ================= POSER UNE QUESTION ================= -->
 <section class="screen" id="s-question" hidden>
   <div class="qhero">
-    <h1>Une question ?<br>On te répond.</h1>
+    <h1>Une question ?<br>Quelqu'un te répond.</h1>
     <p>Tout ce que tu n'as pas trouvé dans le guide. Même la question que tu trouves bête —
       surtout celle-là, en fait : si tu te la poses, dix autres se la posent aussi.</p>
     <div class="promise"><svg style="width:17px;height:17px;flex:none"><use href="#i-check"/></svg>
-      <span>Ta question est <b>copiée</b> pour que tu la colles sur le Discord du groupe. On répond dès qu'on la voit,
-      et la réponse est ajoutée au guide pour tout le monde.</span></div>
+      <span>Ta question s'affiche <b>ici même</b>, et n'importe qui de la promo peut y répondre.</span></div>
   </div>
 
   <label for="ask" style="display:block;font-weight:600;font-size:15px;margin-bottom:9px">Ta question</label>
@@ -337,17 +336,18 @@
   <div class="counter"><span id="askcount">0</span> / 600</div>
 
   <div class="field">
-    <label for="ask-who">Ton prénom <span style="color:var(--faint);font-weight:400">— si tu veux qu'on te réponde directement</span></label>
+    <label for="ask-who">Ton prénom <span style="color:var(--faint);font-weight:400">— pour qu'on sache qui demande</span></label>
     <input id="ask-who" maxlength="40" placeholder="Matteo · A1">
   </div>
-  <button class="primary" id="send-ask">Copier ma question pour l'envoyer</button>
-  <p class="tiny">On n'a pas de serveur, donc rien ne part tout seul : on copie ta question et on t'ouvre le Discord,
-    tu n'as plus qu'à la coller. Elle reste aussi gardée ici, sur ton téléphone, pour que tu la retrouves.</p>
+  <button class="primary" id="send-ask">Publier ma question</button>
+  <p class="tiny" id="note-envoi">Les questions et les réponses sont publiques pour la promo.
+    Pas de nom de famille, pas de numéro, pas de mot de passe — c'est un forum, pas une messagerie.</p>
 
-  <div class="seg" id="seg-mes" hidden>Mes questions</div>
-  <div id="mes-questions"></div>
+  <div class="seg">Les questions de la promo
+    <button class="linky" id="rafraichir" style="margin-left:auto;font-size:13px">rafraîchir</button></div>
+  <div id="fil"><p class="empty">Chargement…</p></div>
 
-  <div class="seg">Déjà répondu à d'autres</div>
+  <div class="seg">Les réponses de l'équipe</div>
   <div id="repondues"></div>
 </section>
 
@@ -408,11 +408,14 @@
 
   <div data-form="cours" hidden>
     <h2>Un cours</h2>
-    <p class="sub">Il reviendra toutes les semaines au même créneau.</p>
+    <p class="sub">Coche tous les jours où il a lieu — il sera ajouté sur chacun d'eux.</p>
     <form id="coursform">
       <div class="field"><label for="c-matiere">La matière</label>
         <input id="c-matiere" maxlength="40" placeholder="Architecture réseaux"></div>
-      <div class="field"><label>Quel jour ?</label><div class="catpick" id="c-jour"></div></div>
+      <div class="field">
+        <label>Quels jours ? <span style="color:var(--faint);font-weight:400">— tu peux en cocher plusieurs</span></label>
+        <div class="catpick" id="c-jour"></div>
+      </div>
       <div class="timerow">
         <div class="field"><label for="c-debut">Début</label><input id="c-debut" type="time" value="09:00"></div>
         <div class="field"><label for="c-fin">Fin</label><input id="c-fin" type="time" value="12:00"></div>
@@ -422,6 +425,10 @@
       <div class="field"><label for="c-prof">Intervenant <span style="color:var(--faint);font-weight:400">— si tu veux</span></label>
         <input id="c-prof" maxlength="40" placeholder="M. Bernard"></div>
       <div class="field"><label>Une couleur</label><div class="colorpick" id="c-couleur"></div></div>
+      <label class="toggle">
+        <span class="txt"><b>Toutes les semaines</b><small id="c-rec-aide">Il revient au même créneau chaque semaine.</small></span>
+        <input type="checkbox" id="c-rec" checked>
+      </label>
       <button class="primary" type="submit">Ajouter le cours</button>
       <button class="ghostbtn" type="button" data-close>Annuler</button>
     </form>
@@ -469,8 +476,16 @@
 
 /* ----- à remplir par l'équipe ----- */
 const CONTACT = {
-  discord: "LIEN_DISCORD_A_COLLER",        // salon où arrivent les questions
-  mail:    "MAIL_DE_LEQUIPE_A_COLLER"      // secours si quelqu'un n'a pas Discord
+  discord: "LIEN_DISCORD_A_COLLER",        // salon de secours
+  mail:    "MAIL_DE_LEQUIPE_A_COLLER"
+};
+
+/* Le fil de questions/réponses est le SEUL élément partagé entre les étudiants.
+   Tant que ces deux valeurs ne sont pas remplies, la question est simplement copiée
+   pour le Discord — l'application continue de fonctionner. */
+const SUPABASE = {
+  url: "URL_SUPABASE_A_COLLER",            // ex. https://xxxxxxxx.supabase.co
+  cle: "CLE_ANON_A_COLLER"                 // la clé « anon public », faite pour être dans le code
 };
 
 const LISTE = [
@@ -1126,9 +1141,21 @@ const JOURS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
 const JCOURT = ["Lu","Ma","Me","Je","Ve","Sa"];
 const COULEURS = ["#3A7D5C","#E2643C","#3C6E9F","#8A5CB8","#C9A227","#C2405F"];
 let jourVu = Math.min(Math.max((new Date().getDay() + 6) % 7, 0), 5);
-let couleurVue = COULEURS[0], jourChoisi = 0;
+let couleurVue = COULEURS[0];
 
 const enMin = h => { const [a,b] = h.split(":").map(Number); return a*60 + b; };
+
+/* Numéro de semaine ISO, pour les cours qui n'ont lieu qu'une fois. */
+function semaineDe(d){
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+  const debutAnnee = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+  const n = Math.ceil(((t - debutAnnee) / 86400000 + 1) / 7);
+  return t.getUTCFullYear() + "-S" + String(n).padStart(2, "0");
+}
+/* Un cours s'affiche s'il est hebdomadaire, ou s'il tombe sur la semaine en cours.
+   (les cours créés avant cette option n'ont pas de champ « rec » : ils sont hebdomadaires) */
+const coursVisibles = () => coffre.edt.filter(c => c.rec !== false || c.semaine === semaineDe(new Date()));
 const triCours = l => [...l].sort((a,b) => enMin(a.debut) - enMin(b.debut));
 
 function dessinerEDT(){
@@ -1140,13 +1167,13 @@ function dessinerEDT(){
   const now = new Date(), jNow = (now.getDay() + 6) % 7, minNow = now.getHours()*60 + now.getMinutes();
 
   $("#days").innerHTML = JOURS.map((j,i) => {
-    const n = coffre.edt.filter(c => c.jour === i).length;
+    const n = coursVisibles().filter(c => c.jour === i).length;
     return `<button class="day${n?" has":""}" data-j="${i}" aria-pressed="${i===jourVu}">
       <b>${JCOURT[i]}</b><span>${n || "—"}</span></button>`;
   }).join("");
   $$("#days .day").forEach(b => b.onclick = () => { jourVu = +b.dataset.j; dessinerEDT(); });
 
-  const duJour = triCours(coffre.edt.filter(c => c.jour === jourVu));
+  const duJour = triCours(coursVisibles().filter(c => c.jour === jourVu));
   $("#edt-eyebrow").textContent = JOURS[jourVu] + " · " + (duJour.length ? duJour.length + " cours" : "rien de prévu");
 
   $("#cours").innerHTML = duJour.length ? duJour.map(c => {
@@ -1154,7 +1181,7 @@ function dessinerEDT(){
     return `<div class="course${maintenant?" now":""}">
       <div class="bar" style="background:${c.couleur}"></div>
       <div class="h">${c.debut}<small>${c.fin}</small></div>
-      <div class="b"><b>${esc(c.matiere)}</b>
+      <div class="b"><b>${esc(c.matiere)}${c.rec === false ? '<span class="rec">cette semaine</span>' : ''}</b>
         <span>${[c.salle && "Salle " + esc(c.salle), c.prof && esc(c.prof)].filter(Boolean).join(" · ") || "—"}</span></div>
       <button class="del" data-cid="${c.id}" aria-label="Supprimer"><svg><use href="#i-x"/></svg></button>
     </div>`;
@@ -1163,17 +1190,32 @@ function dessinerEDT(){
        Aucun cours ${jourVu === 5 ? "le samedi" : "ce " + JOURS[jourVu].toLowerCase()}. Profites-en.</div>`;
 
   $$("#cours [data-cid]").forEach(b => b.onclick = () => {
-    if (!confirm("Supprimer ce cours ?")) return;
-    coffre.edt = coffre.edt.filter(c => c.id !== b.dataset.cid);
+    const c = coffre.edt.find(x => x.id === b.dataset.cid);
+    const freres = c.serie ? coffre.edt.filter(x => x.serie === c.serie) : [c];
+    if (freres.length > 1) {
+      if (confirm("Ce cours est posé sur " + freres.length + " jours.\n\nOK = le supprimer partout.\nAnnuler = ne l'enlever que du " + JOURS[c.jour].toLowerCase() + ".")) {
+        coffre.edt = coffre.edt.filter(x => x.serie !== c.serie);
+      } else {
+        coffre.edt = coffre.edt.filter(x => x.id !== c.id);
+      }
+    } else {
+      if (!confirm("Supprimer ce cours ?")) return;
+      coffre.edt = coffre.edt.filter(x => x.id !== c.id);
+    }
     sauverCoffre(); dessinerEDT(); majAccueil(); toast("Cours supprimé");
   });
 }
 
-$("#c-jour").innerHTML = JOURS.map((j,i) => `<button type="button" data-j="${i}" aria-pressed="${i===0}">${JCOURT[i]}</button>`).join("");
+let joursChoisis = new Set([0]);
+$("#c-jour").innerHTML = JOURS.map((j,i) => `<button type="button" data-j="${i}" aria-pressed="false">${JCOURT[i]}</button>`).join("");
 $$("#c-jour button").forEach(b => b.onclick = () => {
-  jourChoisi = +b.dataset.j;
-  $$("#c-jour button").forEach(x => x.setAttribute("aria-pressed", String(+x.dataset.j === jourChoisi)));
+  const j = +b.dataset.j;
+  joursChoisis.has(j) ? joursChoisis.delete(j) : joursChoisis.add(j);
+  b.setAttribute("aria-pressed", String(joursChoisis.has(j)));
 });
+$("#c-rec").onchange = e => $("#c-rec-aide").textContent = e.target.checked
+  ? "Il revient au même créneau chaque semaine."
+  : "Il n'apparaîtra que cette semaine-ci.";
 $("#c-couleur").innerHTML = COULEURS.map((c,i) =>
   `<button type="button" data-c="${c}" style="background:${c}" aria-pressed="${i===0}" aria-label="Couleur ${i+1}"></button>`).join("");
 $$("#c-couleur button").forEach(b => b.onclick = () => {
@@ -1181,8 +1223,8 @@ $$("#c-couleur button").forEach(b => b.onclick = () => {
   $$("#c-couleur button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.c === couleurVue)));
 });
 $("#add-cours").onclick = () => {
-  jourChoisi = jourVu;
-  $$("#c-jour button").forEach(x => x.setAttribute("aria-pressed", String(+x.dataset.j === jourChoisi)));
+  joursChoisis = new Set([jourVu]);
+  $$("#c-jour button").forEach(x => x.setAttribute("aria-pressed", String(joursChoisis.has(+x.dataset.j))));
   ouvrirFeuille("cours");
 };
 $("#coursform").onsubmit = e => {
@@ -1190,24 +1232,34 @@ $("#coursform").onsubmit = e => {
   const matiere = $("#c-matiere").value.trim();
   const debut = $("#c-debut").value, fin = $("#c-fin").value;
   if (!matiere) return toast("Il manque la matière");
+  if (!joursChoisis.size) return toast("Choisis au moins un jour");
   if (!debut || !fin) return toast("Il manque un horaire");
   if (enMin(fin) <= enMin(debut)) return toast("La fin doit être après le début");
-  coffre.edt.push({id:uid(), matiere, jour:jourChoisi, debut, fin,
-    salle:$("#c-salle").value.trim(), prof:$("#c-prof").value.trim(), couleur:couleurVue});
+
+  const rec = $("#c-rec").checked;
+  const serie = uid();                       // relie les jours d'un même cours
+  const jours = [...joursChoisis].sort((a,b) => a - b);
+  jours.forEach(j => coffre.edt.push({
+    id:uid(), serie, matiere, jour:j, debut, fin,
+    salle:$("#c-salle").value.trim(), prof:$("#c-prof").value.trim(),
+    couleur:couleurVue, rec, semaine: rec ? null : semaineDe(new Date())
+  }));
   sauverCoffre(); e.target.reset();
   $("#c-debut").value = "09:00"; $("#c-fin").value = "12:00";
-  jourVu = jourChoisi;
-  fermerFeuille(); dessinerEDT(); majAccueil(); toast("Cours ajouté");
+  $("#c-rec").checked = true; $("#c-rec-aide").textContent = "Il revient au même créneau chaque semaine.";
+  jourVu = jours[0]; joursChoisis = new Set([jourVu]);
+  fermerFeuille(); dessinerEDT(); majAccueil();
+  toast(jours.length > 1 ? "Cours ajouté sur " + jours.length + " jours" : "Cours ajouté");
 };
 
 /* prochain cours de la semaine, pour l'accueil */
 function prochainCours(){
-  if (!ouvert() || !coffre.edt.length) return null;
+  if (!ouvert() || !coursVisibles().length) return null;
   const now = new Date(), jNow = (now.getDay()+6)%7, minNow = now.getHours()*60 + now.getMinutes();
   for (let d = 0; d <= 7; d++) {          // d = 7 ramène au même jour la semaine suivante
     const j = (jNow + d) % 7;
     if (j > 5) continue;
-    const liste = triCours(coffre.edt.filter(c => c.jour === j));
+    const liste = triCours(coursVisibles().filter(c => c.jour === j));
     for (const c of liste) {
       if (d === 0 && minNow >= enMin(c.debut) && minNow < enMin(c.fin)) return {c, quand:"en ce moment"};
       if (d === 0 && enMin(c.debut) > minNow) return {c, quand:"à " + c.debut};
@@ -1217,64 +1269,156 @@ function prochainCours(){
   return null;
 }
 
-/* =========================== POSER UNE QUESTION =========================== */
-const K_Q = "repere.questions.v1";
+/* =========================== POSER UNE QUESTION ===========================
+   Seule partie partagée de l'application : un fil public où n'importe quel
+   étudiant de la promo peut poser une question et répondre à celle des autres.
+   Tant que SUPABASE n'est pas renseigné, on retombe sur la copie vers Discord.
+   ======================================================================== */
+const enLigne = () => !SUPABASE.url.startsWith("URL_") && !SUPABASE.cle.startsWith("CLE_");
+const K_Q = "repere.questions.v1";                 // secours hors ligne
 let mesQuestions = load(K_Q, []);
+let fil = [];
+let envoiEnCours = false;
 
 $("#ask").oninput = e => $("#askcount").textContent = e.target.value.length;
 
-function dessinerQuestions(){
-  $("#seg-mes").hidden = mesQuestions.length === 0;
-  $("#mes-questions").innerHTML = mesQuestions.map(q =>
-    `<div class="qitem"><span class="st wait">⏳ à coller sur le Discord</span>
+async function api(chemin, options = {}){
+  const r = await fetch(SUPABASE.url + "/rest/v1/" + chemin, {
+    ...options,
+    headers: {
+      "apikey": SUPABASE.cle,
+      "Authorization": "Bearer " + SUPABASE.cle,
+      "Content-Type": "application/json",
+      "Prefer": "return=representation",
+      ...(options.headers || {})
+    }
+  });
+  if (!r.ok) throw new Error("HTTP " + r.status + " " + (await r.text()).slice(0, 200));
+  return r.status === 204 ? null : r.json();
+}
+
+async function chargerFil(){
+  if (!enLigne()) { dessinerFilLocal(); return; }
+  try {
+    fil = await api("questions?select=id,texte,auteur,cree_le,reponses(id,texte,auteur,cree_le)&order=cree_le.desc&limit=60");
+    dessinerFil();
+  } catch(e) {
+    $("#fil").innerHTML = `<p class="empty">Impossible de charger les questions pour le moment.<br>
+      <button class="linky" onclick="chargerFil()">réessayer</button></p>`;
+  }
+}
+
+const quand = iso => {
+  const d = new Date(iso), min = Math.round((Date.now() - d) / 60000);
+  if (min < 1) return "à l'instant";
+  if (min < 60) return "il y a " + min + " min";
+  if (min < 1440) return "il y a " + Math.round(min/60) + " h";
+  return "le " + d.toLocaleDateString("fr-FR", {day:"numeric", month:"long"});
+};
+
+function dessinerFil(){
+  if (!fil.length) {
+    $("#fil").innerHTML = `<p class="empty">Personne n'a encore posé de question.<br>Tu peux être le premier.</p>`;
+    return;
+  }
+  $("#fil").innerHTML = fil.map(q => {
+    const rep = (q.reponses || []).sort((a,b) => new Date(a.cree_le) - new Date(b.cree_le));
+    return `<div class="qitem">
+      <span class="st ${rep.length ? "done" : "wait"}">${rep.length ? "✓ " + rep.length + " réponse" + (rep.length>1?"s":"") : "⏳ sans réponse"}</span>
       <div class="q">${esc(q.texte)}</div>
       <div class="a" style="border:none;padding:0;margin-top:6px;font-size:13px;color:var(--faint)">
-        envoyée le ${esc(q.date)}${q.qui ? " · " + esc(q.qui) : ""}
-        <span class="actions"><button class="linky" data-req="${q.id}">recopier pour l'envoyer</button>
-        <button class="linky" data-delq="${q.id}">retirer</button></span></div>
-    </div>`).join("");
+        ${esc(q.auteur || "Anonyme")} · ${quand(q.cree_le)}</div>
+      ${rep.map(r => `<div class="a"><b>${esc(r.auteur || "Anonyme")}</b> · ${quand(r.cree_le)}<br>${esc(r.texte)}</div>`).join("")}
+      <div class="repondre">
+        <input maxlength="800" data-rep="${q.id}" placeholder="Aider ${esc((q.auteur || "").split(" ")[0] || "cette personne")} : écris ta réponse">
+        <button class="primary" data-envoyer="${q.id}">Répondre</button>
+      </div>
+    </div>`;
+  }).join("");
 
+  $$("#fil [data-envoyer]").forEach(b => b.onclick = () => repondre(b.dataset.envoyer, b));
+  $$("#fil [data-rep]").forEach(i => i.onkeydown = e => {
+    if (e.key === "Enter") { e.preventDefault(); repondre(i.dataset.rep, $(`[data-envoyer="${i.dataset.rep}"]`)); }
+  });
+}
+
+/* affichage de secours quand le fil partagé n'est pas branché */
+function dessinerFilLocal(){
+  $("#fil").innerHTML = mesQuestions.length
+    ? mesQuestions.map(q => `<div class="qitem"><span class="st wait">⏳ à coller sur le Discord</span>
+        <div class="q">${esc(q.texte)}</div>
+        <div class="a" style="border:none;padding:0;margin-top:6px;font-size:13px;color:var(--faint)">
+          gardée ici le ${esc(q.date)}</div></div>`).join("")
+    : `<p class="empty">Le fil partagé n'est pas encore branché.<br>Ta question sera copiée pour le Discord.</p>`;
+}
+
+async function repondre(qid, bouton){
+  const champ = $(`[data-rep="${qid}"]`);
+  const texte = champ.value.trim();
+  if (texte.length < 2) return toast("Écris ta réponse");
+  const auteur = ($("#ask-who").value || "").trim();
+  bouton.disabled = true; bouton.textContent = "…";
+  try {
+    await api("reponses", {method:"POST", body: JSON.stringify({question_id: qid, texte, auteur})});
+    champ.value = "";
+    await chargerFil();
+    toast("Merci, ta réponse est en ligne");
+  } catch(e) {
+    toast("L'envoi a échoué, réessaie");
+    bouton.disabled = false; bouton.textContent = "Répondre";
+  }
+}
+
+$("#send-ask").onclick = async () => {
+  const texte = $("#ask").value.trim();
+  if (texte.length < 8) return toast("Écris ta question en entier");
+  if (envoiEnCours) return;
+  const auteur = $("#ask-who").value.trim();
+
+  if (!enLigne()) {                                   // secours : copie vers Discord
+    const d = new Date();
+    mesQuestions.unshift({id:uid(), texte, qui:auteur,
+      date: d.toLocaleDateString("fr-FR",{day:"numeric",month:"long"})});
+    saveMou(K_Q, mesQuestions);
+    $("#ask").value = ""; $("#askcount").textContent = "0";
+    dessinerFilLocal(); envoyerDiscord(texte, auteur);
+    return;
+  }
+
+  envoiEnCours = true;
+  const b = $("#send-ask"); b.disabled = true; b.textContent = "Publication…";
+  try {
+    await api("questions", {method:"POST", body: JSON.stringify({texte, auteur})});
+    $("#ask").value = ""; $("#askcount").textContent = "0";
+    await chargerFil();
+    toast("Publiée — quelqu'un va te répondre");
+  } catch(e) {
+    toast("La publication a échoué, réessaie");
+  }
+  envoiEnCours = false; b.disabled = false; b.textContent = "Publier ma question";
+};
+
+function envoyerDiscord(texte, qui){
+  const msg = "❓ Question Repère" + (qui ? " — de " + qui : "") + "\n" + texte;
+  const suite = () => {
+    if (CONTACT.discord && !CONTACT.discord.startsWith("LIEN_")) window.open(CONTACT.discord, "_blank", "noopener");
+    else setTimeout(() => toast("Colle-la sur le Discord du groupe"), 2200);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(msg).then(() => { toast("Copiée — colle-la sur le Discord"); suite(); },
+                                            () => prompt("Copie ta question :", msg));
+  } else prompt("Copie ta question :", msg);
+}
+
+$("#rafraichir").onclick = () => { $("#fil").innerHTML = `<p class="empty">Chargement…</p>`; chargerFil(); };
+
+function dessinerQuestions(){
   $("#repondues").innerHTML = REPONSES.map(([q,a,par,date]) =>
     `<div class="qitem"><span class="st done">✓ répondu</span>
       <div class="q">${esc(q)}</div>
       <div class="a">${esc(a)}<br><br><b>${esc(par)}</b> · ${esc(date)}</div></div>`).join("");
-
-  $$("[data-delq]").forEach(b => b.onclick = () => {
-    if (!confirm("Retirer cette question de ta liste ?")) return;
-    mesQuestions = mesQuestions.filter(q => q.id !== b.dataset.delq);
-    saveMou(K_Q, mesQuestions); dessinerQuestions();
-  });
-  $$("[data-req]").forEach(b => b.onclick = () => {
-    const q = mesQuestions.find(x => x.id === b.dataset.req);
-    if (q) envoyer(q.texte, q.qui);
-  });
+  chargerFil();
 }
-
-function envoyer(texte, qui){
-  const msg = "❓ Question Repère" + (qui ? " — de " + qui : "") + "\n" + texte;
-  const suite = () => {
-    if (CONTACT.discord && !CONTACT.discord.startsWith("LIEN_")) window.open(CONTACT.discord, "_blank", "noopener");
-    else if (!CONTACT.mail || CONTACT.mail.startsWith("MAIL_"))
-      setTimeout(() => toast("Colle-la sur le Discord du groupe"), 2200);
-    else if (CONTACT.mail && !CONTACT.mail.startsWith("MAIL_"))
-      location.href = "mailto:" + CONTACT.mail + "?subject=" + encodeURIComponent("Question Repère") + "&body=" + encodeURIComponent(msg);
-  };
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(msg).then(() => { toast("Copiée — colle-la sur le Discord"); suite(); },
-                                            () => { prompt("Copie ta question :", msg); });
-  } else { prompt("Copie ta question :", msg); }
-}
-
-$("#send-ask").onclick = () => {
-  const texte = $("#ask").value.trim();
-  if (texte.length < 8) return toast("Écris ta question en entier");
-  const d = new Date();
-  const q = {id:uid(), texte, qui:$("#ask-who").value.trim(),
-             date: d.toLocaleDateString("fr-FR",{day:"numeric",month:"long"})};
-  mesQuestions.unshift(q); saveMou(K_Q, mesQuestions);
-  $("#ask").value = ""; $("#askcount").textContent = "0";
-  dessinerQuestions(); envoyer(q.texte, q.qui);
-};
 
 /* =========================== FEUILLE MODALE =========================== */
 const PREMIER = {tip:"#t-txt", rev:"#r-montant", dep:"#d-montant", cours:"#c-matiere", profil:null};

@@ -515,3 +515,12 @@ body::before{
 .task .sup:focus-visible{opacity:1;outline:2px solid var(--vert);outline-offset:1px}
 .task.perso{border-left:3px solid var(--vert)}
 .task .txt{flex:1;min-width:0}
+
+/* ---- Répondre à une question dans le fil ---- */
+.repondre{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.repondre input{flex:1;min-width:0;font:inherit;font-size:15px;padding:11px 13px;border:1px solid var(--line);
+  border-radius:11px;background:var(--paper);color:var(--ink);outline:none}
+.repondre input:focus{border-color:var(--vert)}
+.repondre .primary{width:auto;flex:none;margin:0;padding:0 16px;font-size:14px;border-radius:11px}
+.qitem .a{background:var(--paper-deep);border-radius:10px;padding:11px 13px;margin-top:9px;border:none}
+.seg .linky{text-transform:none;letter-spacing:0;font-weight:500}
