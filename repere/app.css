@@ -524,3 +524,79 @@ body::before{
 .repondre .primary{width:auto;flex:none;margin:0;padding:0 16px;font-size:14px;border-radius:11px}
 .qitem .a{background:var(--paper-deep);border-radius:10px;padding:11px 13px;margin-top:9px;border:none}
 .seg .linky{text-transform:none;letter-spacing:0;font-weight:500}
+
+/* ======================= LA CARTE ======================= */
+.search .loupe-act{border:none;background:none;color:var(--muted);cursor:pointer;padding:4px;
+  border-radius:8px;flex:none;display:grid;place-items:center}
+.search .loupe-act svg{width:19px;height:19px}
+.search .loupe-act:hover{color:var(--vert)}
+
+.carte-boite{position:relative;border:1px solid var(--line);border-radius:var(--r-l);overflow:hidden;
+  margin-bottom:18px;box-shadow:var(--shadow)}
+#map{height:300px;width:100%;background:var(--paper-deep)}
+.carte-vide{position:absolute;inset:0;display:grid;place-content:center;gap:5px;text-align:center;
+  background:rgba(251,247,240,.92);padding:24px;z-index:500}
+.carte-vide b{font-family:"Bricolage Grotesque",sans-serif;font-size:17px}
+.carte-vide span{font-size:14px;color:var(--muted);max-width:34ch}
+
+/* Marqueur : une pastille ronde avec l'emoji de la catégorie */
+.marqueur{display:grid;place-items:center;width:34px;height:34px;border-radius:50% 50% 50% 6px;
+  transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 3px 8px rgba(60,40,20,.35);font-size:15px}
+.marqueur span{transform:rotate(45deg)}
+.marqueur.actif{outline:3px solid var(--ink);outline-offset:1px}
+.leaflet-container{font-family:"Figtree",sans-serif}
+.leaflet-control-attribution{font-size:10px;background:rgba(255,255,255,.75)}
+
+/* Carte de sélection dans le formulaire d'ajout */
+.carte-mini{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+#map-ajout{height:190px;width:100%;background:var(--paper-deep)}
+.viseur{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);pointer-events:none;z-index:500;
+  color:var(--terre);filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.viseur svg{width:34px;height:34px}
+
+/* Fiche d'un lieu dans la liste */
+.lieu{display:flex;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-m);
+  padding:13px 14px;margin-bottom:9px;cursor:pointer;align-items:flex-start;text-align:left;width:100%;
+  transition:border-color .15s,transform .12s}
+.lieu:hover{border-color:var(--faint)}
+.lieu:active{transform:scale(.99)}
+.lieu .vignette{width:54px;height:54px;border-radius:12px;flex:none;object-fit:cover;display:grid;
+  place-items:center;font-size:22px;background:var(--paper-deep)}
+.lieu .corps{flex:1;min-width:0}
+.lieu .corps b{display:block;font-size:15.5px;line-height:1.3}
+.lieu .meta{font-size:13px;color:var(--muted);margin-top:3px;display:flex;flex-wrap:wrap;gap:4px 9px;align-items:center}
+.lieu .dist{font-family:var(--mono,"Figtree");font-size:12.5px;color:var(--faint);white-space:nowrap}
+.etoiles{display:inline-flex;gap:1px;vertical-align:-2px}
+.etoiles svg{width:13px;height:13px;fill:#D8CFC0}
+.etoiles svg.on{fill:#E8B62C}
+.badge-opt{font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
+  background:var(--vert-pale);color:var(--vert);padding:2px 7px;border-radius:999px}
+.badge-opt.prix{background:var(--paper-deep);color:var(--muted)}
+.badge-opt.litre{background:var(--terre-pale);color:var(--terre-txt)}
+
+/* Fiche détaillée */
+#fiche-lieu .photo{width:100%;height:170px;object-fit:cover;border-radius:16px;margin-bottom:16px;
+  display:grid;place-items:center;font-size:46px;background:var(--paper-deep)}
+#fiche-lieu h2{margin-bottom:4px}
+#fiche-lieu .sous{color:var(--muted);font-size:14.5px;margin:0 0 14px}
+#fiche-lieu .infos{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+#fiche-lieu .mot{background:var(--post);border:1px solid var(--post-edge);border-radius:12px;
+  padding:13px 15px;font-size:15px;margin-bottom:16px}
+#fiche-lieu .mot .sig{display:block;margin-top:7px;font-family:"Caveat",cursive;font-size:16px;color:#8A6A12;text-align:right}
+#fiche-lieu .avis{background:var(--paper-deep);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:14.5px}
+#fiche-lieu .avis .qui{font-size:12.5px;color:var(--faint);margin-top:6px}
+.noter{display:flex;gap:6px;margin:4px 0 12px}
+.noter button{border:none;background:none;cursor:pointer;padding:2px}
+.noter svg{width:30px;height:30px;fill:#D8CFC0;transition:fill .12s}
+.noter button[aria-pressed="true"] svg, .noter button.survol svg{fill:#E8B62C}
+.itineraire{display:block;text-align:center;text-decoration:none;margin-bottom:10px}
+
+@media (min-width:900px){
+  #map{height:420px}
+  .tabbtn{font-size:14.5px}
+}
+@media (max-width:899px){
+  .tabbar .in{grid-template-columns:repeat(6,1fr)}
+  .tabbtn{font-size:9.5px;letter-spacing:-.01em}
+  .tabbtn svg{width:21px;height:21px}
+}
