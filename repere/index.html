@@ -121,10 +121,7 @@
         <input id="g-pw2" type="password" autocomplete="new-password" placeholder="••••••••">
       </div>
       <button class="primary" id="btn-creer">Créer mon profil</button>
-      <button class="ghostbtn" id="go-liste" hidden>J'ai déjà un profil sur cet appareil</button>
-      <p class="tiny" id="aide-creer" style="text-align:center;margin-top:2px">
-        Il n'y a pas de « se connecter » : ton profil vit sur cet appareil, pas sur un serveur.
-        Si tu changes de téléphone, tu en recrées un.</p>
+      <button class="ghostbtn" id="go-liste">← Retour</button>
       <div class="crypto-note">
         <b>Ce qu'on fait de tes données, en clair</b>
         Ton mot de passe n'est stocké nulle part. Il sert à fabriquer une clé de chiffrement
@@ -975,11 +972,10 @@ function gate(mode){
   if (mode === "compte") majEcranCompte();
   if (mode === "creer") {
     const n = lireComptes().length;
-    $("#go-liste").hidden = n === 0;
-    $("#go-liste").textContent = n === 1
-      ? "J'ai déjà un profil sur cet appareil"
-      : "Revenir aux " + n + " profils de cet appareil";
-    $("#aide-creer").hidden = n > 0;
+    $("#go-liste").textContent = n === 0
+      ? "← Retour : me connecter à mon compte"
+      : n === 1 ? "← Retour : mon compte ou mon profil existant"
+                : "← Retour : mon compte ou mes " + n + " profils";
   }
   if (mode === "ouvrir") {
     const c = lireComptes().find(x => x.id === compteVise);
@@ -1043,7 +1039,7 @@ $("#btn-connexion").onclick = async () => {
 };
 
 $("#go-creer").onclick  = () => gate("creer");
-$("#go-liste").onclick  = () => { const l = lireComptes(); l.length ? gate("choisir") : fermerGate(); };
+$("#go-liste").onclick  = () => gate("choisir");
 $("#go-liste2").onclick = () => gate("choisir");
 
 /* force du mot de passe — indicatif, honnête, sans faux scoring */
