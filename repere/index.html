@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<link rel="stylesheet" href="app.css?v=12">
+<link rel="stylesheet" href="app.css?v=13">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23191713' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23E2643C'/></svg>">
 </head>
 <body>
@@ -294,7 +294,7 @@
 <!-- ================= LA CARTE ================= -->
 <section class="screen" id="s-carte" hidden>
   <div class="head">
-    <p class="eyebrow" id="carte-eyebrow">Les bons plans de la promo</p>
+    <p class="eyebrow" id="carte-eyebrow">Autour de l'école, av. du Club Hippique</p>
     <h1>La carte</h1>
   </div>
 
@@ -311,7 +311,7 @@
     <div id="map"></div>
     <div class="carte-vide" id="carte-vide" hidden>
       <b>La carte est encore vide</b>
-      <span>Ajoute le premier bon plan : ta boulangerie, ton kebab, ta salle de sport.</span>
+      <span>Ajoute le premier bon plan autour de l'école : ta boulangerie, ton kebab, ta salle de sport.</span>
     </div>
   </div>
 
@@ -1601,6 +1601,10 @@ const CATS_LIEU = [
 ];
 const OPTIONS_LIEU = ["Halal","Végé","Vegan","Sans gluten","Pas cher","Ouvert tard","Wifi",
                       "Prises élec.","Tarif étudiant","Accessible PMR","À emporter","Terrasse"];
+
+/* Le campus : point de départ de la carte, et repère fixe pour se situer. */
+const CAMPUS = {lat:43.51351, lng:5.428173, nom:"L'école",
+                adresse:"684 av. du Club Hippique, Aix-en-Provence"};
 const catDe = k => CATS_LIEU.find(c => c.k === k) || CATS_LIEU[0];
 
 let lieux = [], avisParLieu = {}, maCarte = null, carteAjout = null;
@@ -1671,8 +1675,8 @@ function lieuxFiltres(){
     [...filtreOpts].every(o => (x.options || []).includes(o)) &&
     (!q || (x.nom + " " + (x.sous_type||"") + " " + (x.adresse||"") + " " + (x.note_info||"") + " " +
             (x.options||[]).join(" ") + " " + catDe(x.categorie).nom).toLowerCase().includes(q)));
-  if (maPosition) l = l.map(x => ({...x, d: distance(maPosition, x)})).sort((a,b) => a.d - b.d);
-  return l;
+  const origine = maPosition || CAMPUS;     // à défaut de ta position, on mesure depuis l'école
+  return l.map(x => ({...x, d: distance(origine, x)})).sort((a,b) => a.d - b.d);
 }
 
 /* ---------- rendu ---------- */
@@ -1682,8 +1686,9 @@ function dessinerCarte(){
   $("#titre-liste").textContent = l.length === 0 ? "Aucun lieu ne correspond"
     : l.length === 1 ? "1 lieu" : l.length + " lieux";
   $("#carte-eyebrow").textContent = lieux.length
-    ? lieux.length + " bon" + (lieux.length>1?"s":"") + " plan" + (lieux.length>1?"s":"") + " partagés par la promo"
-    : "Les bons plans de la promo";
+    ? lieux.length + " bon" + (lieux.length>1?"s":"") + " plan" + (lieux.length>1?"s":"") +
+      (maPosition ? " · triés depuis ta position" : " · triés depuis l'école")
+    : "Autour de l'école, av. du Club Hippique";
 
   $("#lieux").innerHTML = l.length ? l.map(x => {
     const c = catDe(x.categorie), m = moyenne(x.id), n = (avisParLieu[x.id]||[]).length;
@@ -1724,8 +1729,11 @@ function poserMarqueurs(liste){
   });
   if (liste.length) {
     const b = L.latLngBounds(liste.map(x => [x.lat, x.lng]));
+    b.extend([CAMPUS.lat, CAMPUS.lng]);                 // l'école reste toujours visible
     if (maPosition) b.extend([maPosition.lat, maPosition.lng]);
     maCarte.fitBounds(b, {padding:[40,40], maxZoom:16});
+  } else {
+    maCarte.setView([CAMPUS.lat, CAMPUS.lng], 15);
   }
 }
 
@@ -1759,8 +1767,14 @@ function initCarte(){
     return;
   }
   if (maCarte) { setTimeout(() => maCarte.invalidateSize(), 80); return; }
-  maCarte = L.map("map", {scrollWheelZoom:false, zoomControl:true}).setView([46.6, 2.4], 5);
+  maCarte = L.map("map", {scrollWheelZoom:false, zoomControl:true})
+             .setView([CAMPUS.lat, CAMPUS.lng], 15);
   poserFond(maCarte);
+  L.marker([CAMPUS.lat, CAMPUS.lng], {
+    icon: L.divIcon({className:"", iconSize:[38,38], iconAnchor:[19,38],
+      html:'<div class="marqueur campus" style="background:#191713"><span>🎓</span></div>'}),
+    zIndexOffset: -100
+  }).addTo(maCarte).bindTooltip(CAMPUS.nom + " — " + CAMPUS.adresse);
   setTimeout(() => maCarte.invalidateSize(), 120);
 }
 
@@ -1875,8 +1889,9 @@ $("#add-lieu").onclick = () => {
   ouvrirFeuille("newlieu");
   setTimeout(() => {
     const centre = maPosition ? [maPosition.lat, maPosition.lng]
-                 : maCarte ? [maCarte.getCenter().lat, maCarte.getCenter().lng] : [46.6, 2.4];
-    const zoom = (maPosition || lieux.length) ? 16 : 5;
+                 : maCarte ? [maCarte.getCenter().lat, maCarte.getCenter().lng]
+                 : [CAMPUS.lat, CAMPUS.lng];
+    const zoom = 17;
     if (!carteAjout) {
       carteAjout = L.map("map-ajout", {zoomControl:true, attributionControl:false}).setView(centre, zoom);
       poserFond(carteAjout);

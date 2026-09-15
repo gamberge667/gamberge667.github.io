@@ -618,3 +618,4 @@ body.avec-bandeau{padding-top:74px}
 .avertissement{background:var(--terre-pale);border:1px solid #F3D6C9;border-left:3px solid var(--terre);
   border-radius:12px;padding:13px 15px;font-size:13.5px;line-height:1.5;color:#8A3A1C;margin-bottom:18px}
 .avertissement b{display:block;font-size:14.5px;margin-bottom:2px;color:#7A3218}
+.marqueur.campus{width:38px;height:38px;font-size:17px;border-width:2.5px}
