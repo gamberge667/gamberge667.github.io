@@ -1640,8 +1640,16 @@ async function chargerLieux(){
     $("#carte-vide").innerHTML = "<b>La carte n'est pas branchée</b><span>Le fil partagé doit être configuré pour que la carte fonctionne.</span>";
     return; }
   try {
-    lieux = await api("lieux?select=id,nom,categorie,sous_type,adresse,lat,lng,prix,prix_litre,horaires,options,photo,note_info,auteur"
-      + ",avis(id,note,texte,auteur,cree_le)&order=nom.asc&limit=1500");
+    // PostgREST ne renvoie jamais plus de 1000 lignes d'un coup : on pagine.
+    const champs = "id,nom,categorie,sous_type,adresse,lat,lng,prix,prix_litre,horaires,options,"
+                 + "photo,note_info,auteur,avis(id,note,texte,auteur,cree_le)";
+    const tout = [];
+    for (let page = 0; page < 10; page++) {
+      const lot = await api(`lieux?select=${champs}&order=nom.asc&limit=1000&offset=${page*1000}`);
+      tout.push(...lot);
+      if (lot.length < 1000) break;
+    }
+    lieux = tout;
     avisParLieu = {};
     lieux.forEach(l => avisParLieu[l.id] = l.avis || []);
     dessinerCarte();
