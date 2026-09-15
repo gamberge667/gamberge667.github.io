@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-<link rel="stylesheet" href="app.css?v=14">
+<link rel="stylesheet" href="app.css?v=15">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23191713' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23E2643C'/></svg>">
 </head>
 <body>
@@ -85,7 +85,10 @@
         <input id="g-pw2" type="password" autocomplete="new-password" placeholder="••••••••">
       </div>
       <button class="primary" id="btn-creer">Créer mon profil</button>
-      <button class="ghostbtn" id="go-liste">← Revenir à la liste des profils</button>
+      <button class="ghostbtn" id="go-liste" hidden>J'ai déjà un profil sur cet appareil</button>
+      <p class="tiny" id="aide-creer" style="text-align:center;margin-top:2px">
+        Il n'y a pas de « se connecter » : ton profil vit sur cet appareil, pas sur un serveur.
+        Si tu changes de téléphone, tu en recrées un.</p>
       <div class="crypto-note">
         <b>Ce qu'on fait de tes données, en clair</b>
         Ton mot de passe n'est stocké nulle part. Il sert à fabriquer une clé de chiffrement
@@ -832,6 +835,14 @@ function gate(mode){
   $$("#gate [data-gate]").forEach(d => d.hidden = d.dataset.gate !== mode);
   $("#err-creer").hidden = true; $("#err-ouvrir").hidden = true;
   if (mode === "choisir") dessinerComptes();
+  if (mode === "creer") {
+    const n = lireComptes().length;
+    $("#go-liste").hidden = n === 0;
+    $("#go-liste").textContent = n === 1
+      ? "J'ai déjà un profil sur cet appareil"
+      : "Revenir aux " + n + " profils de cet appareil";
+    $("#aide-creer").hidden = n > 0;
+  }
   if (mode === "ouvrir") {
     const c = lireComptes().find(x => x.id === compteVise);
     $("#g-bonjour").textContent = c ? "Content de te revoir, " + c.nom + "." : "Content de te revoir.";
@@ -1614,6 +1625,55 @@ const CAMPUS = {lat:43.51351, lng:5.428173, nom:"L'école",
 const RAYON_KM = 25;      // au-delà, un lieu n'influence plus le cadrage de la carte
 const catDe = k => CATS_LIEU.find(c => c.k === k) || CATS_LIEU[0];
 
+/* Faute de photo réelle, chaque lieu reçoit une vignette qui lui est propre :
+   deux teintes tirées de son nom, plus l'emoji de sa catégorie. Deux lieux
+   différents n'ont jamais la même, et on n'affiche rien de faux. */
+function teinte(nom){
+  let h = 0;
+  for (let i = 0; i < nom.length; i++) h = (h * 31 + nom.charCodeAt(i)) % 360;
+  return h;
+}
+function fondDe(x){
+  const h = teinte(x.nom);
+  return `linear-gradient(135deg, hsl(${h} 46% 88%), hsl(${(h + 38) % 360} 44% 79%))`;
+}
+function vignette(x, grande){
+  const c = catDe(x.categorie);
+  if (x.photo) return `<img class="${grande ? "photo" : "vignette"}" src="${esc(x.photo)}" alt="" loading="lazy"
+    onerror="this.replaceWith(Object.assign(document.createElement('div'),
+      {className:'${grande ? "photo" : "vignette"} genere',style:'background:${fondDe(x)}',textContent:'${c.emoji}'}))">`;
+  return `<div class="${grande ? "photo" : "vignette"} genere" style="background:${fondDe(x)}">
+            <span>${c.emoji}</span>${grande ? `<b>${esc(x.nom)}</b>` : ""}</div>`;
+}
+
+/* Ce qu'on sait vraiment du lieu, sans rien inventer : horaires et équipements
+   viennent d'OpenStreetMap, le reste viendra des étudiants. */
+/* OpenStreetMap écrit « Mo-Sa 08:00-19:30; Su off ». On rend ça lisible. */
+const JOURS_OSM = {Mo:"lun", Tu:"mar", We:"mer", Th:"jeu", Fr:"ven", Sa:"sam", Su:"dim", PH:"jours fériés"};
+function horairesLisibles(h){
+  if (!h) return "";
+  if (h.trim() === "24/7") return "ouvert 24 h/24, 7 j/7";
+  return h.split(";").map(bloc => bloc.trim()).filter(Boolean).map(bloc => {
+    let t = bloc.replace(/\b(Mo|Tu|We|Th|Fr|Sa|Su|PH)\b/g, j => JOURS_OSM[j]);
+    t = t.replace(/\boff\b/gi, "fermé").replace(/,/g, ", ").replace(/\s+/g, " ");
+    t = t.replace(/(\d{2}):(\d{2})/g, (m, hh, mm) => mm === "00" ? +hh + "h" : +hh + "h" + mm);
+    return t.replace(/-/g, "–").trim();
+  }).join(" · ");
+}
+
+function faits(x){
+  const f = [];
+  if (x.horaires) f.push(horairesLisibles(x.horaires));
+  const o = x.options || [];
+  if (o.includes("Terrasse")) f.push("terrasse");
+  if (o.includes("À emporter")) f.push("vente à emporter");
+  if (o.includes("Wifi")) f.push("wifi");
+  if (o.includes("Accessible PMR")) f.push("accès PMR");
+  if (o.includes("Halal")) f.push("halal");
+  if (o.includes("Végé") || o.includes("Vegan")) f.push("options végé");
+  return f;
+}
+
 let lieux = [], avisParLieu = {}, maCarte = null, carteAjout = null, groupe = null;
 const MAX_LISTE = 60;   // la liste n'affiche que les plus proches, la carte les montre tous
 let marqueurs = {}, filtreCat = null, filtreOpts = new Set(), rechercheLieu = "", maPosition = null;
@@ -1716,8 +1776,7 @@ function dessinerCarte(){
   $("#lieux").innerHTML = affiches.length ? affiches.map(x => {
     const c = catDe(x.categorie), m = moyenne(x.id), n = (avisParLieu[x.id]||[]).length;
     return `<button class="lieu" data-lieu="${x.id}">
-      ${x.photo ? `<img class="vignette" src="${esc(x.photo)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'vignette',textContent:'${c.emoji}'}))">`
-                : `<div class="vignette">${c.emoji}</div>`}
+      ${vignette(x, false)}
       <div class="corps">
         <b>${esc(x.nom)}</b>
         <div class="meta">
@@ -1842,8 +1901,7 @@ function ouvrirLieu(id){
   const c = catDe(x.categorie), av = (avisParLieu[id]||[]).slice().sort((a,b) => new Date(b.cree_le) - new Date(a.cree_le));
   const m = moyenne(id);
   $("#fiche-lieu").innerHTML = `
-    ${x.photo ? `<img class="photo" src="${esc(x.photo)}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'photo',textContent:'${c.emoji}'}))">`
-              : `<div class="photo">${c.emoji}</div>`}
+    ${vignette(x, true)}
     <h2>${esc(x.nom)}</h2>
     <p class="sous">${c.emoji} ${esc(x.sous_type || c.nom)}${x.adresse ? " · " + esc(x.adresse) : ""}
       ${x.d !== undefined ? " · " + formateDist(x.d) : ""}</p>
@@ -1851,10 +1909,15 @@ function ouvrirLieu(id){
       ${av.length ? `<span class="badge-opt" style="background:var(--paper-deep);color:var(--ink)">${etoiles(m,12)} ${m.toFixed(1).replace(".",",")} sur ${av.length}</span>` : ""}
       ${x.prix ? `<span class="badge-opt prix">${"€".repeat(x.prix)}</span>` : ""}
       ${x.prix_litre ? `<span class="badge-opt litre">${String(x.prix_litre).replace(".",",")} €/L</span>` : ""}
-      ${x.horaires ? `<span class="badge-opt prix">${esc(x.horaires)}</span>` : ""}
+      ${x.horaires ? `<span class="badge-opt prix">${esc(horairesLisibles(x.horaires))}</span>` : ""}
       ${(x.options||[]).map(o => `<span class="badge-opt">${esc(o)}</span>`).join("")}
     </div>
-    ${x.note_info ? `<div class="mot">${esc(x.note_info)}<span class="sig">— ${esc(x.auteur || "un étudiant")}</span></div>` : ""}
+    ${x.note_info
+      ? `<div class="mot">${esc(x.note_info)}<span class="sig">— ${esc(x.auteur || "un étudiant")}</span></div>`
+      : faits(x).length
+        ? `<div class="faits"><b>Ce qu'on sait</b>${faits(x).map(f => `<span>${esc(f)}</span>`).join("")}
+             <em>Source OpenStreetMap — personne de la promo n'a encore donné son avis.</em></div>`
+        : `<div class="faits"><em>On n'a encore aucune info sur ce lieu. Tu y es allé ? Mets la première note.</em></div>`}
     <a class="primary itineraire" target="_blank" rel="noopener"
        href="https://www.openstreetmap.org/directions?to=${x.lat}%2C${x.lng}">Y aller</a>
     <div class="seg">Les avis</div>
