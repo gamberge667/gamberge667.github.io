@@ -1736,7 +1736,10 @@ const FONDS = [
   {url:"https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
    opt:{maxZoom:19, attribution:"© Esri, © OpenStreetMap"}}
 ];
-function poserFond(carte, i = 0){
+/* OpenStreetMap refuse les pages ouvertes en fichier local : il renvoie une image
+   « Access blocked » avec un code 403, que le navigateur charge sans erreur — le repli
+   automatique ne peut donc pas la détecter. On choisit l'autre fournisseur d'emblée. */
+function poserFond(carte, i = (location.protocol === "file:" ? 1 : 0)){
   const f = FONDS[i];
   const couche = L.tileLayer(f.url, f.opt).addTo(carte);
   let rates = 0;
