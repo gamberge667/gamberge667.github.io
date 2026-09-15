@@ -30,6 +30,13 @@
   .hud button{border:1px solid var(--line);background:var(--paper-2);border-radius:8px;min-width:30px;height:30px;
     padding:0 9px;cursor:pointer;font:inherit;font-size:12px;color:var(--ink);white-space:nowrap}
   .timerbar{position:fixed;top:0;left:0;height:3px;background:var(--clay);width:0;transition:width .4s}
+  .slide .citation{font-family:"Bricolage Grotesque",serif;font-style:italic;
+    font-size:clamp(30px,5.6vw,58px);line-height:1.15;letter-spacing:-.02em;color:var(--ink);
+    border-left:5px solid var(--clay);padding-left:24px;margin:0 0 26px}
+  .slide .note{margin-top:30px;padding-top:14px;border-top:1px dashed var(--line);
+    font-size:14px;color:var(--ink-3);max-width:70ch;line-height:1.5}
+  .slide .note::before{content:"à dire — ";font-family:var(--mono);font-size:11px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--clay)}
 </style>
 </head>
 <body>
@@ -37,100 +44,101 @@
 <div class="deck">
 
   <section class="slide on">
-    <span class="who">Anthony · A1 · 0:00 – 0:45</span>
-    <h2>Tu viens d'arriver et tu ne sais pas <em>par quoi commencer</em> ?</h2>
-    <p class="big">On a réuni au même endroit les démarches à faire, les réponses aux questions de la première
-      semaine, les astuces des autres étudiants — et de quoi suivre son budget du mois.
-      Ça s'appelle <strong>Repère</strong>, ça s'ouvre sur ton téléphone, sans compte et sans installation.
-      Le lien et le QR code sont sur le Discord.</p>
-    <p class="big" style="color:var(--ink-3);font-size:15px;margin-top:28px">↑ L'elevator pitch. Il se dit d'une traite, sans notes.</p>
+    <span class="who">Anthony · A1 · accroche · 0:00 – 0:40</span>
+    <p class="citation">« je peux manger où pour pas cher »</p>
+    <p class="big">Ça, c'est une vraie question. Posée cette semaine, par un étudiant de la promo,
+      dans notre application.</p>
+    <p class="note">À dire ensuite : « Personne ne lui avait répondu. »  Marquer un silence.</p>
   </section>
 
   <section class="slide">
-    <span class="who">Matteo · A1 · 0:45 – 1:40</span>
-    <h2>Le problème n'est pas le manque d'infos.<br>C'est la <em>dispersion</em>.</h2>
-    <ul class="ticks" style="margin-top:30px">
-      <li>L'information existe : un mail, un PDF, MyGES, un Discord, la tête d'un A2.</li>
-      <li>Elle n'est nulle part réunie, et rien ne dit dans quel ordre s'y prendre.</li>
-      <li>Résultat : on découvre une démarche quand le délai est déjà passé.</li>
-    </ul>
-    <p class="big">J'ai collecté les réponses auprès des A2 et de l'administration, puis je les ai
-      recoupées avant de les écrire. Aucune info du site n'est là sans avoir été vérifiée deux fois.</p>
-  </section>
-
-  <section class="slide">
-    <span class="who">Timée · A2 · 1:40 – 3:15 · DÉMO EN DIRECT</span>
-    <h2>Six écrans. <em>Terminés.</em></h2>
-    <ul class="ticks" style="margin-top:24px">
-      <li><strong>Ma liste</strong> — 12 démarches à cocher, gardées sur l'appareil.</li>
-      <li><strong>Budget</strong> — ce qui rentre, ce qui sort, ce qu'il reste et combien par jour.</li>
-      <li><strong>Emploi du temps</strong> — la semaine type, saisie une fois, consultable partout.</li>
-      <li><strong>Guide et astuces</strong> — 8 réponses vérifiées, plus le mur d'astuces qu'on alimente.</li>
-      <li><strong>Poser une question</strong> — n'importe qui de la promo répond dans le fil, tout de suite.</li>
-      <li><strong>La carte</strong> — manger pas cher, essence, sport : notes et avis des étudiants.</li>
-    </ul>
-    <p class="big"><strong>À montrer :</strong> créer le profil (prénom + mot de passe, 20 s) → cocher deux cases →
-      saisir une dépense et voir le reste-à-vivre bouger → ouvrir l'emploi du temps du jour → poser une question.</p>
-  </section>
-
-  <section class="slide">
-    <span class="who">Axel · A2 · 3:15 – 4:15</span>
-    <h2>Un budget, ça se protège. <em>Vraiment.</em></h2>
-    <p class="big">Dès qu'on touche à l'argent et à l'emploi du temps de quelqu'un, la question n'est plus
-      « est-ce que ça marche » mais « qui peut les lire ». Réponse : personne d'autre que l'étudiant.</p>
-    <ul class="ticks" style="margin-top:26px">
-      <li>Le mot de passe n'est <strong>stocké nulle part</strong> — il dérive une clé via PBKDF2-SHA256, 600 000 itérations, sel aléatoire.</li>
-      <li>Les données sont chiffrées en <strong>AES-256-GCM</strong>, avec un vecteur d'initialisation neuf à chaque écriture.</li>
-      <li>La clé vit en mémoire : fermer l'onglet la détruit. Rien de chiffré ne sort de l'appareil — ni compte, ni mot de passe transmis.</li>
-      <li>La seule chose qui quitte le téléphone, c'est ce que l'étudiant <strong>choisit de publier</strong> : le fil de questions et la carte. On ne les a justement pas mélangés avec le budget.</li>
-    </ul>
-    <p class="big"><strong>À montrer en direct :</strong> <u>depuis l'onglet Budget</u>, recharger la page →
-      l'app redemande le mot de passe → ouvrir le stockage du navigateur devant le jury → il n'y a que du charabia.</p>
-  </section>
-
-  <section class="slide">
-    <span class="who">Mohand · A1 · 4:15 – 5:00</span>
-    <h2>En ligne, et <em>ça marche partout</em>.</h2>
-    <ul class="ticks" style="margin-top:30px">
-      <li>Publié sur une page publique gratuite, en HTTPS, accessible par lien ou par QR code.</li>
-      <li>Testé sur <strong>__ téléphones</strong> et <strong>__ navigateurs</strong> différents avant vendredi.</li>
-      <li>Une version hors-ligne est prête sur une clé : si le réseau de l'amphi lâche, la démo a lieu quand même.</li>
-    </ul>
-    <p class="big" style="color:var(--ink-3);font-size:15px;margin-top:24px">↑ Remplacer les __ par les vrais chiffres.</p>
-  </section>
-
-  <section class="slide">
-    <span class="who">Anthony · A1 · 5:00 – 6:10</span>
-    <h2>Des vrais testeurs, de <em>vraies</em> corrections.</h2>
+    <span class="who">Anthony · A1 · situation · 0:40 – 1:10</span>
+    <h2>Un A1 qui arrive à Aix reconstitue sa rentrée à partir de <em>cinq sources</em> qui ne se parlent pas.</h2>
     <div class="figrow">
-      <div><div class="bigfig" id="n1">__</div><span>étudiants ont testé</span></div>
-      <div><div class="bigfig" id="n2">__</div><span>retours écrits</span></div>
-      <div><div class="bigfig" id="n3">__</div><span>corrections faites</span></div>
+      <div><div class="bigfig">5</div><span>sources séparées</span></div>
+      <div><div class="bigfig">0</div><span>qui lui dit l'ordre</span></div>
     </div>
-    <ul class="ticks" style="margin-top:34px">
-      <li>Ce qu'on a changé après les tests : <strong>à compléter jeudi soir</strong>.</li>
-      <li>Ce qu'on n'a pas eu le temps de corriger, et pourquoi : <strong>à compléter</strong>.</li>
-    </ul>
-    <p class="big" style="color:var(--ink-3);font-size:15px;margin-top:24px">↑ Ne jamais inventer : le jury demande les preuves.</p>
+    <p class="note">Les nommer vite : le mail d'admission, le portail, le groupe WhatsApp, les sites CVEC/CAF/CROUS,
+      et les gens croisés dans le couloir.</p>
   </section>
 
   <section class="slide">
-    <span class="who">Timée · A2 · 6:10 – 7:00</span>
-    <h2>Ce qu'on en retire.</h2>
+    <span class="who">Matteo · A1 · problème · 1:10 – 1:45</span>
+    <h2>Ce qu'il apprend dépend de <em>la personne qu'il croise</em>.</h2>
+    <p class="big">Et il ne sait pas ce qu'il ignore.</p>
+    <p class="note">Ne pas dire « les étudiants sont mal organisés » : c'est un jugement, pas une observation.
+      Rester sur ce qui se constate.</p>
+  </section>
+
+  <section class="slide">
+    <span class="who">Matteo · A1 · enjeu · 1:45 – 2:20</span>
+    <h2>La première semaine ne se <em>rattrape pas</em>.</h2>
     <ul class="ticks" style="margin-top:30px">
-      <li>Six écrans finis valent mieux que douze commencés.</li>
-      <li>Chacun a pris le morceau qui correspond à ce qu'il veut faire — data, sécurité, réseaux, comm — et l'a mené seul jusqu'au bout.</li>
-      <li>Ce qu'on referait autrement : <strong>à compléter jeudi</strong>.</li>
+      <li>Les droits ont des dates : une pièce oubliée en septembre se paie en novembre.</li>
+      <li>Le budget mal tenu se découvre en octobre, sur l'appli de la banque.</li>
+      <li>Celui qui n'a personne à qui demander arrête de demander.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <span class="who">Timée · A2 · solution · 2:20 – 3:40 · DÉMONSTRATION, PAS DE SLIDE</span>
+    <h2>Une seule page. <em>Sans compte, sans installation.</em></h2>
+    <p class="big">gamberge667.github.io/repere</p>
+    <p class="note">Sur le téléphone, projeté : cocher une démarche → saisir une dépense et voir le reste à vivre
+      bouger → chercher « halal » sur la carte → poser une question. Quatre gestes, pas un de plus.
+      Ne rien expliquer de technique ici.</p>
+  </section>
+
+  <section class="slide">
+    <span class="who">Axel · A2 · valeur · 3:40 – 4:40</span>
+    <h2>Le 3 octobre, 12 h 30, sans réseau : il sait s'il peut mettre <em>12 €</em> dans un repas.</h2>
+    <p class="big">Et la carte lui dit où, à moins de cinq minutes.</p>
+    <p class="note">Puis la démonstration, 20 secondes : ouvrir la base devant le jury et chercher le mot
+      « Bourse ». Il n'y est pas. Dire « ses montants, personne ne peut les lire — ni nous, ni l'école ».
+      Ne pas prononcer AES, PBKDF2 ni 600 000 itérations.</p>
+  </section>
+
+  <section class="slide">
+    <span class="who">Mohand · A1 · preuve · 4:40 – 5:40</span>
+    <h2>Ce n'est pas une maquette. <em>Ouvrez-le.</em></h2>
+    <div class="figrow">
+      <div><div class="bigfig">1 068</div><span>lieux réels dans 5 km</span></div>
+      <div><div class="bigfig">0 €</div><span>de budget</span></div>
+      <div><div class="bigfig">0</div><span>serveur à maintenir</span></div>
+    </div>
+    <p class="note">Puis couper le wifi en direct et continuer à naviguer. Répartition si on la demande :
+      634 manger, 128 courses, 111 santé, 104 sortir, 60 sport, 19 essence, 12 étudier.</p>
+  </section>
+
+  <section class="slide">
+    <span class="who">Anthony · A1 · preuve · 5:40 – 6:20</span>
+    <h2>Ce qui est prouvé, ce qui ne l'est <em>pas</em>.</h2>
+    <div class="figrow">
+      <div><div class="bigfig" id="n1">__</div><span>A1 ont testé</span></div>
+      <div><div class="bigfig" id="n2">__</div><span>secondes pour trouver où déjeuner</span></div>
+      <div><div class="bigfig" id="n3">__</div><span>lieux notés par la promo</span></div>
+    </div>
+    <p class="note">Dire le chiffre tel qu'il sort, bon ou mauvais. Et le dire avant qu'on nous le demande :
+      « l'usage n'est pas encore prouvé, on ne va pas le maquiller ». Remplacer les __ jeudi soir.</p>
+  </section>
+
+  <section class="slide">
+    <span class="who">Timée · A2 · action · 6:20 – 7:00</span>
+    <h2>Deux choses, maintenant.</h2>
+    <ul class="ticks" style="margin-top:30px">
+      <li><strong>Ouvrez-le sur votre téléphone</strong>, pendant qu'on se rassoit. Et coupez votre réseau.</li>
+      <li><strong>Donnez-nous 30 minutes</strong> du séminaire de prérentrée A1 : c'est le seul moment de
+        l'année où toute la promo est dans la même salle.</li>
     </ul>
     <p class="big" style="margin-top:36px;font-size:clamp(19px,2.6vw,26px);color:var(--ink)">
-      « Repère, c'est ce qu'on aurait voulu trouver le premier jour — et il est déjà en ligne. »</p>
+      « Ce que sait une promotion ne doit plus repartir avec elle. »</p>
   </section>
 
   <section class="slide" style="text-align:center">
     <span class="logo-mark" style="margin:0 auto 20px;width:46px;height:46px"><i style="width:14px;height:14px"></i></span>
     <h2>Merci.</h2>
     <p class="big" style="margin-inline:auto">Groupe G__ · Timée · Axel · Matteo · Mohand · Anthony<br>
-      Le lien et le QR code sont sur le Discord — on prend vos questions.</p>
+      gamberge667.github.io/repere — ouvrez-le, on prend vos questions.</p>
   </section>
 
 </div>
