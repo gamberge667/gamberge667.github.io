@@ -10,8 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<link rel="stylesheet" href="app.css?v=13">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
+<link rel="stylesheet" href="app.css?v=14">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23191713' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23E2643C'/></svg>">
 </head>
 <body>
@@ -316,12 +319,14 @@
   </div>
 
   <p class="tiny" id="hors-zone" hidden style="margin-top:-8px"></p>
+  <p class="tiny" id="trop-nombreux" hidden style="margin-top:-8px"></p>
   <div class="seg"><span id="titre-liste">Les lieux</span></div>
   <div id="lieux"></div>
   <button class="primary" id="add-lieu" style="margin-top:6px">＋ Ajouter un lieu</button>
-  <p class="tiny">Chaque lieu est ajouté par un étudiant, avec sa note et son commentaire.
-    <strong>Tout ce qui est publié ici est public</strong> et ne peut pas être effacé par son auteur.
-    Si une info est fausse, ajoute un avis pour le dire.</p>
+  <p class="tiny">Les adresses de base viennent d'<strong>OpenStreetMap</strong> (licence ODbL) ;
+    les notes, les avis et les bons plans viennent des étudiants. Tu peux ajouter un lieu qui manque.
+    <strong>Tout ce qui est publié ici est public</strong> et ne peut pas être effacé par son auteur —
+    si une info est fausse, mets un avis pour le dire.</p>
 </section>
 
 <!-- ================= GUIDE + ASTUCES ================= -->
@@ -1609,7 +1614,8 @@ const CAMPUS = {lat:43.51351, lng:5.428173, nom:"L'école",
 const RAYON_KM = 25;      // au-delà, un lieu n'influence plus le cadrage de la carte
 const catDe = k => CATS_LIEU.find(c => c.k === k) || CATS_LIEU[0];
 
-let lieux = [], avisParLieu = {}, maCarte = null, carteAjout = null;
+let lieux = [], avisParLieu = {}, maCarte = null, carteAjout = null, groupe = null;
+const MAX_LISTE = 60;   // la liste n'affiche que les plus proches, la carte les montre tous
 let marqueurs = {}, filtreCat = null, filtreOpts = new Set(), rechercheLieu = "", maPosition = null;
 let lieuOuvert = null, noteChoisie = 0;
 
@@ -1634,7 +1640,8 @@ async function chargerLieux(){
     $("#carte-vide").innerHTML = "<b>La carte n'est pas branchée</b><span>Le fil partagé doit être configuré pour que la carte fonctionne.</span>";
     return; }
   try {
-    lieux = await api("lieux?select=*,avis(id,note,texte,auteur,cree_le)&order=cree_le.desc&limit=300");
+    lieux = await api("lieux?select=id,nom,categorie,sous_type,adresse,lat,lng,prix,prix_litre,horaires,options,photo,note_info,auteur"
+      + ",avis(id,note,texte,auteur,cree_le)&order=nom.asc&limit=1500");
     avisParLieu = {};
     lieux.forEach(l => avisParLieu[l.id] = l.avis || []);
     dessinerCarte();
@@ -1692,7 +1699,13 @@ function dessinerCarte(){
       (maPosition ? " · triés depuis ta position" : " · triés depuis l'école")
     : "Autour de l'école, av. du Club Hippique";
 
-  $("#lieux").innerHTML = l.length ? l.map(x => {
+  const affiches = l.slice(0, MAX_LISTE);
+  $("#trop-nombreux").hidden = l.length <= MAX_LISTE;
+  if (l.length > MAX_LISTE) $("#trop-nombreux").textContent =
+    "Les " + MAX_LISTE + " plus proches sont listés ici ; les " + (l.length - MAX_LISTE) +
+    " autres sont sur la carte. Affine avec la recherche ou les filtres.";
+
+  $("#lieux").innerHTML = affiches.length ? affiches.map(x => {
     const c = catDe(x.categorie), m = moyenne(x.id), n = (avisParLieu[x.id]||[]).length;
     return `<button class="lieu" data-lieu="${x.id}">
       ${x.photo ? `<img class="vignette" src="${esc(x.photo)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'vignette',textContent:'${c.emoji}'}))">`
@@ -1719,14 +1732,21 @@ function dessinerCarte(){
 
 function poserMarqueurs(liste){
   if (!maCarte) return;
-  Object.values(marqueurs).forEach(m => maCarte.removeLayer(m));
+  if (groupe) { groupe.clearLayers(); }
+  else {
+    groupe = (typeof L.markerClusterGroup === "function")
+      ? L.markerClusterGroup({maxClusterRadius:45, spiderfyOnMaxZoom:true, showCoverageOnHover:false})
+      : L.layerGroup();
+    maCarte.addLayer(groupe);
+  }
   marqueurs = {};
   liste.forEach(x => {
     const c = catDe(x.categorie);
     const icone = L.divIcon({ className:"", iconSize:[34,34], iconAnchor:[17,34],
       html:`<div class="marqueur" style="background:${c.couleur}"><span>${c.emoji}</span></div>` });
-    const m = L.marker([x.lat, x.lng], {icon:icone, title:x.nom}).addTo(maCarte);
+    const m = L.marker([x.lat, x.lng], {icon:icone, title:x.nom});
     m.on("click", () => ouvrirLieu(x.id));
+    groupe.addLayer(m);
     marqueurs[x.id] = m;
   });
   // La carte reste centrée sur le campus. On ne cadre que sur les lieux proches :
