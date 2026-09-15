@@ -640,3 +640,8 @@ body.avec-bandeau{padding-top:74px}
 .faits span{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;
   padding:3px 10px;margin:0 5px 5px 0;font-size:13px}
 .faits em{display:block;margin-top:8px;font-size:12.5px;color:var(--faint);font-style:normal}
+
+/* Entrée « Mon compte » sur l'écran de choix */
+.line.compte.cloud{width:100%;text-align:left;border-color:var(--vert);background:var(--vert-pale);margin-bottom:6px}
+.line.compte.cloud .ic{background:#fff}
+.line.compte.cloud .txt b{color:var(--vert)}

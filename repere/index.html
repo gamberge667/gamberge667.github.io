@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-<link rel="stylesheet" href="app.css?v=15">
+<link rel="stylesheet" href="app.css?v=16">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%23191713' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23E2643C'/></svg>">
 </head>
 <body>
@@ -54,8 +54,44 @@
       <h1>Qui es-tu ?</h1>
       <p class="lead">Plusieurs personnes peuvent avoir leur profil sur cet appareil.
         Chacun a son mot de passe, et personne ne peut lire les données d'un autre.</p>
+      <button class="line compte cloud" id="go-compte" type="button">
+        <div class="ic">☁️</div>
+        <div class="txt"><b>Mon compte</b><span>retrouve tes données sur n'importe quel appareil</span></div>
+        <svg class="cad"><use href="#i-arw"/></svg>
+      </button>
+      <div class="seg" id="seg-locaux" hidden>Ou un profil de cet appareil</div>
       <div id="liste-comptes"></div>
-      <button class="ghostbtn" id="go-creer" style="margin-top:6px">＋ Créer un autre profil</button>
+      <button class="ghostbtn" id="go-creer" style="margin-top:6px">＋ Créer un profil sur cet appareil</button>
+    </div>
+
+    <!-- compte synchronisé -->
+    <div data-gate="compte" hidden>
+      <h1 id="titre-compte">Ton compte Repère</h1>
+      <p class="lead">Un seul mot de passe, tes données sur tous tes appareils.
+        Elles arrivent chiffrées sur le serveur : <strong>nous ne pouvons pas les lire</strong>.</p>
+      <div class="err" id="err-compte" hidden></div>
+      <div class="field">
+        <label for="c-mail">Ton adresse mail</label>
+        <input id="c-mail" type="email" autocomplete="email" placeholder="matteo@exemple.fr">
+      </div>
+      <div class="field">
+        <label for="c-mdp">Ton mot de passe <span style="color:var(--faint);font-weight:400">— 12 caractères minimum</span></label>
+        <input id="c-mdp" type="password" autocomplete="current-password" placeholder="••••••••">
+      </div>
+      <div class="field" id="champ-mdp2" hidden>
+        <label for="c-mdp2">Répète-le</label>
+        <input id="c-mdp2" type="password" autocomplete="new-password" placeholder="••••••••">
+      </div>
+      <button class="primary" id="btn-connexion">Me connecter</button>
+      <button class="ghostbtn" id="bascule-compte">Je n'ai pas encore de compte</button>
+      <button class="ghostbtn" id="retour-choisir">← Retour</button>
+      <div class="crypto-note">
+        <b>Comment ça reste privé</b>
+        Ton mot de passe ne part jamais. Il fabrique sur ton téléphone une clé qui chiffre tes données
+        en AES-256-GCM, et c'est seulement une <em>empreinte</em> de cette clé qui sert à t'identifier
+        auprès du serveur. Celui-ci ne stocke que du texte illisible — c'est le même principe qu'un
+        gestionnaire de mots de passe.
+      </div>
     </div>
 
     <!-- création -->
@@ -737,7 +773,17 @@ const ouvert = () => cle !== null;
 
 let enCours = false, aRefaire = false, monN = 0;
 async function sauverCoffre(){
-  if (!cle || !compteId) return;
+  if (!cle) return;
+  if (enCompte) {                       // le coffre vit sur le serveur, chiffré
+    if (enCours) { aRefaire = true; return; }
+    enCours = true;
+    try { await sauverCompte(); }
+    catch(e) { toast("Synchronisation impossible"); enCours = false; throw e; }
+    enCours = false;
+    if (aRefaire) { aRefaire = false; sauverCoffre(); }
+    return;
+  }
+  if (!compteId) return;
   if (enCours) { aRefaire = true; return; }
   enCours = true;
   try {
@@ -801,7 +847,7 @@ async function ouvrirProfil(id, pw){
 }
 
 function verrouiller(){
-  cle = null; profil = null; compteId = null; monN = 0;
+  cle = null; profil = null; compteId = null; monN = 0; enCompte = false; jeton = null;
   coffre = { budget:{revenus:[],depenses:[]}, edt:[] };
   majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
   toast("Verrouillé");
@@ -811,6 +857,97 @@ function effacerProfil(){
   cle = null; profil = null; compteId = null; monN = 0;
   coffre = { budget:{revenus:[],depenses:[]}, edt:[] };
   majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
+}
+
+/* ===================== COMPTE SYNCHRONISÉ =====================
+   Le mot de passe ne quitte jamais l'appareil. Il fabrique une clé maîtresse ;
+   cette clé chiffre les données, et une simple empreinte d'elle sert de mot de
+   passe auprès du serveur. Le serveur ne stocke donc que du texte illisible.
+   ============================================================= */
+const K_SESSION = "repere.session.v1";
+let enCompte = false, jeton = null, monId = null, monMail = null;
+
+async function bitsMaitres(mdp, mail){
+  const base = await sub.importKey("raw", new TextEncoder().encode(mdp), "PBKDF2", false, ["deriveBits"]);
+  return sub.deriveBits({name:"PBKDF2", salt:new TextEncoder().encode(mail.trim().toLowerCase()),
+                         iterations:ITER, hash:"SHA-256"}, base, 256);
+}
+async function empreinte(bits, mdp){          // ce qui part au serveur, et rien d'autre
+  const k = await sub.importKey("raw", bits, "PBKDF2", false, ["deriveBits"]);
+  const e = await sub.deriveBits({name:"PBKDF2", salt:new TextEncoder().encode(mdp),
+                                 iterations:1, hash:"SHA-256"}, k, 256);
+  return b64(e);
+}
+
+async function auth(chemin, corps){
+  const r = await fetch(SUPABASE.url + "/auth/v1/" + chemin, {
+    method:"POST", signal: AbortSignal.timeout(15000),
+    headers:{apikey:SUPABASE.cle, "Content-Type":"application/json"},
+    body: JSON.stringify(corps)
+  });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) { const e = new Error(d.msg || d.error_description || d.message || "erreur"); e.code = d.error_code || d.error; throw e; }
+  return d;
+}
+
+async function apiCompte(chemin, options = {}){
+  const r = await fetch(SUPABASE.url + "/rest/v1/" + chemin, {
+    ...options, signal: AbortSignal.timeout(15000),
+    headers:{apikey:SUPABASE.cle, Authorization:"Bearer " + jeton,
+             "Content-Type":"application/json", Prefer:"return=representation", ...(options.headers||{})}
+  });
+  if (!r.ok) throw new Error("HTTP " + r.status + " " + (await r.text()).slice(0,200));
+  const t = await r.text();
+  return t ? JSON.parse(t) : null;
+}
+
+async function creerCompte(mail, mdp){
+  const bits = await bitsMaitres(mdp, mail);
+  const d = await auth("signup", {email: mail.trim(), password: await empreinte(bits, mdp)});
+  if (!d.access_token) throw new Error("CONFIRMATION");      // Supabase attend une confirmation par mail
+  await installerSession(d, bits, mail);
+  coffre = {profil:{prenom: mail.split("@")[0], promo:""}, budget:{revenus:[],depenses:[]}, edt:[]};
+  monN = 0;
+  await sauverCoffre();
+}
+
+async function ouvrirCompte(mail, mdp){
+  const bits = await bitsMaitres(mdp, mail);
+  const d = await auth("token?grant_type=password", {email: mail.trim(), password: await empreinte(bits, mdp)});
+  await installerSession(d, bits, mail);
+  const lignes = await apiCompte("coffres?select=*");
+  if (!lignes.length) { coffre = {profil:{prenom: mail.split("@")[0], promo:""}, budget:{revenus:[],depenses:[]}, edt:[]}; monN = 0; return; }
+  const c = lignes[0];
+  const clair = await sub.decrypt({name:"AES-GCM", iv:unb64(c.iv)}, cle, unb64(c.ct));
+  const lu = JSON.parse(new TextDecoder().decode(clair));
+  monN = c.n || 0;
+  profil = lu.profil || {prenom: mail.split("@")[0], promo:""};
+  coffre = {profil, budget: lu.budget || {revenus:[],depenses:[]}, edt: lu.edt || []};
+}
+
+async function installerSession(d, bits, mail){
+  jeton = d.access_token; monId = d.user.id; monMail = mail.trim();
+  cle = await sub.importKey("raw", bits, {name:"AES-GCM"}, false, ["encrypt","decrypt"]);
+  enCompte = true; compteId = null;
+  profil = {prenom: mail.split("@")[0], promo:""};
+  saveMou(K_SESSION, {mail: monMail, refresh: d.refresh_token});
+}
+
+async function sauverCompte(){
+  const iv = alea(12);
+  const ct = await sub.encrypt({name:"AES-GCM", iv}, cle,
+                               new TextEncoder().encode(JSON.stringify(coffre)));
+  monN += 1;
+  await apiCompte("coffres", {method:"POST",
+    headers:{Prefer:"resolution=merge-duplicates,return=minimal"},
+    body: JSON.stringify({user_id: monId, sel: monMail, iv: b64(iv), ct: b64(ct), n: monN,
+                          maj_le: new Date().toISOString()})});
+}
+
+function deconnecter(){
+  enCompte = false; jeton = null; monId = null; monMail = null;
+  try { localStorage.removeItem(K_SESSION); } catch {}
+  verrouiller();
 }
 
 /* ---- écran de garde ---- */
@@ -834,7 +971,8 @@ function dessinerComptes(){
 function gate(mode){
   $$("#gate [data-gate]").forEach(d => d.hidden = d.dataset.gate !== mode);
   $("#err-creer").hidden = true; $("#err-ouvrir").hidden = true;
-  if (mode === "choisir") dessinerComptes();
+  if (mode === "choisir") { dessinerComptes(); $("#seg-locaux").hidden = lireComptes().length === 0; }
+  if (mode === "compte") majEcranCompte();
   if (mode === "creer") {
     const n = lireComptes().length;
     $("#go-liste").hidden = n === 0;
@@ -857,13 +995,53 @@ function gate(mode){
 const fermerGate = () => $("#gate").classList.remove("on");
 function demanderProfil(){
   if (!sub) return toast("Ton navigateur ne permet pas le chiffrement ici");
-  const liste = lireComptes();
-  if (liste.length === 0) return gate("creer");
-  if (liste.length === 1) { compteVise = liste[0].id; return gate("ouvrir"); }
-  gate("choisir");
+  gate("choisir");          // compte synchronisé + profils de cet appareil
 }
 $("#gate-close").onclick = fermerGate;
 $$("[data-gate-open]").forEach(b => b.onclick = demanderProfil);
+let modeCompte = "connexion";      // ou "creation"
+
+function majEcranCompte(){
+  const creation = modeCompte === "creation";
+  $("#titre-compte").textContent   = creation ? "Crée ton compte" : "Ton compte Repère";
+  $("#champ-mdp2").hidden          = !creation;
+  $("#btn-connexion").textContent  = creation ? "Créer mon compte" : "Me connecter";
+  $("#bascule-compte").textContent = creation ? "J'ai déjà un compte" : "Je n'ai pas encore de compte";
+  $("#c-mdp").setAttribute("autocomplete", creation ? "new-password" : "current-password");
+  $("#err-compte").hidden = true;
+}
+$("#go-compte").onclick     = () => { modeCompte = "connexion"; majEcranCompte();
+  const s = load(K_SESSION, null); if (s && s.mail) $("#c-mail").value = s.mail;
+  gate("compte"); };
+$("#bascule-compte").onclick = () => { modeCompte = modeCompte === "creation" ? "connexion" : "creation"; majEcranCompte(); };
+$("#retour-choisir").onclick = () => gate(lireComptes().length ? "choisir" : "creer");
+
+$("#btn-connexion").onclick = async () => {
+  const err = $("#err-compte"), dire = m => { err.textContent = m; err.hidden = false; };
+  const mail = $("#c-mail").value.trim(), mdp = $("#c-mdp").value;
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return dire("Mets une adresse mail valide.");
+  if (mdp.length < 12) return dire("Le mot de passe doit faire au moins 12 caractères.");
+  if (modeCompte === "creation" && mdp !== $("#c-mdp2").value) return dire("Les deux mots de passe ne sont pas identiques.");
+  err.hidden = true;
+  const b = $("#btn-connexion"), texte = b.textContent;
+  b.disabled = true; b.textContent = "Chiffrement en cours…";
+  try {
+    if (modeCompte === "creation") await creerCompte(mail, mdp);
+    else await ouvrirCompte(mail, mdp);
+    $("#c-mdp").value = $("#c-mdp2").value = "";
+    fermerGate(); majVerrous(); dessinerBudget(); dessinerEDT(); majAccueil();
+    toast(modeCompte === "creation" ? "Compte créé, tes données sont chiffrées" : "Bonjour " + profil.prenom);
+  } catch(e) {
+    const m = String(e.message);
+    dire(m === "CONFIRMATION" ? "Compte créé. Ouvre le mail de confirmation, puis reviens te connecter."
+       : /already registered|already been/i.test(m) ? "Cette adresse a déjà un compte. Connecte-toi."
+       : /Invalid login|invalid_credentials/i.test(m) ? "Adresse ou mot de passe incorrect."
+       : /TimeoutError|Failed to fetch/i.test(m) ? "Le serveur ne répond pas. Vérifie ta connexion."
+       : "Ça n'a pas marché : " + m);
+  }
+  b.disabled = false; b.textContent = texte;
+};
+
 $("#go-creer").onclick  = () => gate("creer");
 $("#go-liste").onclick  = () => { const l = lireComptes(); l.length ? gate("choisir") : fermerGate(); };
 $("#go-liste2").onclick = () => gate("choisir");
@@ -939,12 +1117,16 @@ $("#btn-oubli").onclick = () => {
 
 $("#btn-profil").onclick = () => {
   if (!ouvert()) return demanderProfil();
-  $("#pf-sub").textContent = profil.prenom + (profil.promo ? " · " + profil.promo : "") + " — déverrouillé sur cet appareil.";
+  $("#pf-sub").textContent = enCompte
+    ? monMail + " — compte synchronisé, données chiffrées avant l'envoi."
+    : profil.prenom + (profil.promo ? " · " + profil.promo : "") + " — profil local à cet appareil.";
   ouvrirFeuille("profil");
 };
-$("#pf-lock").onclick = () => { fermerFeuille(); verrouiller(); };
-$("#pf-switch").onclick = () => { fermerFeuille(); verrouiller(); setTimeout(() => gate("choisir"), 350); };
+$("#pf-lock").onclick = () => { fermerFeuille(); enCompte ? deconnecter() : verrouiller(); };
+$("#pf-switch").onclick = () => { fermerFeuille(); if (enCompte) deconnecter(); else verrouiller();
+  setTimeout(() => gate("choisir"), 350); };
 $("#pf-wipe").onclick = () => {
+  if (enCompte) return alert("Pour supprimer un compte synchronisé, écris à l'équipe : on le retire du serveur.");
   if (!confirm("Supprimer ton profil, ton budget et ton emploi du temps de cet appareil ? C'est définitif.")) return;
   effacerProfil(); fermerFeuille(); toast("Profil supprimé");
 };
