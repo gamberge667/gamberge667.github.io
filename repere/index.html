@@ -315,6 +315,7 @@
     </div>
   </div>
 
+  <p class="tiny" id="hors-zone" hidden style="margin-top:-8px"></p>
   <div class="seg"><span id="titre-liste">Les lieux</span></div>
   <div id="lieux"></div>
   <button class="primary" id="add-lieu" style="margin-top:6px">＋ Ajouter un lieu</button>
@@ -1605,6 +1606,7 @@ const OPTIONS_LIEU = ["Halal","Végé","Vegan","Sans gluten","Pas cher","Ouvert 
 /* Le campus : point de départ de la carte, et repère fixe pour se situer. */
 const CAMPUS = {lat:43.51351, lng:5.428173, nom:"L'école",
                 adresse:"684 av. du Club Hippique, Aix-en-Provence"};
+const RAYON_KM = 25;      // au-delà, un lieu n'influence plus le cadrage de la carte
 const catDe = k => CATS_LIEU.find(c => c.k === k) || CATS_LIEU[0];
 
 let lieux = [], avisParLieu = {}, maCarte = null, carteAjout = null;
@@ -1727,14 +1729,22 @@ function poserMarqueurs(liste){
     m.on("click", () => ouvrirLieu(x.id));
     marqueurs[x.id] = m;
   });
-  if (liste.length) {
-    const b = L.latLngBounds(liste.map(x => [x.lat, x.lng]));
-    b.extend([CAMPUS.lat, CAMPUS.lng]);                 // l'école reste toujours visible
-    if (maPosition) b.extend([maPosition.lat, maPosition.lng]);
-    maCarte.fitBounds(b, {padding:[40,40], maxZoom:16});
+  // La carte reste centrée sur le campus. On ne cadre que sur les lieux proches :
+  // un point ajouté par erreur à l'autre bout de la France ne doit pas tout dézoomer.
+  const proches = liste.filter(x => distance(CAMPUS, x) <= RAYON_KM);
+  if (maPosition && distance(CAMPUS, maPosition) <= RAYON_KM) proches.push(maPosition);
+  if (proches.length) {
+    const b = L.latLngBounds(proches.map(x => [x.lat, x.lng]));
+    b.extend([CAMPUS.lat, CAMPUS.lng]);
+    maCarte.fitBounds(b, {padding:[40,40], maxZoom:16, minZoom:12});
+    if (maCarte.getZoom() < 12) maCarte.setZoom(12);
   } else {
     maCarte.setView([CAMPUS.lat, CAMPUS.lng], 15);
   }
+  const loin = liste.length - liste.filter(x => distance(CAMPUS, x) <= RAYON_KM).length;
+  $("#hors-zone").hidden = loin === 0;
+  if (loin) $("#hors-zone").textContent = loin + (loin > 1 ? " lieux sont" : " lieu est")
+    + " à plus de " + RAYON_KM + " km de l'école — ils restent dans la liste, mais la carte ne s'y déplace pas.";
 }
 
 /* OpenStreetMap refuse ses tuiles quand la page vient d'un fichier local ou d'un
